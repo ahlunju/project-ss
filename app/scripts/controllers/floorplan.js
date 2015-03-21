@@ -8,12 +8,14 @@
  * Controller of the projectSsApp
  */
 angular.module('projectSsApp')
-  .controller('FloorplanCtrl', function ($scope, employeesService) {
+  .controller('FloorplanCtrl', function ($scope, floorPlanService) {
+
     $scope.getEmployees = function () {
-    	employeesService.query(function (data) {
-    		$scope.employees = data;
-    		console.log(data);
-    	});
+    	$scope.employees = floorPlanService.getEmployees();
+    };
+
+    $scope.updateEmployees = function () {
+    	floorPlanService.updateEmployees();
     };
 
     $scope.getEmployees();

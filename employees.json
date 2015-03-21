@@ -1,0 +1,42 @@
+[
+	{
+		"name": "Yalun Zhu",
+		"employeeID": 0,
+		"deskPos": {
+			"x" : 100,
+			"y" : 100
+		}
+	},
+	{
+		"name": "Jon Snow",
+		"employeeID": 1,
+		"deskPos": {
+			"x" : 200,
+			"y" : 300
+		}
+	},
+	{
+		"name": "Hello World",
+		"employeeID": 2,
+		"deskPos": {
+			"x" : 500,
+			"y" : 50
+		}
+	},
+	{
+		"name": "Alan Zhu",
+		"employeeID": 3,
+		"deskPos": {
+			"x" : 70,
+			"y" : 100
+		}
+	},
+	{
+		"name": "Sam Fisher",
+		"employeeID": 4,
+		"deskPos": {
+			"x" : 150,
+			"y" : 30
+		}
+	}
+]

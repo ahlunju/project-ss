@@ -1,1 +1,15 @@
 <h2>floor plan</h2>
+<div class="form-group">
+	<button class="btn btn-primary" ng-click="updateEmployees()">Save</button>
+</div>
+<ul ng-model="employees">
+	<li ng-repeat="employee in employees">
+		<div>
+			<p>{{employee}}</p>
+			<input type="text" ng-model="employee.name"></input>
+			<input type="range" min="0" max="1000" step="10" ng-model="employee.deskPos.x" />
+			<input type="range" min="0" max="1000" step="10" ng-model="employee.deskPos.y" />
+		</div>
+	</li>
+</ul>
+
