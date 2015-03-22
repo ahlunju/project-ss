@@ -15,7 +15,7 @@ angular.module('projectSsApp')
 
     this.getEmployees = function () {
     	return employeesService.query(function (data) {
-    		console.log(data);
+    		// console.log(data);
     		self.Employees = data;
     		return self.Employees;
     	});
