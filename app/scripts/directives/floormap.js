@@ -8,35 +8,50 @@
  */
 angular.module('projectSsApp')
   .directive('floorMap', function () {
-
   // constants
-	var width = 1000;
-	var height = 1000;
+	var margin = {top: -5, right: -5, bottom: -5, left: -5},
+		width = 960 - margin.left - margin.right,
+		height = 500 - margin.top - margin.bottom;
 	return {
 	restrict: 'E',
 	link: function (scope, element, attr) {
 		// set up initial svg object
-		var vis = d3.selectAll(element)
-					.append("svg")
-					.attr("viewBox", "-50 -50 1000 1000")
-					.attr("width", width)
-					.attr("height", height);
+		var isInitialsed = false;
+		var dragstarted = function () {
+			console.log(this);
+			d3.select(this).classed("drag", true);
+		};
+		var dragged = function (d) {
+			d3.select(this)
+				.attr('cx', d.x = Math.round(d3.event.x))
+				.attr('cy', d.v = Math.round(d3.event.y));
+			// scope.$apply();
+		};
+		var dragended = function () {
+			d3.select(this).classed('drag', false);
+			scope.$apply(); //apply on drag end instead of on drag
+		};
 
-		var g = vis.selectAll('adding graphics element')
+		var svg = d3.selectAll(element)
+					.append("svg")
+					.attr("width", width + margin.left + margin.right)
+					.attr("height", height + margin.top + margin.bottom)
+					.append("g")
+					.attr("transform", "translate(" + margin.left + "," + margin.right + ")")
+					// .call(zoom);
+
+		var g = svg.selectAll('adding graphics element')
 					.data([{x:0, y:0}])
 					.enter()
 					.append('g');
 
-		var isInitialsed = false;
-
 		var init = function(value){
-			// console.log(value);
 
 			g.selectAll('add circle elements')
 				.data(value).enter()
 				.append("circle")
 				.attr("class", "points")
-				.attr("r", 6)
+				.attr("r", 10)
 				.attr("cx", function(d){
 					return d.x;
 				})
@@ -47,30 +62,18 @@ angular.module('projectSsApp')
 			isInitialsed = true;
 
 			// drag behavior
-			var dragfn = d3.behavior
+			var drag = d3.behavior
 				.drag()
-				.on('dragstart', function() {
-					console.log(this);
-					d3.select(this).classed("dragging", true);
+				.on('dragstart', dragstarted)
+				.on('drag', dragged)
+				.on('dragend', dragended);
 
-				})
-				.on('drag', function(d, i) {
-					d3.select(this)
-						.attr('cx', d.x = Math.round(d3.event.x))
-						.attr('cy', d.v = Math.round(d3.event.y));
-					scope.$apply();
-				})
-				.on('dragend', function(d, i) {
-					d3.select(this).classed('drag', false);
-				});
-
-			g.selectAll('.points').call(dragfn);
+			g.selectAll('.points').call(drag);
 		};
 
 		scope.$watch(attr.ghBind, function(value){
-				// console.log(value);
 				var changeFn = function(){
-					vis.selectAll(".points")
+					svg.selectAll(".points")
 						.data(value)
 						.attr("cy", function(d){
 							return d.v;
@@ -85,7 +88,6 @@ angular.module('projectSsApp')
 					init(value);
 					changeFn();
 				}
-			
 		}, true);
 	}
 }});

@@ -9,34 +9,43 @@
  */
 angular.module('projectSsApp')
   .controller('FloorplanCtrl', function ($scope, floorPlanService) {
-  	$scope.myEmployees = [
+  	$scope.myDesks = [
   		{
-  			v: 25,
-  			x: 10
+  			deskID: 0,
+        v: 125,
+  			x: 100
   		}, {
-  			v: 0,
-  			x: 20
+  			deskID: 1,
+        v: 20,
+  			x: 100
   		}, {
-  			v: 50,
-  			x: 30
+  			deskID: 2,
+        v: 50,
+  			x: 130
   		}, {
-  			v: 60,
-  			x: 50
+  			deskID: 3,
+        v: 60,
+  			x: 150
   		}, {
-  			v: 40,
-  			x: 40
+  			deskID: 4,
+        v: 40,
+  			x: 140
   		}, {
-  			v: 250,
+  			deskID: 5,
+        v: 250,
   			x: 250
   		}, {
-  			v: 30,
-  			x: 60
+  			deskID: 6,
+        v: 90,
+  			x: 160
   		}, {
-  			v: 30,
-  			x: 90
+  			deskID: 7,
+        v: 100,
+  			x: 190
   		}, {
-  			v: 50,
-  			x: 100
+  			deskID: 8,
+        v: 150,
+  			x: 300
 	}];
     $scope.getEmployees = function () {
     	$scope.employees = floorPlanService.getEmployees();

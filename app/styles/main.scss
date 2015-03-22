@@ -87,3 +87,15 @@ Main marketing message and sign up button
     border-bottom: 0;
   }
 }
+
+.points.drag {
+  fill: #bada55;
+  stroke: #000;
+}
+
+.axis line {
+  fill: none;
+  stroke: #ddd;
+  shape-rendering: crispEdges;
+  vector-effect: non-scaling-stroke;
+}

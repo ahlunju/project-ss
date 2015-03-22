@@ -212,7 +212,7 @@ module.exports = function (grunt) {
       },
       server: {
         options: {
-          sourcemap: true
+          // sourcemap: true
         }
       }
     },
@@ -386,13 +386,13 @@ module.exports = function (grunt) {
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       server: [
-        // 'compass:server'
+        'compass:server'
       ],
       test: [
         // 'compass'
       ],
       dist: [
-        // 'compass:dist',
+        'compass:dist',
         'imagemin',
         'svgmin'
       ]
