@@ -33,21 +33,50 @@ angular.module('projectSsApp')
 		};
 
 		var svg = d3.selectAll(element)
-					.append("svg")
-					.attr("width", width + margin.left + margin.right)
-					.attr("height", height + margin.top + margin.bottom)
-					.append("g")
-					.attr("transform", "translate(" + margin.left + "," + margin.right + ")")
-					// .call(zoom);
+			.append("svg")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+			.attr("transform", "translate(" + margin.left + "," + margin.right + ")")
+			// .call(zoom);
+		
+		var containerBox = svg.append("rect")
+			.attr("width", width)
+			.attr("height", height)
+			.style("fill", "none")
+			.style("pointer-events", "all");
 
-		var g = svg.selectAll('adding graphics element')
-					.data([{x:0, y:0}])
-					.enter()
-					.append('g');
+		var grid = svg.append("g");
+
+		grid.append("g")
+			.attr("class", "x axis")
+			.selectAll("line")
+			.data(d3.range(0, width, 10))
+			.enter().append("line")
+			.attr("x1", function(d) { return d; })
+			.attr("y1", 0)
+			.attr("x2", function(d) { return d; })
+			.attr("y2", height);
+
+		grid.append("g")
+			.attr("class", "y axis")
+			.selectAll("line")
+			.data(d3.range(0, height, 10))
+			.enter().append("line")
+			.attr("x1", 0)
+			.attr("y1", function(d) { return d; })
+			.attr("x2", width)
+			.attr("y2", function(d) { return d; });
+
+		var desksContainer = svg.selectAll('adding graphics element')
+			.data([{x:0, y:0}])
+			.enter()
+			.append('g')
+			.attr("class", "desks-container");
 
 		var init = function(value){
 
-			g.selectAll('add circle elements')
+			desksContainer.selectAll('add circle elements')
 				.data(value).enter()
 				.append("circle")
 				.attr("class", "points")
@@ -58,9 +87,6 @@ angular.module('projectSsApp')
 				.attr("cy", function(d){
 					return d.v;
 				});
-
-			isInitialsed = true;
-
 			// drag behavior
 			var drag = d3.behavior
 				.drag()
@@ -68,7 +94,8 @@ angular.module('projectSsApp')
 				.on('drag', dragged)
 				.on('dragend', dragended);
 
-			g.selectAll('.points').call(drag);
+			desksContainer.selectAll('.points').call(drag);
+			isInitialsed = true;
 		};
 
 		scope.$watch(attr.ghBind, function(value){

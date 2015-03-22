@@ -5,12 +5,14 @@
 <ul ng-model="employees">
 	<li ng-repeat="employee in employees">
 		<div>
-			<p>{{employee}}</p>
+			<pre>{{employee}}</pre>
 			<input type="text" ng-model="employee.name"></input>
 			<input type="range" min="0" max="1000" step="10" ng-model="employee.deskPos.x" />
 			<input type="range" min="0" max="1000" step="10" ng-model="employee.deskPos.y" />
 		</div>
 	</li>
 </ul>
-{{myDesks}}
+<pre>
+	{{myDesks}}
+</pre>
 <floor-map gh-bind="myDesks"></floor-map>
