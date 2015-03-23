@@ -30,10 +30,7 @@ angular.module('projectSsApp')
 			scope.$apply(); //apply on drag end instead of on drag
 		};
 
-		var drag = d3.behavior.drag()
-			.on('dragstart', dragstarted)
-			.on('drag', dragged)
-			.on('dragend', dragended);
+		var drag = d3.behavior.drag();
 
 		// set up initial svg object
 		var svg = d3.selectAll(element)
@@ -65,8 +62,10 @@ angular.module('projectSsApp')
 			.attr('y2', function(d) { return d; });
 
 		var desksContainer = svg.append('g').attr('class', 'desks-container');
+		var desks;
 		var init = function(value){
-			desksContainer.selectAll('circle')
+
+			desks = desksContainer.selectAll('circle')
 				.data(value).enter()
 				.append('circle')
 				.attr('class', 'points')
@@ -77,11 +76,27 @@ angular.module('projectSsApp')
 				.attr('cy', function(d){
 					return d.y;
 				})
-				.call(drag);
+				// .call(drag);
 		};
 
 		scope.$watch(attr.ghBind, function(value){
+			scope.data = value;
 			init(value);
 		}, true);
+
+		scope.$on('editDeskPosition', function (event, args) {
+			console.log(args);
+			if (args) {
+				drag.on('dragstart', dragstarted)
+					.on('drag', dragged)
+					.on('dragend', dragended);
+				desks.call(drag);
+			} else {
+				drag.on('dragstart', null)
+					.on('drag', null)
+					.on('dragend', null);
+				desks.call(drag);
+			}
+		});
 	}
 }});

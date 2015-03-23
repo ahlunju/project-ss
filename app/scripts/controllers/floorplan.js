@@ -55,5 +55,11 @@ angular.module('projectSsApp')
     	floorPlanService.updateEmployees();
     };
 
+    $scope.editMode = false;
+    $scope.editDesks = function () {
+      $scope.editMode = !$scope.editMode;
+      $scope.$broadcast("editDeskPosition", $scope.editMode);
+    };
+
     $scope.getEmployees();
   });
