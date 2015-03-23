@@ -12,39 +12,39 @@ angular.module('projectSsApp')
   	$scope.myDesks = [
   		{
   			deskID: 0,
-        v: 125,
+        y: 125,
   			x: 100
   		}, {
   			deskID: 1,
-        v: 20,
+        y: 20,
   			x: 100
   		}, {
   			deskID: 2,
-        v: 50,
+        y: 50,
   			x: 130
   		}, {
   			deskID: 3,
-        v: 60,
+        y: 60,
   			x: 150
   		}, {
   			deskID: 4,
-        v: 40,
+        y: 40,
   			x: 140
   		}, {
   			deskID: 5,
-        v: 250,
+        y: 250,
   			x: 250
   		}, {
   			deskID: 6,
-        v: 90,
+        y: 90,
   			x: 160
   		}, {
   			deskID: 7,
-        v: 100,
+        y: 100,
   			x: 190
   		}, {
   			deskID: 8,
-        v: 150,
+        y: 150,
   			x: 300
 	}];
     $scope.getEmployees = function () {
