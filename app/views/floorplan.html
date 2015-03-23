@@ -1,12 +1,12 @@
-<h2>floor plan</h2>
+<h2>Playground</h2>
 
 <ul ng-model="employees">
 	<li ng-repeat="employee in employees">
 		<div>
 			<pre>{{employee}}</pre>
 			<input type="text" ng-model="employee.name"></input>
-			<input type="range" min="0" max="1000" step="10" ng-model="employee.deskPos.x" />
-			<input type="range" min="0" max="1000" step="10" ng-model="employee.deskPos.y" />
+			<!-- <input type="range" min="0" max="1000" step="10" ng-model="employee.deskPos.x" /> -->
+			<!-- <input type="range" min="0" max="1000" step="10" ng-model="employee.deskPos.y" /> -->
 		</div>
 	</li>
 </ul>
@@ -17,4 +17,6 @@
 <code>
 	{{myDesks}}
 </code>
-<floor-map gh-bind="myDesks"></floor-map>
+<div>
+	<floor-map gh-bind="myDesks"></floor-map>
+</div>

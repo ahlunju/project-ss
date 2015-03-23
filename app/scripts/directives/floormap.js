@@ -9,31 +9,35 @@ angular.module('projectSsApp')
   .directive('floorMap', function () {
 
 	var margin = {top: -5, right: -5, bottom: -5, left: -5},
-		width = 960 - margin.left - margin.right,
-		height = 500 - margin.top - margin.bottom;
-
-	d3.selection.prototype.moveToFront = function() {
-		return this.each(function(){
-		this.parentNode.appendChild(this);
-		});
-	};
+		width = 1500 - margin.left - margin.right,
+		height = 800 - margin.top - margin.bottom;
 
 	return {
 	restrict: 'E',
 	link: function (scope, element, attr) {
-		
-		var dragstarted = function () {
+		var initialized = false;
+		var dragstarted = function (d) {
+			this.parentNode.appendChild(this); //this changes rendering order by re-appending the elemnt to the end
 			d3.select(this)
 				.classed('drag', true)
-				.moveToFront();
+				.transition()
+				.ease("elastic")
+				.duration(500)
+				.attr('width', 40)
+				.attr('height', 80);
 		};
 		var dragged = function (d) {
 			d3.select(this)
 				.attr('x', d.x = Math.round(d3.event.x))
 				.attr('y', d.y = Math.round(d3.event.y));
 		};
-		var dragended = function () {
-			d3.select(this).classed('drag', false);
+		var dragended = function (d) {
+			d3.select(this).classed('drag', false)
+				.transition()
+				.ease("elastic")
+				.duration(500)
+				.attr('width', 20)
+				.attr('height', 40);
 			scope.$apply(); //apply on drag end instead of on drag
 		};
 
@@ -71,47 +75,43 @@ angular.module('projectSsApp')
 		var desksContainer = svg.append('g').attr('class', 'desks-container');
 		var desks;
 		var init = function(value){
-
+			console.log('init');
+			initialized = true;
 			desks = desksContainer.selectAll('rect')
 				.data(value).enter()
 					.append('rect')
 					.attr('class', 'points')
 					.attr('width', 20)
-					.attr('height', 20)
-					.attr('fill', '#bada55')
-					// .attr('stroke', '#333')
+					.attr('height', 40)
+					.attr('fill', function () {
+						return '#'+Math.floor(Math.random()*16777215).toString(16);
+					})
 					.attr('x', function (d) {
 						return d.x;
 					})
 					.attr('y', function (d) {
 						return d.y;
 					})
-				// .append('circle')
-				// .attr('class', 'points')
-				// .attr('r', 10)
-				// .attr('cx', function(d){
-				// 	return d.x;
-				// })
-				// .attr('cy', function(d){
-				// 	return d.y;
-				// })
 		};
 
 		scope.$watch(attr.ghBind, function(value){
-			scope.data = value;
-			init(value);
+			if (!initialized) {
+				init(value);
+			}
 		}, true);
 
 		scope.$on('editDeskPosition', function (event, args) {
-			console.log(args);
 			if (args) {
-				drag.on('dragstart', dragstarted)
+				drag.origin(function (d) {
+					return d;
+				}).on('dragstart', dragstarted)
 					.on('drag', dragged)
 					.on('dragend', dragended);
 				desks.call(drag);
 			} else {
-				drag.origin(Object)
-					.on('dragstart', null)
+				drag.origin(function (d) {
+					return d;
+				}).on('dragstart', null)
 					.on('drag', null)
 					.on('dragend', null);
 				desks.call(drag);
