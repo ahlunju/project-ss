@@ -23,8 +23,8 @@ angular.module('projectSsApp')
 				.transition()
 				.ease("elastic")
 				.duration(500)
-				.attr('width', 40)
-				.attr('height', 80);
+				.attr('width', 25)
+				.attr('height', 45);
 		};
 		var dragged = function (d) {
 			d3.select(this)
