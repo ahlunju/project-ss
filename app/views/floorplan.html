@@ -1,8 +1,5 @@
 <h2>floor plan</h2>
-<div class="form-group">
-	<button class="btn btn-primary" ng-click="updateEmployees()">Save</button>
-	<button class="btn btn-primary" ng-click="editDesks()">Toggle Edit</button>
-</div>
+
 <ul ng-model="employees">
 	<li ng-repeat="employee in employees">
 		<div>
@@ -13,6 +10,10 @@
 		</div>
 	</li>
 </ul>
+<div class="form-group">
+	<button class="btn btn-primary" ng-click="updateEmployees()">Save</button>
+	<button class="btn btn-primary" ng-click="editDesks()">Toggle Edit</button>
+</div>
 <code>
 	{{myDesks}}
 </code>

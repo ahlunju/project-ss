@@ -12,18 +12,25 @@ angular.module('projectSsApp')
 		width = 960 - margin.left - margin.right,
 		height = 500 - margin.top - margin.bottom;
 
+	d3.selection.prototype.moveToFront = function() {
+		return this.each(function(){
+		this.parentNode.appendChild(this);
+		});
+	};
+
 	return {
 	restrict: 'E',
 	link: function (scope, element, attr) {
 		
 		var dragstarted = function () {
-			console.log(this);
-			d3.select(this).classed('drag', true);
+			d3.select(this)
+				.classed('drag', true)
+				.moveToFront();
 		};
 		var dragged = function (d) {
 			d3.select(this)
-				.attr('cx', d.x = Math.round(d3.event.x))
-				.attr('cy', d.y = Math.round(d3.event.y));
+				.attr('x', d.x = Math.round(d3.event.x))
+				.attr('y', d.y = Math.round(d3.event.y));
 		};
 		var dragended = function () {
 			d3.select(this).classed('drag', false);
@@ -65,18 +72,29 @@ angular.module('projectSsApp')
 		var desks;
 		var init = function(value){
 
-			desks = desksContainer.selectAll('circle')
+			desks = desksContainer.selectAll('rect')
 				.data(value).enter()
-				.append('circle')
-				.attr('class', 'points')
-				.attr('r', 10)
-				.attr('cx', function(d){
-					return d.x;
-				})
-				.attr('cy', function(d){
-					return d.y;
-				})
-				// .call(drag);
+					.append('rect')
+					.attr('class', 'points')
+					.attr('width', 20)
+					.attr('height', 20)
+					.attr('fill', '#bada55')
+					// .attr('stroke', '#333')
+					.attr('x', function (d) {
+						return d.x;
+					})
+					.attr('y', function (d) {
+						return d.y;
+					})
+				// .append('circle')
+				// .attr('class', 'points')
+				// .attr('r', 10)
+				// .attr('cx', function(d){
+				// 	return d.x;
+				// })
+				// .attr('cy', function(d){
+				// 	return d.y;
+				// })
 		};
 
 		scope.$watch(attr.ghBind, function(value){
@@ -92,7 +110,8 @@ angular.module('projectSsApp')
 					.on('dragend', dragended);
 				desks.call(drag);
 			} else {
-				drag.on('dragstart', null)
+				drag.origin(Object)
+					.on('dragstart', null)
 					.on('drag', null)
 					.on('dragend', null);
 				desks.call(drag);
