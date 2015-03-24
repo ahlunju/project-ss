@@ -1,15 +1,13 @@
-<h2>Playground</h2>
+<div class="employees-panel">
+<ui-select ng-model="country.selected" theme="bootstrap" ng-disabled="disabled" >
+	<ui-select-match placeholder="Select or search employee...">{{$select.selected.name}}</ui-select-match>
+	<ui-select-choices repeat="employee in employees | filter: $select.search">
+		<span ng-bind-html="employee.name | highlight: $select.search"></span>
+		<small>desk id: <span ng-bind-html="employee.deskID | highlight: $select.search"></span></small>
+	</ui-select-choices>
+</ui-select>
+</div>
 
-<ul ng-model="employees">
-	<li ng-repeat="employee in employees">
-		<div>
-			<pre>{{employee}}</pre>
-			<input type="text" ng-model="employee.name"></input>
-			<!-- <input type="range" min="0" max="1000" step="10" ng-model="employee.deskPos.x" /> -->
-			<!-- <input type="range" min="0" max="1000" step="10" ng-model="employee.deskPos.y" /> -->
-		</div>
-	</li>
-</ul>
 <div class="form-group">
 	<button class="btn btn-primary" ng-click="updateEmployees()">Save</button>
 	<button class="btn btn-primary" ng-click="editDesks()">Toggle Edit</button>

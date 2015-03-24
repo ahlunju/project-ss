@@ -29,7 +29,7 @@ angular.module('projectSsApp')
     	// 	console.log(error);
     	// });
     };
-
+    
     this.addEmployee = function () {
 
     };
