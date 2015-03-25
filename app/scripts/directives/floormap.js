@@ -24,8 +24,8 @@ angular.module('projectSsApp')
 				.transition()
 				.ease("elastic")
 				.duration(500)
-				.attr('width', 45)
-				.attr('height', 65);
+				.attr('width', 40)
+				.attr('height', 60);
 		};
 		var dragged = function (d) {
 			
@@ -87,7 +87,7 @@ angular.module('projectSsApp')
 
 		// container of all the elements
 		var desksContainer = svg.append('g').attr('class', 'desks-container');
-
+		window.myDesks = desksContainer.node();
 		// desks g element, wrapping the rect and circle
 		var desks,
 			deskRects,
@@ -115,9 +115,9 @@ angular.module('projectSsApp')
 				.attr('y', function (d) {
 					return d.y;
 				}).on('mouseover', function(d){
-					var nodeSelection = d3.select(this).style({opacity:'0.8'})
+					var nodeSelection = d3.select(this).style({opacity:'0.8'}).attr('width', 45).attr('height', 65);
 				}).on('mouseleave', function (d) {
-					var nodeSelection = d3.select(this).style({opacity:'1'})
+					var nodeSelection = d3.select(this).style({opacity:'1'}).attr('width', 40).attr('height', 60);
 				});
 
 			deskRectsID = desks.append('text')
@@ -138,9 +138,14 @@ angular.module('projectSsApp')
 				.style({opacity: '0'});
 			};
 
-		scope.$watch(attr.ghBind, function(value){
+		scope.$watch(attr.desksData, function(newValue, oldValue){
+			console.log(newValue);
 			if (!initialized) {
-				init(value);
+				init(newValue);
+			}
+			if (newValue.length !== oldValue.length) {
+			// if (!initialized) {
+				init(newValue);
 			}
 		}, true);
 
@@ -173,29 +178,31 @@ angular.module('projectSsApp')
 
 		scope.$on('addDesk', function (event, args) {
 			if(args.addMode) {
-				var newDesk = {
-					deskID : Math.floor(Math.random()*12345),
-					y : undefined,
-					x : undefined,
-				};
-				svg.on('mousemove', function () {
-					newDesk.x = d3.mouse(this)[0];
-					newDesk.y = d3.mouse(this)[1];
-				}).on('click', function () {
-					console.log('hello');
-					desksContainer
-						.append('g')
-						.attr("transform", function (d) { return "translate(" + newDesk.x + "," + newDesk.y + ")"; })
-						.append('rect')
-						.attr('x', newDesk.x)
-						.attr('y', newDesk.y)
-						.attr('width', 40)
-						.attr('height', 60)
-						.attr('fill', function () {
-							return '#'+Math.floor(Math.random()*16777215).toString(16);
-						})
-				});
+				// var newDesk = {
+				// 	deskID : Math.floor(Math.random()*12345),
+				// 	y : undefined,
+				// 	x : undefined,
+				// };
+
+				// svg.on('mousemove', function () {
+				// 	newDesk.x = d3.mouse(this)[0];
+				// 	newDesk.y = d3.mouse(this)[1];
+				// }).on('click', function () {
+				// 	console.log('hello');
+				// 	desksContainer
+				// 		.append('g')
+				// 		.attr("transform", function (d) { return "translate(" + newDesk.x + "," + newDesk.y + ")"; })
+				// 		.append('rect')
+				// 		.attr('x', newDesk.x)
+				// 		.attr('y', newDesk.y)
+				// 		.attr('width', 40)
+				// 		.attr('height', 60)
+				// 		.attr('fill', function () {
+				// 			return '#'+Math.floor(Math.random()*16777215).toString(16);
+				// 		})
+				// });
 			}
 		});
+
 	}
 }});
