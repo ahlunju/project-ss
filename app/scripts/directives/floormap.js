@@ -10,12 +10,13 @@ angular.module('projectSsApp')
 
 	var margin = {top: -5, right: -5, bottom: -5, left: -5},
 		width = 1500 - margin.left - margin.right,
-		height = 800 - margin.top - margin.bottom;
+		height = 800 - margin.top - margin.bottom,
+		movex, movey,
+		dragStep = 10;
 
 	return {
 	restrict: 'E',
 	link: function (scope, element, attr) {
-
 		var initialized = false;
 		var dragstarted = function (d) {
 			this.parentNode.appendChild(this); //this changes rendering order by re-appending the elemnt to the end
@@ -24,29 +25,18 @@ angular.module('projectSsApp')
 				.transition()
 				.ease("elastic")
 				.duration(500)
-				.attr('width', 40)
-				.attr('height', 60);
 		};
 		var dragged = function (d) {
-			
-			var translate = d3.transform(this.getAttribute("transform")).translate,
-				x = d3.event.dx + translate[0],
-				y = d3.event.dy + translate[1];
-			// console.log(translate);
-			d3.select(this)
-				.attr('transform', 'translate('+x + ',' + y +')');
-				
-			d.x = Math.round(d3.event.x);
-			d.y = Math.round(d3.event.y);
+			d.x += d3.event.dx;
+			d.y += d3.event.dy;
+			movex = Math.round(d.x / dragStep) * dragStep;
+			movey = Math.round(d.y / dragStep) * dragStep;
+			d3.select(this).attr("transform", "translate(" + movex + "," + movey + ")");
 		};
 		var dragended = function (d) {
-			d3.select(this).select('rect')
-				.classed('drag', false)
-				.transition()
-				.ease("elastic")
-				.duration(500)
-				.attr('width', 40)
-				.attr('height', 60);
+			d3.select(this).select('rect').classed('drag', false)
+			d.x = movex;
+			d.y = movey;
 			scope.$apply(); //apply on drag end instead of on drag
 		};
 
@@ -99,7 +89,7 @@ angular.module('projectSsApp')
 			desks = desksContainer.selectAll('g')
 				.data(value).enter()
 					.append('g')
-					.attr("transform", function (d) { return "translate(" + 0 + "," + 0 + ")"; })
+					.attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; })
 					
 
 			deskRects = desks.append('rect')
@@ -109,42 +99,27 @@ angular.module('projectSsApp')
 				.attr('fill', function () {
 					return '#'+Math.floor(Math.random()*16777215).toString(16);
 				})
-				.attr('x', function (d) {
-					return d.x;
-				})
-				.attr('y', function (d) {
-					return d.y;
-				}).on('mouseover', function(d){
-					var nodeSelection = d3.select(this).style({opacity:'0.8'}).attr('width', 45).attr('height', 65);
+				.on('mouseover', function(d){
+					var nodeSelection = d3.select(this).style({opacity:'0.8'});
 				}).on('mouseleave', function (d) {
-					var nodeSelection = d3.select(this).style({opacity:'1'}).attr('width', 40).attr('height', 60);
+					var nodeSelection = d3.select(this).style({opacity:'1'});
 				});
 
 			deskRectsID = desks.append('text')
 				.text(function (d) {
 					return d.deskID;
 				})
-				.attr("x", function (d) { return d.x;} )
-				.attr("y", function (d) { return d.y;});
 
 			deskHandles = desks.append('circle')
 				.attr('r', 5)
-				.attr('cx', function (d) {
-					return d.x;
-				})
-				.attr('cy', function (d) {
-					return d.y;
-				})
 				.style({opacity: '0'});
 			};
 
 		scope.$watch(attr.desksData, function(newValue, oldValue){
-			console.log(newValue);
 			if (!initialized) {
 				init(newValue);
 			}
 			if (newValue.length !== oldValue.length) {
-			// if (!initialized) {
 				init(newValue);
 			}
 		}, true);
