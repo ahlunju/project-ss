@@ -9,11 +9,14 @@
 </div>
 
 <div class="form-group">
+	<button class="btn btn-primary" ng-click="addDesk()">Toggle Add Desk</button>
 	<button class="btn btn-primary" ng-click="updateEmployees()">Save</button>
 	<button class="btn btn-primary" ng-click="editDesks()">Toggle Edit</button>
 </div>
 <code>
-	{{myDesks}}
+	<ul ng-model="myDesks">
+		<li ng-repeat="desk in myDesks">{{desk}}</li>
+	</ul>
 </code>
 <div>
 	<floor-map gh-bind="myDesks"></floor-map>

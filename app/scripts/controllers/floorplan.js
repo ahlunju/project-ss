@@ -12,12 +12,12 @@ angular.module('projectSsApp')
 	$scope.myDesks = [
 		{
 			deskID: 0,
-		y: 125,
-			x: 100
+		y: 10,
+			x: 10
 		}, {
 			deskID: 1,
 		y: 20,
-			x: 100
+			x: 20
 		}, {
 			deskID: 2,
 		y: 50,
@@ -44,8 +44,8 @@ angular.module('projectSsApp')
 			x: 190
 		}, {
 			deskID: 8,
-		y: 150,
-			x: 300
+		y: 50,
+			x: 500
 	}];
 
 	$scope.getEmployees = function () {
@@ -60,6 +60,15 @@ angular.module('projectSsApp')
 	$scope.editDesks = function () {
 		$scope.editMode = !$scope.editMode;
 		$scope.$broadcast("editDeskPosition", $scope.editMode);
+	};
+
+	$scope.addMode = false;
+	$scope.addDesk = function () {
+		$scope.addMode = !$scope.addMode;
+		$scope.$broadcast('addDesk', {
+			desks: $scope.myDesks,
+			addMode: $scope.addMode
+		});
 	};
 	$scope.getEmployees();
 });
