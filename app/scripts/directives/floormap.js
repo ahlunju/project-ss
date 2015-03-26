@@ -39,6 +39,7 @@ angular.module('projectSsApp')
 			movex = Math.round(d.x / dragStep) * dragStep;
 			movey = Math.round(d.y / dragStep) * dragStep;
 			d3.select(this).attr("transform", "translate(" + movex + "," + movey + ")");
+			scope.getCursorPosition(d);
 		};
 		var dragended = function (d) {
 			d3.event.sourceEvent.stopPropagation();
@@ -113,9 +114,14 @@ angular.module('projectSsApp')
 					var nodeSelection = d3.select(this).style({opacity:'1'});
 				})
 				.on('click', function (d) {
-					if (d3.event.defaultPrevented) return;
+					// if (d3.event.defaultPrevented) return;
+
 					d3.event.stopPropagation();
-					scope.getCursorPosition(d);
+					if (!scope.isEditBoxOpened) {
+						scope.isEditBoxOpened = true;
+						scope.getCursorPosition(d);
+					}
+					
 					d3.select(this).attr('fill', 'orange');
 				})
 				.on('blur', function (d) {
