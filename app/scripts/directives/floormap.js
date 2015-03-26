@@ -17,8 +17,8 @@ angular.module('projectSsApp')
 	return {
 	restrict: 'E',
 	link: function (scope, element, attr) {
-		var initialized = false;
-		var desks,
+		var initialized = false,
+			desks,
 			deskRects,
 			deskRectsID,
 			deskHandles;
@@ -28,25 +28,32 @@ angular.module('projectSsApp')
 			// this.parentNode.appendChild(this); //this changes rendering order by re-appending the elemnt to the end
 			d3.select(this).select('rect')
 				.classed('drag', true)
-				.transition()
-				.ease("elastic")
-				.duration(500)
+				// .transition()
+				// .ease("elastic")
+				// .duration(500)
+			// scope.hideEditBox();
 		};
 		var dragged = function (d) {
-			// d3.event.sourceEvent.stopPropagation();
-			d.x += d3.event.dx || 0;
-			d.y += d3.event.dy || 0;
-			movex = Math.round(d.x / dragStep) * dragStep;
-			movey = Math.round(d.y / dragStep) * dragStep;
-			d3.select(this).attr("transform", "translate(" + movex + "," + movey + ")");
-			scope.getCursorPosition(d);
+			// d.x += d3.event.dx || 0;
+			// d.y += d3.event.dy || 0;
+			// movex = Math.round(d.x / dragStep) * dragStep;
+			// movey = Math.round(d.y / dragStep) * dragStep;
+			// d3.select(this).attr("transform", "translate(" + movex + "," + movey + ")");
+			// console.log('dragging 2', d.x, d.y, d3.event.dx, d3.event.dy);
+			d.x = d3.event.x;
+			d.y = d3.event.y;
+			d3.select(this).attr("transform", "translate(" + d.x+ "," +  d.y + ")");
+			if (scope.isEditBoxOpened) {
+				scope.showEditBox(d.x, d.y);
+			}
 		};
 		var dragended = function (d) {
-			d3.event.sourceEvent.stopPropagation();
 			d3.select(this).select('rect').classed('drag', false)
-			d.x = movex || d.x;
-			d.y = movey || d.y;
+			// d.x = movex || d.x;
+			// d.y = movey || d.y;
+			scope.updateCursorPos(d.x, d.y);
 			scope.$apply(); //apply on drag end instead of on drag
+			
 		};
 
 		var drag = d3.behavior.drag();
@@ -56,9 +63,9 @@ angular.module('projectSsApp')
 			.append('svg')
 			.attr('width', width + margin.left + margin.right)
 			.attr('height', height + margin.top + margin.bottom)
-			.on('click', function (d) {
-				console.log('click on svg');
+			.on('click', function () {
 				if (d3.event.defaultPrevented) return;
+				console.log('click on svg');
 				scope.hideEditBox();
 			});
 		svg.append('g')
@@ -86,10 +93,7 @@ angular.module('projectSsApp')
 		// 	.attr('y1', function(d) { return d; })
 		// 	.attr('x2', width)
 		// 	.attr('y2', function(d) { return d; });
-
-		// container of all the elements
 		var desksContainer = svg.append('g').attr('class', 'desks-container');
-		// desks g element, wrapping the rect and circle
 		
 		var init = function(value){
 			console.log('init');
@@ -99,7 +103,6 @@ angular.module('projectSsApp')
 					.append('g')
 					.attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; })
 					
-
 			deskRects = desks.append('rect')
 				.attr('class', 'points')
 				.attr('width', 40)
@@ -114,22 +117,17 @@ angular.module('projectSsApp')
 					var nodeSelection = d3.select(this).style({opacity:'1'});
 				})
 				.on('click', function (d) {
-					// if (d3.event.defaultPrevented) return;
-
-					d3.event.stopPropagation();
-					if (!scope.isEditBoxOpened) {
-						scope.isEditBoxOpened = true;
-						scope.getCursorPosition(d);
-					}
-					
-					d3.select(this).attr('fill', 'orange');
-				})
-				.on('blur', function (d) {
 					if (d3.event.defaultPrevented) return;
-					d3.select(this).attr('fill', function (d) {
-						return '#'+Math.floor(Math.random()*16777215).toString(16);
-					});
-				});
+					console.log('click!!!!!!');
+					d3.event.stopPropagation();
+					scope.showEditBox(d.x, d.y);
+				})
+				// .on('blur', function (d) {
+				// 	if (d3.event.defaultPrevented) return;
+				// 	d3.select(this).attr('fill', function (d) {
+				// 		return '#'+Math.floor(Math.random()*16777215).toString(16);
+				// 	});
+				// });
 
 			deskRectsID = desks.append('text')
 				.text(function (d) {
@@ -152,7 +150,6 @@ angular.module('projectSsApp')
 
 		scope.$on('editDeskPosition', function (event, args) {
 			if (args) {
-				console.log('drag', args, desks);
 				drag.origin(function (d) {
 					return d;
 				}).on('dragstart', dragstarted)

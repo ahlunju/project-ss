@@ -89,21 +89,26 @@ angular.module('projectSsApp')
 
 	$scope.isEditBoxOpened = false;
 
-	$scope.getCursorPosition = function (obj) {
-		$scope.editBoxPosition = {
-			'top': obj.y +'px',
-			'left': obj.x + 50 + 'px',
-			'display': 'block'
-		};
+	$scope.updateCursorPos = function (x, y) {
+		$scope.editBoxPosition.top =  y +'px';
+		$scope.editBoxPosition.left = x + 50 + 'px';
 		$scope.$apply();
+		
 	};
 
+	$scope.showEditBox = function (x, y) {
+		$scope.isEditBoxOpened = true;
+		$scope.editBoxPosition.top =  y +'px';
+		$scope.editBoxPosition.left = x + 50 + 'px';
+		$scope.editBoxPosition.display = 'block';
+		$scope.$apply();
+		console.log('show editbox');
+	}
 	$scope.hideEditBox = function () {
-		$scope.editBoxPosition = {
-			'display': 'none'
-		};
+		$scope.editBoxPosition.display = 'none';
 		$scope.$apply();
 		$scope.isEditBoxOpened = false;
+		console.log('hide editbox');
 	};
 	// $scope.getEmployees(); // use local data for now
 	$scope.employees = [
