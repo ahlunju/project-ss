@@ -18,6 +18,12 @@
 		<li ng-repeat="desk in myDesks">{{desk}}</li>
 	</ul>
 </code>
-<div>
+<div id="floor-map-container">
 	<floor-map desks-data="myDesks"></floor-map>
+	<div class="edit-box" ng-style="editBoxPosition" ng-click="$event.stopPropagation()">
+		<button class="btn btn-success">Edit</button>
+		<button class="btn btn-success">Rotate</button>
+		<button class="btn btn-success">Assign Employee</button>
+		<button class="btn btn-danger">Delete</button>
+	</div>
 </div>

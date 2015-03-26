@@ -25,7 +25,7 @@ angular.module('projectSsApp')
 
 		var dragstarted = function (d) {
 			d3.event.sourceEvent.stopPropagation();
-			this.parentNode.appendChild(this); //this changes rendering order by re-appending the elemnt to the end
+			// this.parentNode.appendChild(this); //this changes rendering order by re-appending the elemnt to the end
 			d3.select(this).select('rect')
 				.classed('drag', true)
 				.transition()
@@ -33,13 +33,15 @@ angular.module('projectSsApp')
 				.duration(500)
 		};
 		var dragged = function (d) {
-			d.x += d3.event.dx;
-			d.y += d3.event.dy;
+			// d3.event.sourceEvent.stopPropagation();
+			d.x += d3.event.dx || 0;
+			d.y += d3.event.dy || 0;
 			movex = Math.round(d.x / dragStep) * dragStep;
 			movey = Math.round(d.y / dragStep) * dragStep;
 			d3.select(this).attr("transform", "translate(" + movex + "," + movey + ")");
 		};
 		var dragended = function (d) {
+			d3.event.sourceEvent.stopPropagation();
 			d3.select(this).select('rect').classed('drag', false)
 			d.x = movex || d.x;
 			d.y = movey || d.y;
@@ -53,30 +55,36 @@ angular.module('projectSsApp')
 			.append('svg')
 			.attr('width', width + margin.left + margin.right)
 			.attr('height', height + margin.top + margin.bottom)
-			.append('g')
+			.on('click', function (d) {
+				console.log('click on svg');
+				if (d3.event.defaultPrevented) return;
+				scope.hideEditBox();
+			});
+		svg.append('g')
 			.attr('transform', 'translate(' + margin.left + ',' + margin.right + ')')
+
 			// .call(zoom);
 		
 		// gridlines
-		var grid = svg.append('g').attr('class', 'grid');
-		grid.append('g')
-			.attr('class', 'x axis')
-			.selectAll('line')
-			.data(d3.range(0, width, 10))
-			.enter().append('line')
-			.attr('x1', function(d) { return d; })
-			.attr('y1', 0)
-			.attr('x2', function(d) { return d; })
-			.attr('y2', height);
-		grid.append('g')
-			.attr('class', 'y axis')
-			.selectAll('line')
-			.data(d3.range(0, height, 10))
-			.enter().append('line')
-			.attr('x1', 0)
-			.attr('y1', function(d) { return d; })
-			.attr('x2', width)
-			.attr('y2', function(d) { return d; });
+		// var grid = svg.append('g').attr('class', 'grid');
+		// grid.append('g')
+		// 	.attr('class', 'x axis')
+		// 	.selectAll('line')
+		// 	.data(d3.range(0, width, 10))
+		// 	.enter().append('line')
+		// 	.attr('x1', function(d) { return d; })
+		// 	.attr('y1', 0)
+		// 	.attr('x2', function(d) { return d; })
+		// 	.attr('y2', height);
+		// grid.append('g')
+		// 	.attr('class', 'y axis')
+		// 	.selectAll('line')
+		// 	.data(d3.range(0, height, 10))
+		// 	.enter().append('line')
+		// 	.attr('x1', 0)
+		// 	.attr('y1', function(d) { return d; })
+		// 	.attr('x2', width)
+		// 	.attr('y2', function(d) { return d; });
 
 		// container of all the elements
 		var desksContainer = svg.append('g').attr('class', 'desks-container');
@@ -104,13 +112,15 @@ angular.module('projectSsApp')
 				.on('mouseleave', function (d) {
 					var nodeSelection = d3.select(this).style({opacity:'1'});
 				})
-				.on('focus', function (d) {
+				.on('click', function (d) {
 					if (d3.event.defaultPrevented) return;
+					d3.event.stopPropagation();
+					scope.getCursorPosition(d);
 					d3.select(this).attr('fill', 'orange');
 				})
 				.on('blur', function (d) {
 					if (d3.event.defaultPrevented) return;
-					d3.select(this).attr('fill', function () {
+					d3.select(this).attr('fill', function (d) {
 						return '#'+Math.floor(Math.random()*16777215).toString(16);
 					});
 				});

@@ -80,6 +80,29 @@ angular.module('projectSsApp')
 	$scope.removeDesk = function () {
 		// $scope.myDesks
 	};
+
+	$scope.editBoxPosition = {
+		top	: '0px',
+		left : '0px',
+		display : 'none'
+	};
+
+	$scope.getCursorPosition = function (obj) {
+		console.log(obj);
+		$scope.editBoxPosition = {
+			'top': obj.y +'px',
+			'left': obj.x + 50 + 'px',
+			'display': 'block'
+		};
+		$scope.$apply();
+	};
+
+	$scope.hideEditBox = function () {
+		$scope.editBoxPosition = {
+			'display': 'none'
+		};
+		$scope.$apply();
+	};
 	// $scope.getEmployees(); // use local data for now
 	$scope.employees = [
 		{

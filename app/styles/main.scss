@@ -108,6 +108,20 @@ Main marketing message and sign up button
 }
 
 .is-shown {
-  width: 230px;
   display: block;
+}
+
+.is-hidden {
+  display: none;
+}
+
+#floor-map-container {
+  position: relative;
+  background-image: url('../assets/grid.png');
+}
+.edit-box {
+  position: absolute;
+  padding: 10px;
+  border-radius: 3px;
+  background: #eee;
 }
