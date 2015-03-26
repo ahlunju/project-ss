@@ -80,5 +80,32 @@ angular.module('projectSsApp')
 	$scope.removeDesk = function () {
 		// $scope.myDesks
 	};
-	$scope.getEmployees();
+	// $scope.getEmployees(); // use local data for now
+	$scope.employees = [
+		{
+			"name": "Yalun Zhu",
+			"employeeID": 0,
+			"deskID": 0
+		},
+		{
+			"name": "Jon Snow",
+			"employeeID": 1,
+			"deskID": 1
+		},
+		{
+			"name": "Hello World",
+			"employeeID": 2,
+			"deskID": 4
+		},
+		{
+			"name": "Alan Zhu",
+			"employeeID": 3,
+			"deskID": 2
+		},
+		{
+			"name": "Sam Fisher",
+			"employeeID": 4,
+			"deskID": 3
+		}
+	];
 });
