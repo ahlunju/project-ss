@@ -18,7 +18,13 @@ angular.module('projectSsApp')
 	restrict: 'E',
 	link: function (scope, element, attr) {
 		var initialized = false;
+		var desks,
+			deskRects,
+			deskRectsID,
+			deskHandles;
+
 		var dragstarted = function (d) {
+			d3.event.sourceEvent.stopPropagation();
 			this.parentNode.appendChild(this); //this changes rendering order by re-appending the elemnt to the end
 			d3.select(this).select('rect')
 				.classed('drag', true)
@@ -35,14 +41,13 @@ angular.module('projectSsApp')
 		};
 		var dragended = function (d) {
 			d3.select(this).select('rect').classed('drag', false)
-			d.x = movex;
-			d.y = movey;
+			d.x = movex || d.x;
+			d.y = movey || d.y;
 			scope.$apply(); //apply on drag end instead of on drag
 		};
 
 		var drag = d3.behavior.drag();
 
-		
 		// set up initial svg object
 		var svg = d3.selectAll(element)
 			.append('svg')
@@ -51,8 +56,6 @@ angular.module('projectSsApp')
 			.append('g')
 			.attr('transform', 'translate(' + margin.left + ',' + margin.right + ')')
 			// .call(zoom);
-
-		var pointer;
 		
 		// gridlines
 		var grid = svg.append('g').attr('class', 'grid');
@@ -77,12 +80,8 @@ angular.module('projectSsApp')
 
 		// container of all the elements
 		var desksContainer = svg.append('g').attr('class', 'desks-container');
-		window.myDesks = desksContainer.node();
 		// desks g element, wrapping the rect and circle
-		var desks,
-			deskRects,
-			deskRectsID,
-			deskHandles;
+		
 		var init = function(value){
 			console.log('init');
 			initialized = true;
@@ -101,8 +100,19 @@ angular.module('projectSsApp')
 				})
 				.on('mouseover', function(d){
 					var nodeSelection = d3.select(this).style({opacity:'0.8'});
-				}).on('mouseleave', function (d) {
+				})
+				.on('mouseleave', function (d) {
 					var nodeSelection = d3.select(this).style({opacity:'1'});
+				})
+				.on('focus', function (d) {
+					if (d3.event.defaultPrevented) return;
+					d3.select(this).attr('fill', 'orange');
+				})
+				.on('blur', function (d) {
+					if (d3.event.defaultPrevented) return;
+					d3.select(this).attr('fill', function () {
+						return '#'+Math.floor(Math.random()*16777215).toString(16);
+					});
 				});
 
 			deskRectsID = desks.append('text')
@@ -113,7 +123,7 @@ angular.module('projectSsApp')
 			deskHandles = desks.append('circle')
 				.attr('r', 5)
 				.style({opacity: '0'});
-			};
+		};
 
 		scope.$watch(attr.desksData, function(newValue, oldValue){
 			if (!initialized) {
@@ -153,29 +163,7 @@ angular.module('projectSsApp')
 
 		scope.$on('addDesk', function (event, args) {
 			if(args.addMode) {
-				// var newDesk = {
-				// 	deskID : Math.floor(Math.random()*12345),
-				// 	y : undefined,
-				// 	x : undefined,
-				// };
-
-				// svg.on('mousemove', function () {
-				// 	newDesk.x = d3.mouse(this)[0];
-				// 	newDesk.y = d3.mouse(this)[1];
-				// }).on('click', function () {
-				// 	console.log('hello');
-				// 	desksContainer
-				// 		.append('g')
-				// 		.attr("transform", function (d) { return "translate(" + newDesk.x + "," + newDesk.y + ")"; })
-				// 		.append('rect')
-				// 		.attr('x', newDesk.x)
-				// 		.attr('y', newDesk.y)
-				// 		.attr('width', 40)
-				// 		.attr('height', 60)
-				// 		.attr('fill', function () {
-				// 			return '#'+Math.floor(Math.random()*16777215).toString(16);
-				// 		})
-				// });
+				//
 			}
 		});
 
