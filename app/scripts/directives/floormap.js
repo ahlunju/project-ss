@@ -96,7 +96,7 @@ angular.module('projectSsApp')
 			.attr('y2', function(d) { return d; });
 		var desksContainer = svg.append('g').attr('class', 'desks-container');
 		
-		function addDragBox(x,y) {
+		function addRotateBox(x,y) {
 			var startx = x;
 			var starty = y;
 			var boxWidth = 40;
@@ -148,7 +148,7 @@ angular.module('projectSsApp')
 						scope.showEditBox(d.x, d.y);
 					}
 
-					addDragBox(d.x, d.y);
+					addRotateBox(d.x, d.y);
 				})
 	
 				.on('blur', function (d) {
