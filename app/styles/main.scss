@@ -117,11 +117,28 @@ Main marketing message and sign up button
 
 #floor-map-container {
   position: relative;
-  background-image: url('../assets/grid.png');
+  // background-image: url('../assets/grid.png');
 }
 .edit-box {
   position: absolute;
+  width: 400px;
   padding: 10px;
   border-radius: 3px;
   background: #eee;
+}
+
+.dashed{
+  stroke-dasharray: 5;
+  stroke: #333;
+  fill: none;
+}
+
+.solid {
+  stroke: #333;
+  fill: none;
+}
+
+.drag-dot {
+  fill: orange;
+  stroke: #333;
 }

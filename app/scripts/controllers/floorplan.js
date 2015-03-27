@@ -92,6 +92,7 @@ angular.module('projectSsApp')
 	$scope.updateCursorPos = function (x, y) {
 		$scope.editBoxPosition.top =  y +'px';
 		$scope.editBoxPosition.left = x + 50 + 'px';
+		$scope.editBoxPosition.display = 'none';
 		$scope.$apply();
 		
 	};
@@ -107,7 +108,6 @@ angular.module('projectSsApp')
 	$scope.hideEditBox = function () {
 		$scope.editBoxPosition.display = 'none';
 		$scope.$apply();
-		$scope.isEditBoxOpened = false;
 		console.log('hide editbox');
 	};
 	// $scope.getEmployees(); // use local data for now
