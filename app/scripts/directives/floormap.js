@@ -14,8 +14,6 @@ angular.module('projectSsApp')
 		movex, movey,
 		dragStep = 10;
 
-		
-
 	return {
 	restrict: 'E',
 	link: function (scope, element, attr) {
@@ -26,33 +24,6 @@ angular.module('projectSsApp')
 			deskRectsID,
 			deskHandles;
 
-		function addRotateBox(x,y) {
-			var startx = x;
-			var starty = y;
-			var boxWidth = 40;
-			var boxHeigth = 60;
-			var lineData = [
-				{x: startx,y: starty},
-				{x: startx + boxWidth, y: starty},
-				{x: startx + boxWidth, y: starty + boxHeigth},
-				{x: startx, y: starty + boxHeigth},
-				{x: startx, y: starty}
-			];
-			var line = d3.svg.line()
-				.x(function(d) { return d.x; })
-				.y(function(d) { return d.y; })
-				.interpolate("linear");
-			var lineStartX = startx + 20;
-			var lineStartY = starty;
-			var lineEndX = lineStartX;
-			var lineEndY = lineStartY - 15;
-
-			var rotateBoxGroup = svg.append('g').attr('class', 'rotate-box-group');
-			rotateBoxGroup.append('path').attr('class', 'dashed rotate-box').attr('d', line(lineData));
-			rotateBoxGroup.append('path').attr('class', 'solid rotate-stem').attr('d', 'M '+ lineStartX+ ' ' + lineStartY + ' L '+ lineEndX + ' ' + lineEndY);
-			rotateBoxGroup.append('circle').attr('class', 'rotate-handle').attr('r', 4).attr('cx', lineEndX).attr('cy', lineEndY);
-		}
-		
 		var dragstarted = function (d) {
 			d3.event.sourceEvent.stopPropagation();
 			// this.parentNode.appendChild(this); //this changes rendering order by re-appending the elemnt to the end
@@ -125,7 +96,32 @@ angular.module('projectSsApp')
 			.attr('y2', function(d) { return d; });
 		var desksContainer = svg.append('g').attr('class', 'desks-container');
 		
+		function addRotateBox(x,y) {
+			var startx = x;
+			var starty = y;
+			var boxWidth = 40;
+			var boxHeigth = 60;
+			var lineData = [
+				{x: startx,y: starty},
+				{x: startx + boxWidth, y: starty},
+				{x: startx + boxWidth, y: starty + boxHeigth},
+				{x: startx, y: starty + boxHeigth},
+				{x: startx, y: starty}
+			];
+			var line = d3.svg.line()
+				.x(function(d) { return d.x; })
+				.y(function(d) { return d.y; })
+				.interpolate("linear");
+			var lineStartX = startx + 20;
+			var lineStartY = starty;
+			var lineEndX = lineStartX;
+			var lineEndY = lineStartY - 15;
 
+			var rotateBoxGroup = svg.append('g').attr('class', 'rotate-box-group');
+			rotateBoxGroup.append('path').attr('class', 'dashed rotate-box').attr('d', line(lineData));
+			rotateBoxGroup.append('path').attr('class', 'solid rotate-stem').attr('d', 'M '+ lineStartX+ ' ' + lineStartY + ' L '+ lineEndX + ' ' + lineEndY);
+			rotateBoxGroup.append('circle').attr('class', 'rotate-handle').attr('r', 4).attr('cx', lineEndX).attr('cy', lineEndY);
+		}
 
 		function removeRotateBox() {
 			svg.select('.rotate-box-group').remove();
@@ -175,11 +171,7 @@ angular.module('projectSsApp')
 			deskRectsID = desks.append('text')
 				.text(function (d) {
 					return d.deskID;
-				})
-
-			// deskHandles = desks.append('circle')
-			// 	.attr('r', 5)
-			// 	.style({opacity: '0'});
+				});
 		};
 
 		scope.$watch(attr.desksData, function(newValue, oldValue){
