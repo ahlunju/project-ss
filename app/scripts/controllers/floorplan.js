@@ -82,35 +82,26 @@ angular.module('projectSsApp')
 		// $scope.myDesks
 	};
 
-	$scope.editBoxPosition = {
-		top	: '0px',
-		left : '0px',
-		display : 'none'
-	};
+	$scope.editBoxPosition = floorFactory.editBoxPosition;
 
-	$scope.isEditBoxOpened = false;
+	// $scope.isEditBoxOpened = false;
 
-	$scope.updateCursorPos = function (x, y) {
-		$scope.editBoxPosition.top =  y +'px';
-		$scope.editBoxPosition.left = x + 50 + 'px';
-		$scope.editBoxPosition.display = 'none';
-		$scope.$apply();
-		
-	};
+	// $scope.updateCursorPos = function (x, y) {
+	// 	floorFactory.updateCursorPos(x, y);
+	// };
 
-	$scope.showEditBox = function (x, y) {
-		$scope.isEditBoxOpened = true;
-		$scope.editBoxPosition.top =  y +'px';
-		$scope.editBoxPosition.left = x + 50 + 'px';
-		$scope.editBoxPosition.display = 'block';
-		$scope.$apply();
-		console.log('show editbox');
-	}
-	$scope.hideEditBox = function () {
-		$scope.editBoxPosition.display = 'none';
-		$scope.$apply();
-		console.log('hide editbox');
-	};
+	// $scope.showEditBox = function (x, y) {
+	// 	$scope.isEditBoxOpened = true;
+	// 	floorFactory.showEditBox(x, y);
+	// 	// $scope.$apply();
+	// 	console.log('show editbox');
+	// }
+	// $scope.hideEditBox = function () {
+	// 	floorFactory.hideEditBox();
+	// 	console.log('hide editbox');
+	// 	// $scope.$apply();
+	// };
+	
 	// $scope.getEmployees(); // use local data for now
 	$scope.employees = [
 		{

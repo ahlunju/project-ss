@@ -104,4 +104,32 @@ angular.module('projectSsApp').service('floorFactory', [ function () {
 		this.svg.select('.rotate-box-group').remove();
 	};
 
+	// EditBox
+	this.isEditBoxOpened = false;
+	this.editBoxPosition = {
+		top	: '0px',
+		left : '0px',
+		display : 'none'
+	};
+
+	this.updateCursorPos = function (x, y) {
+		this.editBoxPosition.top =  y +'px';
+		this.editBoxPosition.left = x + 50 + 'px';
+		this.editBoxPosition.display = 'none';
+		console.log(this.editBoxPosition);
+		this.isEditBoxOpened = true;
+	};
+
+	this.showEditBox = function (x, y) {
+		this.isEditBoxOpened = true;
+		this.editBoxPosition.top =  y +'px';
+		this.editBoxPosition.left = x + 50 + 'px';
+		this.editBoxPosition.display = 'block';
+		console.log(this.editBoxPosition);
+	};
+
+	this.hideEditBox = function () {
+		this.editBoxPosition.display = 'none';
+		console.log('hideEditBox');
+	};
 }]);

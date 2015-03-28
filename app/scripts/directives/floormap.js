@@ -33,7 +33,8 @@ angular.module('projectSsApp')
 				// .transition()
 				// .ease("elastic")
 				// .duration(500)
-			scope.hideEditBox();
+			floorFactory.hideEditBox();
+			scope.$apply();
 		};
 		var dragged = function (d) {
 			// d.x += d3.event.dx || 0;
@@ -51,10 +52,10 @@ angular.module('projectSsApp')
 			// d.x = movex || d.x;
 			// d.y = movey || d.y;
 			
-			if (scope.isEditBoxOpened) {
-				scope.showEditBox(d.x, d.y);
+			if (floorFactory.isEditBoxOpened) {
+				floorFactory.showEditBox(d.x, d.y);
 			} else {
-				// scope.updateCursorPos(d.x, d.y);
+				// floorFactory.updateCursorPos(d.x, d.y);
 			}
 			scope.$apply(); //apply on drag end instead of on drag
 			
@@ -65,7 +66,8 @@ angular.module('projectSsApp')
 		svg.on('click', function () {
 			if (d3.event.defaultPrevented) return;
 			console.log('click on svg');
-			scope.hideEditBox();
+			floorFactory.hideEditBox();
+			scope.$apply();
 		});
 		// gridlines
 		var grid = floorFactory.initializeGridLines();
@@ -98,9 +100,10 @@ angular.module('projectSsApp')
 					d3.event.stopPropagation(); //prevent bubbling up
 					selectedDesk = d;
 					if (scope.editMode) {
-						scope.showEditBox(d.x, d.y);
+						floorFactory.showEditBox(d.x, d.y);
 					}
 					floorFactory.appendRotateBox(d.x, d.y);
+					scope.$apply();
 				})
 	
 				.on('blur', function (d) {
