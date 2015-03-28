@@ -6,14 +6,15 @@
  * # floorMap
  */
 angular.module('projectSsApp')
-.directive('floorMap', function () {
-
-	var margin = {top: -5, right: -5, bottom: -5, left: -5},
-		width = 1500 - margin.left - margin.right,
-		height = 800 - margin.top - margin.bottom,
-		movex, movey,
-		dragStep = 10;
-
+.directive('floorMap', ['floorFactory', function (floorFactory) {
+	var margin = floorFactory.margin;
+	var width = floorFactory.width;
+	var height = floorFactory.height;
+	var movex = floorFactory.movex;
+	var movey = floorFactory.movey;
+	var dragStep = floorFactory.dragStep;
+	var drag = floorFactory.drag;
+	
 	return {
 	restrict: 'E',
 	link: function (scope, element, attr) {
@@ -59,76 +60,19 @@ angular.module('projectSsApp')
 			
 		};
 
-		var drag = d3.behavior.drag();
-		// set up initial svg object
-		var svg = d3.selectAll(element)
-			.append('svg')
-			.attr('width', width + margin.left + margin.right)
-			.attr('height', height + margin.top + margin.bottom)
-			.on('click', function () {
-				if (d3.event.defaultPrevented) return;
-				console.log('click on svg');
-				scope.hideEditBox();
-			});
-		svg.append('g')
-			.attr('transform', 'translate(' + margin.left + ',' + margin.right + ')')
-			// .call(zoom);
-		
+		// base svg
+		var svg = floorFactory.initializeBase(element);
+		svg.on('click', function () {
+			if (d3.event.defaultPrevented) return;
+			console.log('click on svg');
+			scope.hideEditBox();
+		});
 		// gridlines
-		var grid = svg.append('g').attr('class', 'grid');
-		grid.append('g')
-			.attr('class', 'x axis')
-			.selectAll('line')
-			.data(d3.range(0, width, 10))
-			.enter().append('line')
-			.attr('x1', function(d) { return d; })
-			.attr('y1', 0)
-			.attr('x2', function(d) { return d; })
-			.attr('y2', height);
-		grid.append('g')
-			.attr('class', 'y axis')
-			.selectAll('line')
-			.data(d3.range(0, height, 10))
-			.enter().append('line')
-			.attr('x1', 0)
-			.attr('y1', function(d) { return d; })
-			.attr('x2', width)
-			.attr('y2', function(d) { return d; });
-		var desksContainer = svg.append('g').attr('class', 'desks-container');
-		
-		function addRotateBox(x,y) {
-			var startx = x;
-			var starty = y;
-			var boxWidth = 40;
-			var boxHeigth = 60;
-			var lineData = [
-				{x: startx,y: starty},
-				{x: startx + boxWidth, y: starty},
-				{x: startx + boxWidth, y: starty + boxHeigth},
-				{x: startx, y: starty + boxHeigth},
-				{x: startx, y: starty}
-			];
-			var line = d3.svg.line()
-				.x(function(d) { return d.x; })
-				.y(function(d) { return d.y; })
-				.interpolate("linear");
-			var lineStartX = startx + 20;
-			var lineStartY = starty;
-			var lineEndX = lineStartX;
-			var lineEndY = lineStartY - 15;
+		var grid = floorFactory.initializeGridLines();
 
-			var rotateBoxGroup = svg.append('g').attr('class', 'rotate-box-group');
-			rotateBoxGroup.append('path').attr('class', 'dashed rotate-box').attr('d', line(lineData));
-			rotateBoxGroup.append('path').attr('class', 'solid rotate-stem').attr('d', 'M '+ lineStartX+ ' ' + lineStartY + ' L '+ lineEndX + ' ' + lineEndY);
-			rotateBoxGroup.append('circle').attr('class', 'rotate-handle').attr('r', 4).attr('cx', lineEndX).attr('cy', lineEndY);
-		}
+		var desksContainer = floorFactory.initializeDataContainer('g', 'desks-container');
 
-		function removeRotateBox() {
-			svg.select('.rotate-box-group').remove();
-			// svg.select('.rotate-stem').remove();
-			// svg.select('.rotate-handle').remove();
-		}
-		var init = function(value){
+		var bindFloorData = function(value){
 			console.log('init');
 			initialized = true;
 			desks = desksContainer.selectAll('g')
@@ -156,8 +100,7 @@ angular.module('projectSsApp')
 					if (scope.editMode) {
 						scope.showEditBox(d.x, d.y);
 					}
-
-					addRotateBox(d.x, d.y);
+					floorFactory.appendRotateBox(d.x, d.y);
 				})
 	
 				.on('blur', function (d) {
@@ -165,7 +108,7 @@ angular.module('projectSsApp')
 					d3.select(this).attr('fill', function (d) {
 						return '#'+Math.floor(Math.random()*16777215).toString(16);
 					});
-					removeRotateBox();
+					floorFactory.removeRotateBox();
 				});
 
 			deskRectsID = desks.append('text')
@@ -176,10 +119,10 @@ angular.module('projectSsApp')
 
 		scope.$watch(attr.desksData, function(newValue, oldValue){
 			if (!initialized) {
-				init(newValue);
+				bindFloorData(newValue);
 			}
 			if (newValue.length !== oldValue.length) {
-				init(newValue);
+				bindFloorData(newValue);
 			}
 		}, true);
 
@@ -191,12 +134,6 @@ angular.module('projectSsApp')
 					.on('drag', dragged)
 					.on('dragend', dragended);
 				desks.call(drag)
-				// .on('mouseover', function (d) {
-				// 	var nodeSelection = d3.select(this).select('circle').style({opacity: '1'});
-				// })
-				// .on('mouseleave', function (d) {
-				// 	var nodeSelection = d3.select(this).select('circle').style({opacity: '0'});
-				// });
 			} else {
 				drag.origin(function (d) {
 					return d;
@@ -204,12 +141,6 @@ angular.module('projectSsApp')
 					.on('drag', null)
 					.on('dragend', null);
 				desks.call(drag)
-				// .on('mouseover', function (d) {
-				// 	var nodeSelection = d3.select(this).select('circle').style({opacity: '0'});
-				// })
-				// .on('mouseleave', function (d) {
-				// 	var nodeSelection = d3.select(this).select('circle').style({opacity: '0'});
-				// });
 			}
 		});
 
@@ -218,6 +149,6 @@ angular.module('projectSsApp')
 				//
 			}
 		});
-
 	}
-}});
+	};
+}]);

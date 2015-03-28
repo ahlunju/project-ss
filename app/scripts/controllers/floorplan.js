@@ -8,7 +8,8 @@
  * Controller of the projectSsApp
  */
 angular.module('projectSsApp')
-.controller('FloorplanCtrl', function ($scope, floorPlanService) {
+.controller('FloorplanCtrl', function ($scope, floorPlanService, floorFactory) {
+	$scope.FloorFactory = floorFactory;
 	$scope.myDesks = [
 		{
 			deskID: 0,
