@@ -142,3 +142,15 @@ body {
   fill: orange;
   stroke: #333;
 }
+
+#floor-map-controls-container {
+  position: relative;
+  z-index: 1;
+}
+#floor-map-controls {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-top: 15px;
+  text-align: center;
+}

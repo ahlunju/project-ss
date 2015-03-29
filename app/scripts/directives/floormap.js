@@ -123,9 +123,11 @@ angular.module('projectSsApp')
 		scope.$watch(attr.desksData, function(newValue, oldValue){
 			if (!initialized) {
 				bindFloorData(newValue);
+				console.log('bind');
 			}
 			if (newValue.length !== oldValue.length) {
 				bindFloorData(newValue);
+				console.log('rebind');
 			}
 		}, true);
 
@@ -136,22 +138,24 @@ angular.module('projectSsApp')
 				}).on('dragstart', dragstarted)
 					.on('drag', dragged)
 					.on('dragend', dragended);
-				desks.call(drag)
+
+				desks.call(drag);
 			} else {
 				drag.origin(function (d) {
 					return d;
 				}).on('dragstart', null)
 					.on('drag', null)
 					.on('dragend', null);
-				desks.call(drag)
+
+				desks.call(drag);
 			}
 		});
 
-		scope.$on('addDesk', function (event, args) {
-			if(args.addMode) {
-				//
-			}
-		});
+		// scope.$on('addDesk', function (event, args) {
+		// 	if(args.addMode) {
+		// 		//
+		// 	}
+		// });
 	}
 	};
 }]);

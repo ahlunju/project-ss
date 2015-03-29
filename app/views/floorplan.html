@@ -7,17 +7,22 @@
 	</ui-select-choices>
 </ui-select>
 </div>
+editbox position:
 {{editBoxPosition}}
-<div class="form-group">
-	<button class="btn btn-primary" ng-click="addDesk()">Toggle Add Desk</button>
-	<button class="btn btn-primary" ng-click="updateEmployees()">Save</button>
-	<button class="btn btn-primary" ng-click="editDesks()">Toggle Edit</button>
-</div>
+
 <code>
 	<ul ng-model="myDesks">
 		<li ng-repeat="desk in myDesks">{{desk}}</li>
 	</ul>
 </code>
+<div id="floor-map-controls-container">
+	<div class="form-group" id="floor-map-controls">
+		<button class="btn btn-primary" ng-click="addDesk()">Toggle Add Desk</button>
+		<button class="btn btn-primary" ng-click="updateEmployees()">Save</button>
+		<button class="btn btn-primary" ng-click="editDesks()">Toggle Edit</button>
+	</div>
+</div>
+
 <div id="floor-map-container">
 	<floor-map desks-data="myDesks"></floor-map>
 	<div class="edit-box" ng-style="editBoxPosition" ng-click="$event.stopPropagation()">

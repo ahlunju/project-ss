@@ -71,11 +71,11 @@ angular.module('projectSsApp')
 			x : 500
 		});
 		$scope.editMode = false; //switch off edit mode
-		$scope.addMode = !$scope.addMode;
-		$scope.$broadcast('addDesk', {
-			desks: $scope.myDesks,
-			addMode: $scope.addMode
-		});
+		// $scope.addMode = !$scope.addMode;
+		// $scope.$broadcast('addDesk', {
+		// 	desks: $scope.myDesks,
+		// 	addMode: $scope.addMode
+		// });
 	};
 
 	$scope.removeDesk = function () {
@@ -83,24 +83,6 @@ angular.module('projectSsApp')
 	};
 
 	$scope.editBoxPosition = floorFactory.editBoxPosition;
-
-	// $scope.isEditBoxOpened = false;
-
-	// $scope.updateCursorPos = function (x, y) {
-	// 	floorFactory.updateCursorPos(x, y);
-	// };
-
-	// $scope.showEditBox = function (x, y) {
-	// 	$scope.isEditBoxOpened = true;
-	// 	floorFactory.showEditBox(x, y);
-	// 	// $scope.$apply();
-	// 	console.log('show editbox');
-	// }
-	// $scope.hideEditBox = function () {
-	// 	floorFactory.hideEditBox();
-	// 	console.log('hide editbox');
-	// 	// $scope.$apply();
-	// };
 	
 	// $scope.getEmployees(); // use local data for now
 	$scope.employees = [
