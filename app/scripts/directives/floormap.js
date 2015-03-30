@@ -61,25 +61,58 @@ angular.module('projectSsApp')
 			
 		};
 
+		var updateTempObjectPos = function (x, y) {
+			svg.select('.temp-object').attr('transform', "translate(" + x+ "," +  y + ")");
+		};
+
+		var removeTempObject = function () {
+			svg.select('.temp-object').remove();
+		};
+
+		var addNewDesk = function (x, y) {
+			scope.myDesks.push({
+				deskID : Math.floor(Math.random() * 12345),
+				y : y,
+				x : x
+			});
+			console.log(scope.myDesks);
+		}
 		// base svg
 		var svg = floorFactory.initializeBase(element);
 		svg.on('click', function () {
 			if (d3.event.defaultPrevented) return;
 			console.log('click on svg');
 			floorFactory.hideEditBox();
+			
+
+			if (scope.addMode) {
+				console.log('add mode');
+				addNewDesk(pointer.x, pointer.y);
+				removeTempObject();
+				scope.addMode = false;
+			}
 			scope.$apply();
 		});
-		// gridlines
+
+		var pointer = {x: 0, y:0};
+		svg.on('mousemove', function () {
+			pointer.x = d3.mouse(this)[0];
+			pointer.y = d3.mouse(this)[1];
+			updateTempObjectPos(pointer.x, pointer.y);
+		});
+
 		var grid = floorFactory.initializeGridLines();
 
 		var desksContainer = floorFactory.initializeDataContainer('g', 'desks-container');
 
 		var bindFloorData = function(value){
+			console.log(value);
 			console.log('init');
 			initialized = true;
+
 			desks = desksContainer.selectAll('g')
 				.data(value).enter()
-					.append('g')
+					.append('g').attr('class', 'desk')
 					.attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; })
 					
 			deskRects = desks.append('rect')
@@ -118,6 +151,16 @@ angular.module('projectSsApp')
 				.text(function (d) {
 					return d.deskID;
 				});
+
+			drag.origin(function (d) {
+				return d;
+			}).on('dragstart', null)
+				.on('drag', null)
+				.on('dragend', null);
+
+			console.log(desks);
+			desks.call(drag);
+			
 		};
 
 		scope.$watch(attr.desksData, function(newValue, oldValue){
@@ -133,6 +176,7 @@ angular.module('projectSsApp')
 
 		scope.$on('editDeskPosition', function (event, args) {
 			if (args) {
+
 				drag.origin(function (d) {
 					return d;
 				}).on('dragstart', dragstarted)
@@ -141,21 +185,31 @@ angular.module('projectSsApp')
 
 				desks.call(drag);
 			} else {
-				drag.origin(function (d) {
-					return d;
-				}).on('dragstart', null)
-					.on('drag', null)
-					.on('dragend', null);
+				// drag.origin(function (d) {
+				// 	return d;
+				// }).on('dragstart', null)
+				// 	.on('drag', null)
+				// 	.on('dragend', null);
 
-				desks.call(drag);
+				// desks.call(drag);
 			}
 		});
 
-		// scope.$on('addDesk', function (event, args) {
-		// 	if(args.addMode) {
-		// 		//
-		// 	}
-		// });
+		scope.$on('addDesk', function (event, args) {
+			if(args.addMode) {
+				console.log(args.addMode);
+				// console.log(pointer.x, pointer.y);
+				// append temp shape (with data or not?)
+				var tempGroup = svg.append('g').attr('class', 'temp-object')
+					.attr("transform", function (d) {
+						return "translate(" + pointer.x + "," + pointer.y + ")";
+					})
+				tempGroup.append('rect').attr('width', 40).attr('height', 60).attr('fill', '#bada55');
+				// position the temp shape using current cursor position
+
+				// on click, add the temp shape, push the data, x, y pos to data array
+			}
+		});
 	}
 	};
 }]);

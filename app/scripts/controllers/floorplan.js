@@ -65,17 +65,18 @@ angular.module('projectSsApp')
 
 	$scope.addMode = false;
 	$scope.addDesk = function () {
-		$scope.myDesks.push({
-			deskID : Math.floor(Math.random() * 12345),
-			y : 500,
-			x : 500
-		});
-		$scope.editMode = false; //switch off edit mode
-		// $scope.addMode = !$scope.addMode;
-		// $scope.$broadcast('addDesk', {
-		// 	desks: $scope.myDesks,
-		// 	addMode: $scope.addMode
+		// $scope.myDesks.push({
+		// 	deskID : Math.floor(Math.random() * 12345),
+		// 	y : 500,
+		// 	x : 500
 		// });
+		$scope.editMode = false; //switch off edit mode
+		$scope.addMode = !$scope.addMode;
+		$scope.$broadcast('addDesk', {
+			// desks: $scope.myDesks,
+			addMode: $scope.addMode
+		});
+		floorFactory.addNewDesk();
 	};
 
 	$scope.removeDesk = function () {

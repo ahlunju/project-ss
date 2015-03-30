@@ -132,4 +132,8 @@ angular.module('projectSsApp').service('floorFactory', [ function () {
 		this.editBoxPosition.display = 'none';
 		console.log('hideEditBox');
 	};
+
+	this.addNewDesk = function () {
+		//
+	}
 }]);
