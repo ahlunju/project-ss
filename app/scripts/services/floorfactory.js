@@ -8,6 +8,12 @@
  * Service in the projectSsApp.
  */
 angular.module('projectSsApp').service('floorFactory', [ function () {
+	var self = this;
+	this.pointer = {
+		x : 0,
+		y : 0
+	};
+
 	this.margin = {
 		top: -5,
 		right: -5,
@@ -135,5 +141,22 @@ angular.module('projectSsApp').service('floorFactory', [ function () {
 
 	this.addNewDesk = function () {
 		//
-	}
+	};
+
+	this.appendTempObject = function () {
+		var tempGroup = this.dataContainer.append('g').attr('class', 'temp-object')
+			.attr("transform", function (d) {
+				console.log(self.pointer);
+				return "translate(" + self.pointer.x + "," + self.pointer.y + ")";
+			})
+		tempGroup.append('rect').attr('width', 40).attr('height', 60).attr('fill', '#bada55');
+	};
+
+	this.updateTempObjectPos = function (x, y) {
+		this.dataContainer.select('.temp-object').attr('transform', "translate(" + x+ "," +  y + ")");
+	};
+
+	this.removeTempObject = function () {
+		this.dataContainer.select('.temp-object').remove();
+	};
 }]);
