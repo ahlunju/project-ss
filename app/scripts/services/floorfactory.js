@@ -7,7 +7,7 @@
  * # floorFactory
  * Service in the projectSsApp.
  */
-angular.module('projectSsApp').service('floorFactory', [ function () {
+angular.module('projectSsApp').service('floorFactory', ['employeesService', function (employeesService) {
 	var self = this;
 	this.pointer = {
 		x : 0,
@@ -20,6 +20,7 @@ angular.module('projectSsApp').service('floorFactory', [ function () {
 		bottom: -5,
 		left: -5
 	};
+	
 	this.gridSpacing = 10;
 	this.width = 1500 - this.margin.left - this.margin.right;
 	this.height = 800 - this.margin.top - this.margin.bottom;
@@ -30,6 +31,7 @@ angular.module('projectSsApp').service('floorFactory', [ function () {
 	this.dragStep = 10;
 	this.drag = d3.behavior.drag();
 	
+	this.employees = employeesService.query();
 	this.data = []; //array of objects that will be bound
 	this.bindData = function (data) {
 		//
@@ -85,25 +87,29 @@ angular.module('projectSsApp').service('floorFactory', [ function () {
 		var boxWidth = 40;
 		var boxHeigth = 60;
 		var lineData = [
-			{x: startx,y: starty},
-			{x: startx + boxWidth, y: starty},
-			{x: startx + boxWidth, y: starty + boxHeigth},
-			{x: startx, y: starty + boxHeigth},
-			{x: startx, y: starty}
+			{x: 0,y: 0},
+			{x: 0 + boxWidth, y: 0},
+			{x: 0 + boxWidth, y: 0 + boxHeigth},
+			{x: 0, y: 0 + boxHeigth},
+			{x: 0, y: 0}
 		];
 		var line = d3.svg.line()
 			.x(function(d) { return d.x; })
 			.y(function(d) { return d.y; })
 			.interpolate("linear");
-		var lineStartX = startx + 20;
-		var lineStartY = starty;
+		var lineStartX = 20;
+		var lineStartY = 0;
 		var lineEndX = lineStartX;
 		var lineEndY = lineStartY - 15;
 
-		var rotateBoxGroup = this.svg.append('g').attr('class', 'rotate-box-group');
+		var rotateBoxGroup = this.svg.append('g').attr('class', 'rotate-box-group').attr('transform', "translate(" + startx+ "," +  starty + ")");;
 		rotateBoxGroup.append('path').attr('class', 'dashed rotate-box').attr('d', line(lineData));
 		rotateBoxGroup.append('path').attr('class', 'solid rotate-stem').attr('d', 'M '+ lineStartX+ ' ' + lineStartY + ' L '+ lineEndX + ' ' + lineEndY);
 		rotateBoxGroup.append('circle').attr('class', 'rotate-handle').attr('r', 4).attr('cx', lineEndX).attr('cy', lineEndY);
+	};
+
+	this.updateRotateBoxPos = function (x, y) {
+		this.svg.select('.rotate-box-group').attr('transform', "translate(" + x+ "," +  y + ")");
 	};
 
 	this.removeRotateBox = function removeRotateBox() {

@@ -46,6 +46,7 @@ angular.module('projectSsApp')
 			d.x = d3.event.x;
 			d.y = d3.event.y;
 			d3.select(this).attr("transform", "translate(" + d.x+ "," +  d.y + ")");
+			floorFactory.updateRotateBoxPos(d.x,d.y);
 		};
 		var dragended = function (d) {
 			d3.select(this).select('rect').classed('drag', false)
@@ -61,6 +62,7 @@ angular.module('projectSsApp')
 			
 		};
 
+		// add, update delete still rely on controller's scope object, possibly move to floorFactory as well
 		var addNewDesk = function (x, y) {
 			scope.myDesks.push({
 				deskID : Math.floor(Math.random() * 12345),
@@ -153,7 +155,7 @@ angular.module('projectSsApp')
 			
 		};
 
-		scope.$watch(attr.desksData, function(newValue, oldValue){
+		scope.$watch(attr.desksData, function (newValue, oldValue){
 			if (!initialized) {
 				bindFloorData(newValue);
 				console.log('bind');
@@ -189,6 +191,11 @@ angular.module('projectSsApp')
 			if(args.addMode) {
 				floorFactory.appendTempObject();
 			}
+		});
+
+		// watch the employees promise from employeesService
+		scope.$watch('floorFactory.employees', function (newValue, oldValue) {
+			console.log(floorFactory.employees);
 		});
 	}
 	};
