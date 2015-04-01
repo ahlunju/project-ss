@@ -136,7 +136,7 @@ angular.module('projectSsApp')
 					d3.select(this).attr('fill', function (d) {
 						return '#'+Math.floor(Math.random()*16777215).toString(16);
 					});
-					floorFactory.removeRotateBox();
+					// floorFactory.removeRotateBox();
 				});
 
 			deskRectsID = desks.append('text')
