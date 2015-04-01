@@ -131,7 +131,8 @@ angular.module('projectSsApp').service('floorFactory', ['employeesService', func
 		console.log(rotateAndTranslate(0, startx, starty));
 		this.rotateBox = this.svg.append('g').attr('class', 'rotate-box-group').attr('transform', rotateZeroAndTranslate(startx, starty));
 
-		this.rotateBox.append('path').attr('class', 'dashed rotate-box').attr('d', line(lineData));
+		// this.rotateBox.append('path').attr('class', 'dashed rotate-box').attr('d', line(lineData));
+		this.rotateBox.append('rect').attr('width', boxWidth).attr('height', boxHeigth).attr('class', 'dashed rotate-box');
 		this.rotateBox.append('path').attr('class', 'solid rotate-stem').attr('d', 'M '+ lineStartX+ ' ' + lineStartY + ' L '+ lineEndX + ' ' + lineEndY);
 		
 		var rotateHandle = this.rotateBox.append('circle').attr('class', 'rotate-handle').attr('r', 4).attr('cx', lineEndX).attr('cy', lineEndY); // 60 + 40 + 4 = 104
@@ -162,7 +163,7 @@ angular.module('projectSsApp').service('floorFactory', ['employeesService', func
 	};
 	
 	this.rotate = function (angle, originx, originy) {
-		console.log(rotateAndTranslate(angle, originx, originy));
+		// console.log(rotateAndTranslate(angle, originx, originy));
 		this.rotateBox.attr("transform", rotateAndTranslate(angle, originx, originy));
 	};
 	// EditBox
