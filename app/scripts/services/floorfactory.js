@@ -132,26 +132,38 @@ angular.module('projectSsApp').service('floorFactory', ['employeesService', func
 		this.rotateBox = this.svg.append('g').attr('class', 'rotate-box-group').attr('transform', rotateZeroAndTranslate(startx, starty));
 
 		// this.rotateBox.append('path').attr('class', 'dashed rotate-box').attr('d', line(lineData));
-		this.rotateBox.append('rect').attr('width', boxWidth).attr('height', boxHeigth).attr('class', 'dashed rotate-box');
-		this.rotateBox.append('path').attr('class', 'solid rotate-stem').attr('d', 'M '+ lineStartX+ ' ' + lineStartY + ' L '+ lineEndX + ' ' + lineEndY);
-		
-		var rotateHandle = this.rotateBox.append('circle').attr('class', 'rotate-handle').attr('r', 4).attr('cx', lineEndX).attr('cy', lineEndY); // 60 + 40 + 4 = 104
-		console.log(lineEndX, lineEndY);
+		this.rotateBox.append('rect')
+						.attr('width', boxWidth)
+						.attr('height', boxHeigth)
+						.attr('class', 'dashed rotate-box')
+						.attr('transform', 'translate(' + (-boxWidth/2) + ',' + (-boxHeigth/2) + ')');
+		this.rotateBox.append('path')
+					.attr('class', 'solid rotate-stem')
+					.attr('d', 'M '+ (lineStartX -boxWidth/2) + ' ' + (lineStartY - boxHeigth/2) + ' L '+ (lineEndX -boxWidth/2 )+ ' ' + (lineEndY - boxHeigth/2));
+		var angle = 0;
+		var rotateHandle = this.rotateBox.append('circle')
+			.attr('class', 'rotate-handle')
+			.attr('r', 4)
+			.attr('cx', lineEndX)
+			.attr('cy', lineEndY) // 60 + 40 + 4 = 104
+			.attr('transform', 'translate(' + (-boxWidth/2) + ',' + (-boxHeigth/2) + ')');
 		rotateHandle.call(d3.behavior.drag()
 			.on("drag", function (d) {
 				// Resizing
-				var centerx = (x + boxWidth) /2;
-				var centery = (y + boxHeigth) /2;
-				console.log(centerx, centery);
-				var angle = 0;
+				
 				var exy = [d3.event.x, d3.event.y];
 				console.log(exy);
-				var dxy = [centerx, centery];
-				// var dxy = [lineEndX, lineEndY];
-				angle = angle + angleBetweenPoints(dxy, exy);
+				var dxy = [0, 0];
+				console.log(dxy);
+				angle = angle + angleBetweenPoints(exy, dxy);
 				self.rotate(angle, startx, starty);
 			})
 		);
+		// rotateHandle.on('click', function() {
+		// 		console.log('rotate');
+		// 		angle+=10;
+		// 		self.rotate(angle, startx, starty);
+		// 	})
 	};
 
 	this.updateRotateBoxPos = function (x, y) {
@@ -163,8 +175,10 @@ angular.module('projectSsApp').service('floorFactory', ['employeesService', func
 	};
 	
 	this.rotate = function (angle, originx, originy) {
+		console.log(toDegrees(angle));
+		this.rotateBox.attr('transform', 'rotate(' + toDegrees(angle) + ' ' + originx + ' ' + originy + ')' + ' translate(' + (originx) + ',' + (originy) + ')');
 		// console.log(rotateAndTranslate(angle, originx, originy));
-		this.rotateBox.attr("transform", rotateAndTranslate(angle, originx, originy));
+		// this.rotateBox.attr("transform", rotateAndTranslate(angle, originx, originy));
 	};
 	// EditBox
 	this.isEditBoxOpened = false;

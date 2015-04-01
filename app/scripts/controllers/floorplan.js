@@ -12,6 +12,11 @@ angular.module('projectSsApp')
 	$scope.FloorFactory = floorFactory;
 	$scope.myDesks = [
 		{
+			deskID: 9,
+		y: 0,
+			x: 0
+		},
+		{
 			deskID: 0,
 		y: 10,
 			x: 10

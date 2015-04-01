@@ -112,6 +112,7 @@ angular.module('projectSsApp')
 				.attr('class', 'points')
 				.attr('width', 40)
 				.attr('height', 60)
+				.attr('transform', 'translate(' + (-40/2) + ',' + (-60/2) + ')')
 				.attr('fill', function () {
 					return '#'+Math.floor(Math.random()*16777215).toString(16);
 				})
