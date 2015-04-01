@@ -25,15 +25,9 @@ angular.module('projectSsApp').service('floorFactory', ['employeesService', func
 	};
 
 	var rotateAndTranslate = function (angle, x, y) {
-		return "translate(" + x + "," +  y + ")" + " rotate (" + toDegrees(angle) + ")" + "translate(" + (-10) + "," +  (44) + ")";
-		// return "rotate(" + 45 + ' ' + (x) + ' ' + (y) + ")";
-		// return "translate(" + x + ',' + y + ') ' + 'rotate(' + 45 + ') ' + 'translate(' + (-x) + ',' + (-y) + ')';
-
+		return "rotate (" + toDegrees(angle) + ")" + "translate(" + (x) + "," +  (y) + ")";
 	};
 
-	var rotateZeroAndTranslate = function(x,y) {
-		return "translate(" + x + "," +  y + ")"// + " rotate(" + 0 + ")";
-	}
 	this.pointer = {
 		x : 0,
 		y : 0
@@ -120,6 +114,7 @@ angular.module('projectSsApp').service('floorFactory', ['employeesService', func
 			{x: 0, y: 0 + boxHeigth},
 			{x: 0, y: 0}
 		];
+
 		var line = d3.svg.line()
 			.x(function(d) { return d.x; })
 			.y(function(d) { return d.y; })
@@ -128,8 +123,8 @@ angular.module('projectSsApp').service('floorFactory', ['employeesService', func
 		var lineStartY = 0;
 		var lineEndX = lineStartX;
 		var lineEndY = lineStartY - 40;
-		console.log(rotateAndTranslate(0, startx, starty));
-		this.rotateBox = this.svg.append('g').attr('class', 'rotate-box-group').attr('transform', rotateZeroAndTranslate(startx, starty));
+
+		this.rotateBox = this.svg.append('g').attr('class', 'rotate-box-group').attr('transform', rotateAndTranslate(0,startx, starty));
 
 		// this.rotateBox.append('path').attr('class', 'dashed rotate-box').attr('d', line(lineData));
 		this.rotateBox.append('rect')
@@ -137,28 +132,32 @@ angular.module('projectSsApp').service('floorFactory', ['employeesService', func
 						.attr('height', boxHeigth)
 						.attr('class', 'dashed rotate-box')
 						.attr('transform', 'translate(' + (-boxWidth/2) + ',' + (-boxHeigth/2) + ')');
+
 		this.rotateBox.append('path')
 					.attr('class', 'solid rotate-stem')
 					.attr('d', 'M '+ (lineStartX -boxWidth/2) + ' ' + (lineStartY - boxHeigth/2) + ' L '+ (lineEndX -boxWidth/2 )+ ' ' + (lineEndY - boxHeigth/2));
 		var angle = 0;
+
 		var rotateHandle = this.rotateBox.append('circle')
 			.attr('class', 'rotate-handle')
 			.attr('r', 4)
 			.attr('cx', lineEndX)
 			.attr('cy', lineEndY) // 60 + 40 + 4 = 104
 			.attr('transform', 'translate(' + (-boxWidth/2) + ',' + (-boxHeigth/2) + ')');
+
 		rotateHandle.call(d3.behavior.drag()
 			.on("drag", function (d) {
+				d3.event.sourceEvent.stopPropagation();
 				// Resizing
-				
 				var exy = [d3.event.x, d3.event.y];
-				console.log(exy);
 				var dxy = [0, 0];
+				console.log(exy);
 				console.log(dxy);
 				angle = angle + angleBetweenPoints(exy, dxy);
 				self.rotate(angle, startx, starty);
 			})
 		);
+		// for debugging
 		// rotateHandle.on('click', function() {
 		// 		console.log('rotate');
 		// 		angle+=10;
@@ -167,18 +166,20 @@ angular.module('projectSsApp').service('floorFactory', ['employeesService', func
 	};
 
 	this.updateRotateBoxPos = function (x, y) {
-		this.rotateBox.attr('transform', "translate(" + x+ "," +  y + ")");
+		if (this.rotateBox) {
+			this.rotateBox.attr('transform', "rotate(0) translate(" + x+ "," +  y + ")");
+		}
 	};
 
 	this.removeRotateBox = function removeRotateBox() {
-		this.rotateBox.remove();
+		if (this.rotateBox) {
+			this.rotateBox.remove();
+		}
 	};
 	
 	this.rotate = function (angle, originx, originy) {
 		console.log(toDegrees(angle));
 		this.rotateBox.attr('transform', 'rotate(' + toDegrees(angle) + ' ' + originx + ' ' + originy + ')' + ' translate(' + (originx) + ',' + (originy) + ')');
-		// console.log(rotateAndTranslate(angle, originx, originy));
-		// this.rotateBox.attr("transform", rotateAndTranslate(angle, originx, originy));
 	};
 	// EditBox
 	this.isEditBoxOpened = false;

@@ -77,7 +77,7 @@ angular.module('projectSsApp')
 			if (d3.event.defaultPrevented) return;
 			console.log('click on svg');
 			floorFactory.hideEditBox();
-			
+			floorFactory.removeRotateBox();
 			if (scope.addMode) {
 				console.log('add mode');
 				addNewDesk(pointer.x, pointer.y);
