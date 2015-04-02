@@ -13,45 +13,45 @@ angular.module('projectSsApp')
 	$scope.myDesks = [
 		{
 			deskID: 9,
-		y: 0,
-			x: 0
+		y: 210,
+			x: 650
 		},
 		{
 			deskID: 0,
-		y: 10,
-			x: 10
+		y: 150,
+			x: 510
 		}, {
 			deskID: 1,
-		y: 20,
-			x: 20
+		y: 210,
+			x: 380
 		}, {
 			deskID: 2,
-		y: 50,
-			x: 130
+		y: 210,
+			x: 510
 		}, {
 			deskID: 3,
-		y: 60,
-			x: 150
+		y: 90,
+			x: 510
 		}, {
 			deskID: 4,
-		y: 40,
-			x: 140
+		y: 280,
+			x: 510
 		}, {
 			deskID: 5,
-		y: 250,
-			x: 250
+		y: 150,
+			x: 380
 		}, {
 			deskID: 6,
-		y: 90,
-			x: 160
+		y: 280,
+			x: 650
 		}, {
 			deskID: 7,
-		y: 100,
-			x: 190
+		y: 270,
+			x: 380
 		}, {
 			deskID: 8,
-		y: 50,
-			x: 500
+		y: 90,
+			x: 380
 	}];
 
 	$scope.getEmployees = function () {
@@ -108,12 +108,12 @@ angular.module('projectSsApp')
 			"deskID": 4
 		},
 		{
-			"name": "Alan Zhu",
+			"name": "Tony Stark",
 			"employeeID": 3,
 			"deskID": 2
 		},
 		{
-			"name": "Sam Fisher",
+			"name": "Ned Stark",
 			"employeeID": 4,
 			"deskID": 3
 		}
