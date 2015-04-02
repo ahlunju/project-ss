@@ -41,8 +41,8 @@ angular.module('projectSsApp').service('floorFactory', ['employeesService', func
 	};
 
 	this.gridSpacing = 10;
-	this.width = 1500 - this.margin.left - this.margin.right;
-	this.height = 800 - this.margin.top - this.margin.bottom;
+	this.width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0) - this.margin.left - this.margin.right;
+	this.height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - this.margin.top - this.margin.bottom;
 
 	this.movex;
 	this.movey;
@@ -151,8 +151,8 @@ angular.module('projectSsApp').service('floorFactory', ['employeesService', func
 				// Resizing
 				var exy = [d3.event.x, d3.event.y];
 				var dxy = [0, 0];
-				console.log(exy);
-				console.log(dxy);
+				// console.log(exy);
+				// console.log(dxy);
 				angle = angle + angleBetweenPoints(exy, dxy);
 				self.rotate(angle, startx, starty);
 			})
@@ -171,15 +171,17 @@ angular.module('projectSsApp').service('floorFactory', ['employeesService', func
 		}
 	};
 
-	this.removeRotateBox = function removeRotateBox() {
+	this.removeRotateBox = function () {
+		console.log('remove rotate box');
+
 		if (this.rotateBox) {
 			this.rotateBox.remove();
 		}
 	};
 	
-	this.rotate = function (angle, originx, originy) {
+	this.rotate = function (angle, x, y) {
 		console.log(toDegrees(angle));
-		this.rotateBox.attr('transform', 'rotate(' + toDegrees(angle) + ' ' + originx + ' ' + originy + ')' + ' translate(' + (originx) + ',' + (originy) + ')');
+		this.rotateBox.attr('transform', 'rotate(' + toDegrees(angle) + ' ' + x + ' ' + y + ')' + ' translate(' + (x) + ',' + (y) + ')');
 	};
 	// EditBox
 	this.isEditBoxOpened = false;

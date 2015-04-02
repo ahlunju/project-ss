@@ -77,7 +77,7 @@ angular.module('projectSsApp')
 			if (d3.event.defaultPrevented) return;
 			console.log('click on svg');
 			floorFactory.hideEditBox();
-			floorFactory.removeRotateBox();
+			// floorFactory.removeRotateBox();
 			if (scope.addMode) {
 				console.log('add mode');
 				addNewDesk(pointer.x, pointer.y);
@@ -129,6 +129,7 @@ angular.module('projectSsApp')
 					if (scope.editMode) {
 						floorFactory.showEditBox(d.x, d.y);
 					}
+					floorFactory.removeRotateBox();
 					floorFactory.appendRotateBox(d.x, d.y);
 					scope.$apply();
 				})
