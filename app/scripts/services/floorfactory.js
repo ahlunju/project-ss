@@ -25,7 +25,7 @@ angular.module('projectSsApp').service('floorFactory', ['employeesService', func
 	};
 
 	var rotateAndTranslate = function (angle, x, y) {
-		return "rotate (" + toDegrees(angle) + ")" + "translate(" + (x) + "," +  (y) + ")";
+		return "rotate(" + toDegrees(angle) + ") " + "translate(" + (x) + "," +  (y) + ")";
 	};
 
 	this.pointer = {
@@ -148,13 +148,16 @@ angular.module('projectSsApp').service('floorFactory', ['employeesService', func
 		rotateHandle.call(d3.behavior.drag()
 			.on("drag", function (d) {
 				d3.event.sourceEvent.stopPropagation();
-				// Resizing
+				var parent = d3.select(this.parentNode);
+				var originX = d3.transform(parent.attr('transform')).translate[0];
+				var originY = d3.transform(parent.attr('transform')).translate[1];
+
 				var exy = [d3.event.x, d3.event.y];
 				var dxy = [0, 0];
 				// console.log(exy);
 				// console.log(dxy);
 				angle = angle + angleBetweenPoints(exy, dxy);
-				self.rotate(angle, startx, starty);
+				self.rotate(angle, originX, originY);
 			})
 		);
 		// for debugging
@@ -180,7 +183,7 @@ angular.module('projectSsApp').service('floorFactory', ['employeesService', func
 	};
 	
 	this.rotate = function (angle, x, y) {
-		console.log(toDegrees(angle));
+		// console.log(toDegrees(angle));
 		this.rotateBox.attr('transform', 'rotate(' + toDegrees(angle) + ' ' + x + ' ' + y + ')' + ' translate(' + (x) + ',' + (y) + ')');
 	};
 	// EditBox
@@ -204,7 +207,7 @@ angular.module('projectSsApp').service('floorFactory', ['employeesService', func
 		this.editBoxPosition.top =  y +'px';
 		this.editBoxPosition.left = x + 50 + 'px';
 		this.editBoxPosition.display = 'block';
-		console.log(this.editBoxPosition);
+		// console.log(this.editBoxPosition);
 	};
 
 	this.hideEditBox = function () {
