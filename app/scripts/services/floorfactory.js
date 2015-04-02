@@ -225,7 +225,10 @@ angular.module('projectSsApp').service('floorFactory', ['employeesService', func
 				console.log(self.pointer);
 				return "translate(" + self.pointer.x + "," + self.pointer.y + ")";
 			})
-		tempGroup.append('rect').attr('width', 40).attr('height', 60).attr('fill', '#bada55');
+		tempGroup.append('rect').attr('width', 40)
+			.attr('height', 60)
+			.attr('fill', '#bada55')
+			.attr('transform', 'translate(' + (-40/2) + ',' + (-60/2) + ')');
 	};
 
 	this.updateTempObjectPos = function (x, y) {
