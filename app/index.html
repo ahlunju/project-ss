@@ -40,6 +40,7 @@
           <div class="collapse navbar-collapse" id="js-navbar-collapse">
 
             <ul class="nav navbar-nav">
+              <li class=""><a ng-href="#/floor-planner">Floor Planner</a></li>
               <li class="active"><a ng-href="#/floor-plan">Floor</a></li>
               <!-- <li><a href="#/home">Home</a></li> -->
               <!-- <li><a ng-href="#/about">About</a></li> -->
@@ -89,6 +90,7 @@
     <script src="bower_components/d3/d3.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/ui-select/dist/select.js"></script>
+    <script src="bower_components/fabric/dist/fabric.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -100,6 +102,9 @@
         <script src="scripts/services/floorplanservice.js"></script>
         <script src="scripts/directives/floormap.js"></script>
         <script src="scripts/services/floorfactory.js"></script>
+        <script src="scripts/directives/floorcanvas.js"></script>
+        <script src="scripts/controllers/floor.js"></script>
+        <script src="scripts/controllers/floorplanner.js"></script>
         <!-- endbuild -->
 </body>
 </html>

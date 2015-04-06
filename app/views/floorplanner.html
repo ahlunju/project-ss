@@ -1,0 +1,13 @@
+<div class="employees-panel">
+<ui-select ng-model="country.selected" theme="bootstrap" ng-disabled="disabled" >
+	<ui-select-match placeholder="Select or search employee...">{{$select.selected.name}}</ui-select-match>
+	<ui-select-choices repeat="employee in employees | filter: $select.search">
+		<span ng-bind-html="employee.name | highlight: $select.search"></span>
+		<small>desk id: <span ng-bind-html="employee.deskID | highlight: $select.search"></span></small>
+	</ui-select-choices>
+</ui-select>
+</div>
+
+<div id="floor-planner-container">
+	
+</div>

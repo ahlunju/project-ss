@@ -33,6 +33,10 @@ angular
         templateUrl: 'views/floorplan.html',
         controller: 'FloorplanCtrl'
       })
+      .when('/floor-planner', {
+        templateUrl: 'views/floorplanner.html',
+        controller: 'FloorplannerCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
