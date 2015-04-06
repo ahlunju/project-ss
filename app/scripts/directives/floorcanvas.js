@@ -43,7 +43,7 @@ return {
 		
 		var canvas = new fabric.Canvas('floor-canvas', {
 			backgroundColor: 'rgb(255,255,255)',
-			selectionColor: 'orange',
+			selectionColor: 'rgba(100,200,200, 0.5)',
 			selectionLineWidth: 2,
 			width: 1500,
 			height: 800
@@ -56,6 +56,47 @@ return {
 				top: Math.round(options.target.top / gridSize) * gridSize
 			});
 		});
+
+		// rotation increment of 10 deg
+		var lastClosestAngle = 0,
+		    snapAfterRotate = false;
+
+		function calculateClosestAngle(targetObj) {
+			// if angle > 360 then mod 360
+			var currentAngle = targetObj.angle;
+			var normalizedAngle = Math.abs(Math.round(Math.asin(Math.sin(currentAngle * Math.PI/360.0)) * 360.0/Math.PI));
+			console.log("normalized: ", normalizedAngle);
+			snapAfterRotate = true;
+			if (normalizedAngle >= 45 && normalizedAngle < 135) {
+			return 90;
+			} else if (normalizedAngle >= 135 && normalizedAngle < 225) {
+			return 180;
+			} else if (normalizedAngle >= 225 && normalizedAngle < 315) {
+			return 270;
+			} else if ((normalizedAngle >= 315 && normalizedAngle <= 360) || (normalizedAngle >= 0 && normalizedAngle < 45)) {
+			return 0;
+			}
+			return currentAngle;
+		}
+
+		// rotation increment of 10 (round to the nearest 10)
+		canvas.on("object:rotating", function(rotEvtData) {
+		  var targetObj = rotEvtData.target;
+		  // lastClosestAngle = calculateClosestAngle(targetObj);
+		  lastClosestAngle = Math.round(targetObj.angle / 10) * 10;
+		  snapAfterRotate = true;
+		  console.log(lastClosestAngle);
+		});
+
+		canvas.on("object:modified", function(modEvtData) {
+			// modified fires after object has been rotated
+			var modifiedObj = modEvtData.target;
+			if (modifiedObj.angle && snapAfterRotate) {
+				modifiedObj.setAngle(lastClosestAngle).setCoords();
+				snapAfterRotate = false;
+				canvas.renderAll();
+			}
+		})
 
 		canvas.loadFromJSON(scope.objects);
 		draw_grid(gridSize);
