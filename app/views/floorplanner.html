@@ -1,5 +1,5 @@
 <div class="employees-panel">
-<ui-select ng-model="country.selected" theme="bootstrap" ng-disabled="disabled" >
+<ui-select ng-model="selectedEmployee.selected" theme="bootstrap" ng-disabled="disabled" >
 	<ui-select-match placeholder="Select or search employee...">{{$select.selected.name}}</ui-select-match>
 	<ui-select-choices repeat="employee in employees | filter: $select.search">
 		<span ng-bind-html="employee.name | highlight: $select.search"></span>
@@ -7,7 +7,16 @@
 	</ui-select-choices>
 </ui-select>
 </div>
-
+<code>
+	{{objects}}
+</code>
 <div id="floor-planner-container">
 	<floor-canvas></floor-canvas>
+
+	<div class="edit-box" ng-style="editBoxPosition" ng-click="$event.stopPropagation()">
+		<!-- <button class="btn btn-success">Edit</button> -->
+		<!-- <button class="btn btn-success">Rotate</button> -->
+		<button class="btn btn-success" ng-click="assignEmployee()">Assign Employee</button>
+		<button class="btn btn-danger" ng-click="removeDesk()">Delete</button>
+	</div>
 </div>
