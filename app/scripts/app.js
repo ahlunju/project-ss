@@ -21,10 +21,10 @@ angular
   ])
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/', {
-        templateUrl: 'views/floorplanner.html',
-        controller: 'FloorplannerCtrl'
-      })
+      // .when('/', {
+      //   templateUrl: 'views/floorplanner.html',
+      //   controller: 'FloorplannerCtrl'
+      // })
       .when('/home', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
@@ -38,6 +38,6 @@ angular
         controller: 'FloorplannerCtrl'
       })
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/floor-planner'
       });
   });

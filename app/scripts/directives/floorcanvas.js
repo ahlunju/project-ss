@@ -12,6 +12,7 @@ return {
 	restrict: 'E',
 	link: function postLink(scope, element, attrs) {
 
+		var gridSize = 10;
 		function draw_grid(gridSize) {
 			var w = canvas.width,
 				h = canvas.height;
@@ -48,9 +49,16 @@ return {
 			height: 800
 		});
 
-		
+		// snap to grid
+		canvas.on('object:moving', function(options) {
+			options.target.set({
+				left: Math.round(options.target.left / gridSize) * gridSize,
+				top: Math.round(options.target.top / gridSize) * gridSize
+			});
+		});
+
 		canvas.loadFromJSON(scope.objects);
-		draw_grid(10);
+		draw_grid(gridSize);
 		// var rect = new fabric.Rect({
 		//   left: 100,
 		//   top: 100,
