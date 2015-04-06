@@ -22,8 +22,8 @@ angular
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/floorplan.html',
-        controller: 'FloorplanCtrl'
+        templateUrl: 'views/floorplanner.html',
+        controller: 'FloorplannerCtrl'
       })
       .when('/home', {
         templateUrl: 'views/main.html',
