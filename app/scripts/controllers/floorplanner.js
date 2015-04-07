@@ -55,4 +55,16 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 			"hasControls":true,"hasBorders":true,"hasRotatingPoint":true,"transparentCorners":true,"perPixelTargetFind":false,"rx":0,"ry":0
 		}]
 	};
+
+	$scope.addObject = function () {
+		$scope.$broadcast('addObject');
+	};
+
+	$scope.updateEmployees = function () {
+		console.log('update employees');
+	};
+
+	$scope.editDesks = function () {
+		console.log('edit desks');
+	};
 });
