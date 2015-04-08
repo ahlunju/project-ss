@@ -63,7 +63,8 @@ return {
 			selectionColor: 'rgba(100,200,200, 0.5)',
 			selectionLineWidth: 2,
 			width: 1500,
-			height: 800
+			height: 800,
+			renderOnAddRemove: false //increase performance
 		});
 
 		// snap to grid
@@ -104,7 +105,7 @@ return {
 			pointer = canvas.getPointer(options.e);
 			// getMouse(options);// its not an event its options of your canvas object
 			if (tempObject instanceof fabric.Object) {
-				console.log('set left and top');
+				console.log('update tempObject pos');
 				tempObject.set({
 					left: pointer.x - 64.5,
 					top: pointer.y - 64.5
@@ -114,8 +115,25 @@ return {
 		});
 
 		canvas.on('mouse:down', function (options) {
-			
-		})
+			// console.log(options);
+			if (tempObject instanceof fabric.Object) {
+				console.log(tempObject);
+				
+				var newObject = new fabric.Rect({
+					fill: 'orange',
+					left: tempObject.left,
+					top: tempObject.top,
+					width: 125,
+					height: 125,
+					hasRotatingPoint: true,
+				});
+				
+				canvas.remove(tempObject);
+				tempObject = {};
+				canvas.add(newObject);
+				canvas.renderAll();
+			}
+		});
 
 		canvas.loadFromJSON(scope.objects);
 		draw_grid(gridSize);
