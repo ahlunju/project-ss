@@ -66,5 +66,6 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 
 	$scope.editDesks = function () {
 		console.log('edit desks');
+		$scope.$broadcast('toggleLock');
 	};
 });

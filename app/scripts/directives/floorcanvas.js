@@ -15,12 +15,27 @@ return {
 		var gridSize = 10;
 		var mouseX = 0;
 		var mouseY = 0;
-		var canvasOffset = {};
 		var pointer = {
 			x: 0,
 			y: 0
 		};
 		var tempObject = {};
+		var lock = true;
+		var canvas = {};
+
+		canvas = new fabric.Canvas('floor-canvas', {
+			backgroundColor: 'rgb(255,255,255)',
+			selectionColor: 'rgba(100,200,200, 0.5)',
+			selectionLineWidth: 2,
+			width: 1500,
+			height: 800,
+			renderOnAddRemove: false //increase performance
+		});
+
+		function initializeCanvas() {
+			canvas.loadFromJSON(scope.objects);
+			draw_grid(gridSize);
+		}
 
 		function draw_grid (gridSize) {
 			var w = canvas.width,
@@ -57,16 +72,6 @@ return {
 			console.log(options.e.clientX, options.e.clientY);
 		}
 
-
-		var canvas = new fabric.Canvas('floor-canvas', {
-			backgroundColor: 'rgb(255,255,255)',
-			selectionColor: 'rgba(100,200,200, 0.5)',
-			selectionLineWidth: 2,
-			width: 1500,
-			height: 800,
-			renderOnAddRemove: false //increase performance
-		});
-
 		// snap to grid
 		canvas.on('object:moving', function (options) {
 			options.target.set({
@@ -76,8 +81,7 @@ return {
 		});
 
 		canvas.on("after:render", function (){
-			// var canvasOffset = canvas.calcOffset();
-			// console.log(canvasOffset);
+			
 		});
 
 		// rotation increment of 10 deg
@@ -135,10 +139,6 @@ return {
 			}
 		});
 
-		canvas.loadFromJSON(scope.objects);
-		draw_grid(gridSize);
-		canvasOffset = canvas.calcOffset();
-		console.log(canvasOffset._offset.top);
 		scope.$on('addObject', function () {
 
 			tempObject = new fabric.Rect({
@@ -153,6 +153,13 @@ return {
 			});
 			canvas.add(tempObject);
 		});
+
+		scope.$on('toggleLock', function () {
+			lock = !lock;
+			
+		});
+
+		initializeCanvas()
 	}
 };
 });
