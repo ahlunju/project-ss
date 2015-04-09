@@ -11,7 +11,9 @@ return {
 	template: '<canvas id="floor-canvas"></canvas>',
 	restrict: 'E',
 	link: function postLink (scope, element, attrs) {
-
+		/**controller variable:
+			editBoxPosition
+		**/
 		var gridSize = 10;
 		var mouseX = 0;
 		var mouseY = 0;
@@ -170,6 +172,7 @@ return {
 		});
 
 		function showEditBox (x, y) {
+			//scope variable from controller
 			scope.editBoxPosition.top =  y +'px';
 			scope.editBoxPosition.left = x + 50 + 'px';
 			scope.editBoxPosition.display = 'block';
