@@ -68,4 +68,10 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 		console.log('edit desks');
 		$scope.$broadcast('toggleLock');
 	};
+
+	$scope.editBoxPosition = {
+		top	: '0px',
+		left : '0px',
+		display : 'none'
+	};
 });

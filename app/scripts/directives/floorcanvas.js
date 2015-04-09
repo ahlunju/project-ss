@@ -22,13 +22,15 @@ return {
 		var tempObject = {};
 		var lock = true;
 		var canvas = {};
+		var canvasWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 1000);
+		var canvasHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 1000);
 
 		canvas = new fabric.Canvas('floor-canvas', {
 			backgroundColor: 'rgb(255,255,255)',
 			selectionColor: 'rgba(100,200,200, 0.5)',
 			selectionLineWidth: 2,
-			width: 1500,
-			height: 800,
+			width: canvasWidth,
+			height: canvasHeight,
 			renderOnAddRemove: false //increase performance
 		});
 
@@ -72,6 +74,9 @@ return {
 			console.log(options.e.clientX, options.e.clientY);
 		}
 
+		function getPointerCoords(options) {
+			pointer = canvas.getPointer(options.e);
+		}
 		// snap to grid
 		canvas.on('object:moving', function (options) {
 			options.target.set({
@@ -106,7 +111,7 @@ return {
 		});
 
 		canvas.on('mouse:move', function (options){
-			pointer = canvas.getPointer(options.e);
+			getPointerCoords(options);
 			// getMouse(options);// its not an event its options of your canvas object
 			if (tempObject instanceof fabric.Object) {
 				console.log('update tempObject pos');
@@ -137,6 +142,11 @@ return {
 				canvas.add(newObject);
 				canvas.renderAll();
 			}
+
+			if (options.target) {
+				getPointerCoords(options);
+				showEditBox(pointer.x, pointer.y);
+			}
 		});
 
 		scope.$on('addObject', function () {
@@ -159,7 +169,14 @@ return {
 			
 		});
 
-		initializeCanvas()
+		function showEditBox (x, y) {
+			scope.editBoxPosition.top =  y +'px';
+			scope.editBoxPosition.left = x + 50 + 'px';
+			scope.editBoxPosition.display = 'block';
+			scope.$apply();
+		}
+
+		initializeCanvas();
 	}
 };
 });
