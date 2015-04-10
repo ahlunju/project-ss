@@ -79,13 +79,6 @@ return {
 		function getPointerCoords(options) {
 			pointer = canvas.getPointer(options.e);
 		}
-		// snap to grid
-		canvas.on('object:moving', function (options) {
-			options.target.set({
-				left: Math.round(options.target.left / gridSize) * gridSize,
-				top: Math.round(options.target.top / gridSize) * gridSize
-			});
-		});
 
 		canvas.on("after:render", function (){
 			
@@ -116,8 +109,19 @@ return {
 
 		canvas.on('object:moving', function (movEvtData) {
 			// console.log(movEvtData.target);
+			movEvtData.target.set({
+				left: Math.round(movEvtData.target.left / gridSize) * gridSize,
+				top: Math.round(movEvtData.target.top / gridSize) * gridSize
+			});
+
+			//update edit box position
 			getPointerCoords(movEvtData.target);
 			updateEditBoxPosition(pointer);
+		});
+
+		// snap to grid
+		canvas.on('object:moving', function (options) {
+			
 		});
 
 		canvas.on('mouse:move', function (options){
