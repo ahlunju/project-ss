@@ -26,6 +26,7 @@ return {
 		var canvas = {};
 		var canvasWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 1000);
 		var canvasHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 1000);
+		var selectedObject = {};
 
 		canvas = new fabric.Canvas('floor-canvas', {
 			backgroundColor: 'rgb(255,255,255)',
@@ -108,7 +109,7 @@ return {
 		});
 
 		canvas.on('object:moving', function (movEvtData) {
-			// console.log(movEvtData.target);
+			// snap to grid
 			movEvtData.target.set({
 				left: Math.round(movEvtData.target.left / gridSize) * gridSize,
 				top: Math.round(movEvtData.target.top / gridSize) * gridSize
@@ -119,9 +120,10 @@ return {
 			updateEditBoxPosition(pointer);
 		});
 
-		// snap to grid
-		canvas.on('object:moving', function (options) {
-			
+		canvas.on('object:selected', function (selectData) {
+			console.log('selected');
+			console.log(selectData);
+			selectedObject = selectData.target;
 		});
 
 		canvas.on('mouse:move', function (options){
@@ -179,12 +181,14 @@ return {
 		});
 
 		scope.$on('removeObject', function () {
-			//
+			canvas.remove(selectedObject);
+			canvas.renderAll();
+
+			hideEditBox();
 		});
 
 		scope.$on('toggleLock', function () {
 			lock = !lock;
-			
 		});
 
 		function showEditBox (position) {
@@ -195,11 +199,16 @@ return {
 			scope.$apply();
 		}
 
+		function hideEditBox () {
+			scope.editBoxPosition.display = 'none';
+		}
+
 		function updateEditBoxPosition(position) {
 			scope.editBoxPosition.top =  position.y +'px';
 			scope.editBoxPosition.left = position.x + 100 + 'px';
 			scope.$apply();
 		}
+
 		initializeCanvas();
 	}
 };
