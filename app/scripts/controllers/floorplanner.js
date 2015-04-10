@@ -74,4 +74,10 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 		left : '0px',
 		display : 'none'
 	};
+
+	$scope.removeObject = function () {
+		$scope.$broadcast('removeOject');
+		console.log('remove object');
+	};
+
 });

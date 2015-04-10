@@ -95,6 +95,8 @@ return {
 		var lastClosestAngle = 0,
 		    snapAfterRotate = false;
 
+		/*Object related events*/
+
 		// rotation increment of 10 (round to the nearest 10)
 		canvas.on("object:rotating", function (rotEvtData) {
 			var targetObj = rotEvtData.target;
@@ -110,6 +112,12 @@ return {
 				snapAfterRotate = false;
 				canvas.renderAll();
 			}
+		});
+
+		canvas.on('object:moving', function (movEvtData) {
+			// console.log(movEvtData.target);
+			getPointerCoords(movEvtData.target);
+			updateEditBoxPosition(pointer);
 		});
 
 		canvas.on('mouse:move', function (options){
@@ -147,7 +155,7 @@ return {
 
 			if (options.target) {
 				getPointerCoords(options);
-				showEditBox(pointer.x, pointer.y);
+				showEditBox(pointer);
 			}
 		});
 
@@ -166,19 +174,28 @@ return {
 			canvas.add(tempObject);
 		});
 
+		scope.$on('removeObject', function () {
+			//
+		});
+
 		scope.$on('toggleLock', function () {
 			lock = !lock;
 			
 		});
 
-		function showEditBox (x, y) {
+		function showEditBox (position) {
 			//scope variable from controller
-			scope.editBoxPosition.top =  y +'px';
-			scope.editBoxPosition.left = x + 50 + 'px';
+			scope.editBoxPosition.top =  position.y +'px';
+			scope.editBoxPosition.left = position.x + 100 + 'px';
 			scope.editBoxPosition.display = 'block';
 			scope.$apply();
 		}
 
+		function updateEditBoxPosition(position) {
+			scope.editBoxPosition.top =  position.y +'px';
+			scope.editBoxPosition.left = position.x + 100 + 'px';
+			scope.$apply();
+		}
 		initializeCanvas();
 	}
 };
