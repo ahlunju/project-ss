@@ -6,7 +6,19 @@
 </code> -->
 <div id="floor-map-controls-container">
 	<div class="form-group" id="floor-map-controls">
-		<button class="btn btn-primary" ng-click="addObject()">Add Object</button>
+		<div class="btn-group" dropdown is-open="status.isopen">
+			<button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle ng-disabled="disabled">
+				Button dropdown <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="" ng-click="addObject()">Circle</a></li>
+				<li><a href="">Square</a></li>
+				<li><a href=""></a></li>
+				<li class="divider"></li>
+				<li><a href="">Separated link</a></li>
+			</ul>
+		</div>
+		<!-- <button class="btn btn-primary" ng-click="addObject()">Add Object</button> -->
 		<button class="btn btn-primary" ng-click="updateEmployees()">Save (Not Working)</button>
 		<button class="btn btn-primary" ng-click="editDesks()">Lock/Unlock</button>
 	</div>
