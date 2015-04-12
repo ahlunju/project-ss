@@ -14,6 +14,41 @@ return {
 		/**controller variable:
 			editBoxPosition
 		**/
+
+		// polygon shapes (Tetris)
+		// L-shape
+		var L = [
+			{x: 0, y: 0},
+			{x: 50, y: 0},
+			{x: 50, y: 100},
+			{x: 100, y: 100},
+			{x: 100, y: 150},
+			{x: 0, y: 150}
+		];
+
+		var T = [
+			{x: 50, y: 0},
+			{x: 100, y: 0},
+			{x: 100, y: 50},
+			{x: 150, y: 50},
+			{x: 150, y: 100},
+			{x: 0, y: 100},
+			{x: 0, y: 50},
+			{x: 50, y: 50}
+		];
+
+		var Z = [
+			{x: 0, y: 0},
+			{x: 100, y: 0},
+			{x: 100, y: 50},
+			{x: 150, y: 50},
+			{x: 150, y: 100},
+			{x: 50, y: 100},
+			{x: 50, y: 50},
+			{x: 0, y: 50}
+		];
+
+
 		var gridSize = 10;
 		var mouseX = 0;
 		var mouseY = 0;
@@ -124,17 +159,8 @@ return {
 			});
 		}
 
-		function createLShape(config) {
-			var L = [
-				{x: 0, y: 0},
-				{x: 50, y: 0},
-				{x: 50, y: 100},
-				{x: 100, y: 100},
-				{x: 100, y: 150},
-				{x: 0, y: 150}
-			];
-
-			return new fabric.Polygon(L, {
+		function createPolygon(config, type) {
+			return new fabric.Polygon(type, {
 				fill: config.fill || 'rgba(0,0,0,0.2)',
 				left: config.x,
 				top: config.y,
@@ -261,17 +287,22 @@ return {
 						height: 100,
 						hasRotatingPoint: true,
 					});
-				} else if (newObjectType.type === 'Lshape') {
-					var L = [
-						{x: 0, y: 0},
-						{x: 50, y: 0},
-						{x: 50, y: 100},
-						{x: 100, y: 100},
-						{x: 100, y: 150},
-						{x: 0, y: 150}
-					];
-
+				} else if (newObjectType.type === 'L-shape') {
 					var newObject = new fabric.Polygon(L, {
+						fill: 'orange',
+						left: tempObject.left,
+						top: tempObject.top,
+						hasRotatingPoint: true,
+					});
+				} else if (newObjectType.type === 'T-shape') {
+					var newObject = new fabric.Polygon(T, {
+						fill: 'orange',
+						left: tempObject.left,
+						top: tempObject.top,
+						hasRotatingPoint: true,
+					});
+				} else if (newObjectType.type === 'Z-shape') {
+					var newObject = new fabric.Polygon(Z, {
 						fill: 'orange',
 						left: tempObject.left,
 						top: tempObject.top,
@@ -305,8 +336,12 @@ return {
 				tempObject = createCircle({x: pointer.x, y: pointer.y});
 			} else if (newObjectType.type === 'triangle') {
 				tempObject = createTriangle({x:pointer.x, y:pointer.y});
-			} else if (newObjectType.type === 'Lshape') {
-				tempObject = createLShape({x:pointer.x, y:pointer.y});
+			} else if (newObjectType.type === 'T-shape') {
+				tempObject = createPolygon({x:pointer.x, y:pointer.y}, T);
+			} else if (newObjectType.type === 'L-shape') {
+				tempObject = createPolygon({x:pointer.x, y:pointer.y}, L);
+			} else if (newObjectType.type === 'Z-shape') {
+				tempObject = createPolygon({x:pointer.x, y:pointer.y}, Z);
 			}
 			
 			canvas.add(tempObject);
