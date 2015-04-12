@@ -56,8 +56,8 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 		}]
 	};
 
-	$scope.addObject = function () {
-		$scope.$broadcast('addObject');
+	$scope.addObject = function (objectType) {
+		$scope.$broadcast('addObject', {type: objectType});
 	};
 
 	$scope.updateEmployees = function () {

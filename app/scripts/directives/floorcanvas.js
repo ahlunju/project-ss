@@ -27,7 +27,7 @@ return {
 		var canvasWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 1000);
 		var canvasHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 1000);
 		var selectedObject = {};
-
+		var newObjectType = {};
 		canvas = new fabric.Canvas('floor-canvas', {
 			backgroundColor: 'rgb(255,255,255)',
 			selectionColor: 'rgba(100,200,200, 0.5)',
@@ -144,14 +144,37 @@ return {
 			if (tempObject instanceof fabric.Object) {
 				console.log(tempObject);
 				
-				var newObject = new fabric.Rect({
-					fill: 'orange',
-					left: tempObject.left,
-					top: tempObject.top,
-					width: 125,
-					height: 125,
-					hasRotatingPoint: true,
-				});
+				if (newObjectType.type === 'square') {
+					var newObject = new fabric.Rect({
+						fill: 'orange',
+						left: tempObject.left,
+						top: tempObject.top,
+						width: 125,
+						height: 125,
+						hasRotatingPoint: true,
+					});
+				} else if (newObjectType.type === 'circle') {
+					var newObject = new fabric.Circle({
+						fill: 'orange',
+						left: tempObject.left,
+						top: tempObject.top,
+						// width: 125,
+						// height: 125,
+						radius: 60,
+						hasRotatingPoint: true,
+					});
+				} else if (newObjectType.type === 'triangle') {
+					var newObject = new fabric.Triangle({
+						fill: 'orange',
+						left: tempObject.left,
+						top: tempObject.top,
+						angle: 60,
+						width: 125,
+						height: 125,
+						hasRotatingPoint: true,
+					});
+				}
+				
 				
 				canvas.remove(tempObject);
 				tempObject = {};
@@ -165,18 +188,49 @@ return {
 			}
 		});
 
-		scope.$on('addObject', function () {
-
-			tempObject = new fabric.Rect({
-				fill: 'rgba(0,0,0,0.2)',
-				left: pointer.x - 64.5,
-				top: pointer.y - 64.5,
-				width: 125,
-				height: 125,
-				stroke: 'blue',
-				hasRotatingPoint:false,
-				strokeDashArray: [5, 5]
-			});
+		scope.$on('addObject', function (event, args) {
+			newObjectType = args;
+			console.log(newObjectType);
+			if (!newObjectType.type) {
+				return false;
+			}
+			if (newObjectType.type === 'square') {
+				tempObject = new fabric.Rect({
+					fill: 'rgba(0,0,0,0.2)',
+					left: pointer.x - 64.5,
+					top: pointer.y - 64.5,
+					width: 125,
+					height: 125,
+					stroke: 'blue',
+					hasRotatingPoint:false,
+					strokeDashArray: [5, 5]
+				});
+			} else if (newObjectType.type === 'circle') {
+				tempObject = new fabric.Circle({
+					fill: 'rgba(0,0,0,0.2)',
+					left: pointer.x - 25,
+					top: pointer.y - 25,
+					// width: 125,
+					// height: 125,
+					radius: 50,
+					stroke: 'blue',
+					hasRotatingPoint:false,
+					strokeDashArray: [5, 5]
+				});
+			} else if (newObjectType.type === 'triangle') {
+				tempObject = new fabric.Triangle({
+					fill: 'rgba(0,0,0,0.2)',
+					left: tempObject.left,
+					top: tempObject.top,
+					angle: 60,
+					width: 125,
+					height: 125,
+					stroke: 'blue',
+					hasRotatingPoint:false,
+					strokeDashArray: [5, 5]
+				});
+			}
+			
 			canvas.add(tempObject);
 		});
 
@@ -207,6 +261,18 @@ return {
 			scope.editBoxPosition.top =  position.y +'px';
 			scope.editBoxPosition.left = position.x + 100 + 'px';
 			scope.$apply();
+		}
+
+		function createSquare(config) {
+
+		}
+
+		function createCircle(config) {
+
+		}
+
+		function createTriangle(config) {
+
 		}
 
 		initializeCanvas();

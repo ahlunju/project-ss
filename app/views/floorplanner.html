@@ -8,14 +8,14 @@
 	<div class="form-group" id="floor-map-controls">
 		<div class="btn-group" dropdown is-open="status.isopen">
 			<button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle ng-disabled="disabled">
-				Button dropdown <span class="caret"></span>
+				Add <span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu" role="menu">
-				<li><a href="" ng-click="addObject()">Circle</a></li>
-				<li><a href="">Square</a></li>
-				<li><a href=""></a></li>
+				<li><a href="" ng-click="addObject('circle')">Circle</a></li>
+				<li><a href="" ng-click="addObject('square')">Square</a></li>
+				<li><a href="" ng-click="addObject('triangle')">Triangle</a></li>
 				<li class="divider"></li>
-				<li><a href="">Separated link</a></li>
+				<li><a href="addObject('custom')">Custom</a></li>
 			</ul>
 		</div>
 		<!-- <button class="btn btn-primary" ng-click="addObject()">Add Object</button> -->
