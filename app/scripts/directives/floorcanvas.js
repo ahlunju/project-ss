@@ -132,8 +132,8 @@ return {
 			if (tempObject instanceof fabric.Object) {
 				console.log('update tempObject pos');
 				tempObject.set({
-					left: pointer.x - 64.5,
-					top: pointer.y - 64.5
+					left: pointer.x - 50,
+					top: pointer.y - 50
 				});
 				canvas.renderAll();
 			}
@@ -149,8 +149,8 @@ return {
 						fill: 'orange',
 						left: tempObject.left,
 						top: tempObject.top,
-						width: 125,
-						height: 125,
+						width: 100,
+						height: 100,
 						hasRotatingPoint: true,
 					});
 				} else if (newObjectType.type === 'circle') {
@@ -160,7 +160,7 @@ return {
 						top: tempObject.top,
 						// width: 125,
 						// height: 125,
-						radius: 60,
+						radius: 50,
 						hasRotatingPoint: true,
 					});
 				} else if (newObjectType.type === 'triangle') {
@@ -168,9 +168,8 @@ return {
 						fill: 'orange',
 						left: tempObject.left,
 						top: tempObject.top,
-						angle: 60,
-						width: 125,
-						height: 125,
+						width: 100,
+						height: 100,
 						hasRotatingPoint: true,
 					});
 				}
@@ -195,40 +194,11 @@ return {
 				return false;
 			}
 			if (newObjectType.type === 'square') {
-				tempObject = new fabric.Rect({
-					fill: 'rgba(0,0,0,0.2)',
-					left: pointer.x - 64.5,
-					top: pointer.y - 64.5,
-					width: 125,
-					height: 125,
-					stroke: 'blue',
-					hasRotatingPoint:false,
-					strokeDashArray: [5, 5]
-				});
+				tempObject = createSquare({x:pointer.x, y: pointer.y});
 			} else if (newObjectType.type === 'circle') {
-				tempObject = new fabric.Circle({
-					fill: 'rgba(0,0,0,0.2)',
-					left: pointer.x - 25,
-					top: pointer.y - 25,
-					// width: 125,
-					// height: 125,
-					radius: 50,
-					stroke: 'blue',
-					hasRotatingPoint:false,
-					strokeDashArray: [5, 5]
-				});
+				tempObject = createCircle({x: pointer.x, y: pointer.y});
 			} else if (newObjectType.type === 'triangle') {
-				tempObject = new fabric.Triangle({
-					fill: 'rgba(0,0,0,0.2)',
-					left: tempObject.left,
-					top: tempObject.top,
-					angle: 60,
-					width: 125,
-					height: 125,
-					stroke: 'blue',
-					hasRotatingPoint:false,
-					strokeDashArray: [5, 5]
-				});
+				tempObject = createTriangle({x:pointer.x, y:pointer.y});
 			}
 			
 			canvas.add(tempObject);
@@ -264,15 +234,43 @@ return {
 		}
 
 		function createSquare(config) {
-
+			return new fabric.Rect({
+				fill: 'rgba(0,0,0,0.2)',
+				left: config.x - 50,
+				top: config.y - 50,
+				width: 100,
+				height: 100,
+				stroke: 'blue',
+				hasRotatingPoint:false,
+				strokeDashArray: [5, 5]
+			});
 		}
 
 		function createCircle(config) {
-
+			return new fabric.Circle({
+				fill: 'rgba(0,0,0,0.2)',
+				left: config.x,
+				top: config.y,
+				// width: 125,
+				// height: 125,
+				radius: 50,
+				stroke: 'blue',
+				hasRotatingPoint:false,
+				strokeDashArray: [5, 5]
+			});
 		}
 
 		function createTriangle(config) {
-
+			return new fabric.Triangle({
+				fill: 'rgba(0,0,0,0.2)',
+				left: config.x,
+				top: config.y,
+				width: 100,
+				height: 100,
+				stroke: 'blue',
+				hasRotatingPoint:false,
+				strokeDashArray: [5, 5]
+			});
 		}
 
 		initializeCanvas();
