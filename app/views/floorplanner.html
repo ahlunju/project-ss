@@ -11,11 +11,12 @@
 				Add <span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu" role="menu">
-				<li><a href="" ng-click="addObject('circle')">Circle</a></li>
+				<li><a href="" ng-click="addObject('rectangle')">Rectangle</a></li>
 				<li><a href="" ng-click="addObject('square')">Square</a></li>
+				<li><a href="" ng-click="addObject('circle')">Circle</a></li>
 				<li><a href="" ng-click="addObject('triangle')">Triangle</a></li>
 				<li class="divider"></li>
-				<li><a href="addObject('custom')">Custom</a></li>
+				<li><a href="" ng-click="addObject('Lshape')">L Shape</a></li>
 			</ul>
 		</div>
 		<!-- <button class="btn btn-primary" ng-click="addObject()">Add Object</button> -->
@@ -34,7 +35,9 @@
 				<small>desk id: <span ng-bind-html="employee.deskID | highlight: $select.search"></span></small>
 			</ui-select-choices>
 		</ui-select>
-		<button class="btn btn-success" ng-click="assignEmployee()">Assign Employee</button>
-		<button class="btn btn-danger" ng-click="removeObject()">Delete</button>
+		<div class="margin-top-0">
+			<button class="btn btn-success" ng-click="assignEmployee()">Assign Employee</button>
+			<button class="btn btn-danger" ng-click="removeObject()">Delete</button>
+		</div>
 	</div>
 </div>

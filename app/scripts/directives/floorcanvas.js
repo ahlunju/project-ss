@@ -28,6 +28,7 @@ return {
 		var canvasHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 1000);
 		var selectedObject = {};
 		var newObjectType = {};
+
 		canvas = new fabric.Canvas('floor-canvas', {
 			backgroundColor: 'rgb(255,255,255)',
 			selectionColor: 'rgba(100,200,200, 0.5)',
@@ -70,6 +71,79 @@ return {
 			}
 		}
 		
+		function createRect(config) {
+			return new fabric.Rect({
+				fill: config.fill || 'rgba(0,0,0,0.2)',
+				left: config.x - 50,
+				top: config.y - 25,
+				width: 100,
+				height: 50,
+				stroke: 'blue',
+				hasRotatingPoint:false,
+				strokeDashArray: [5, 5]
+			});
+		}
+
+		function createSquare(config) {
+			return new fabric.Rect({
+				fill: config.fill || 'rgba(0,0,0,0.2)',
+				left: config.x - 50,
+				top: config.y - 50,
+				width: 100,
+				height: 100,
+				stroke: 'blue',
+				hasRotatingPoint:false,
+				strokeDashArray: [5, 5]
+			});
+		}
+
+		function createCircle(config) {
+			return new fabric.Circle({
+				fill: config.fill || 'rgba(0,0,0,0.2)',
+				left: config.x,
+				top: config.y,
+				// width: 100,
+				// height: 100,
+				radius: 50,
+				stroke: 'blue',
+				hasRotatingPoint:false,
+				strokeDashArray: [5, 5]
+			});
+		}
+
+		function createTriangle(config) {
+			return new fabric.Triangle({
+				fill: config.fill || 'rgba(0,0,0,0.2)',
+				left: config.x,
+				top: config.y,
+				width: 100,
+				height: 100,
+				stroke: 'blue',
+				hasRotatingPoint:false,
+				strokeDashArray: [5, 5]
+			});
+		}
+
+		function createLShape(config) {
+			var L = [
+				{x: 0, y: 0},
+				{x: 50, y: 0},
+				{x: 50, y: 100},
+				{x: 100, y: 100},
+				{x: 100, y: 150},
+				{x: 0, y: 150}
+			];
+
+			return new fabric.Polygon(L, {
+				fill: config.fill || 'rgba(0,0,0,0.2)',
+				left: config.x,
+				top: config.y,
+				stroke: 'blue',
+				hasRotatingPoint:false,
+				strokeDashArray: [5, 5]
+			});
+		}
+
 		function getMouse (options) {
 			//console.log(options);// you can check all options here
 			mouseX = options.e.clientX;
@@ -87,7 +161,7 @@ return {
 
 		// rotation increment of 10 deg
 		var lastClosestAngle = 0,
-		    snapAfterRotate = false;
+			snapAfterRotate = false;
 
 		/*Object related events*/
 
@@ -131,10 +205,17 @@ return {
 			// getMouse(options);// its not an event its options of your canvas object
 			if (tempObject instanceof fabric.Object) {
 				console.log('update tempObject pos');
-				tempObject.set({
-					left: pointer.x - 50,
-					top: pointer.y - 50
-				});
+				if (newObjectType.type === 'rectangle') {
+					tempObject.set({
+						left: pointer.x - 50,
+						top: pointer.y - 25
+					});
+				} else {
+					tempObject.set({
+						left: pointer.x - 50,
+						top: pointer.y - 50
+					});
+				}
 				canvas.renderAll();
 			}
 		});
@@ -143,8 +224,16 @@ return {
 			// console.log(options);
 			if (tempObject instanceof fabric.Object) {
 				console.log(tempObject);
-				
-				if (newObjectType.type === 'square') {
+				if (newObjectType.type === 'rectangle') {
+					var newObject = new fabric.Rect({
+						fill: 'orange',
+						left: tempObject.left,
+						top: tempObject.top,
+						width: 100,
+						height: 50,
+						hasRotatingPoint: true,
+					});
+				} else if (newObjectType.type === 'square') {
 					var newObject = new fabric.Rect({
 						fill: 'orange',
 						left: tempObject.left,
@@ -172,8 +261,23 @@ return {
 						height: 100,
 						hasRotatingPoint: true,
 					});
+				} else if (newObjectType.type === 'Lshape') {
+					var L = [
+						{x: 0, y: 0},
+						{x: 50, y: 0},
+						{x: 50, y: 100},
+						{x: 100, y: 100},
+						{x: 100, y: 150},
+						{x: 0, y: 150}
+					];
+
+					var newObject = new fabric.Polygon(L, {
+						fill: 'orange',
+						left: tempObject.left,
+						top: tempObject.top,
+						hasRotatingPoint: true,
+					});
 				}
-				
 				
 				canvas.remove(tempObject);
 				tempObject = {};
@@ -189,16 +293,20 @@ return {
 
 		scope.$on('addObject', function (event, args) {
 			newObjectType = args;
-			console.log(newObjectType);
+			hideEditBox();
 			if (!newObjectType.type) {
 				return false;
 			}
-			if (newObjectType.type === 'square') {
+			if (newObjectType.type === 'rectangle') {
+				tempObject = createRect({x:pointer.x, y: pointer.y});
+			} else if (newObjectType.type === 'square') {
 				tempObject = createSquare({x:pointer.x, y: pointer.y});
 			} else if (newObjectType.type === 'circle') {
 				tempObject = createCircle({x: pointer.x, y: pointer.y});
 			} else if (newObjectType.type === 'triangle') {
 				tempObject = createTriangle({x:pointer.x, y:pointer.y});
+			} else if (newObjectType.type === 'Lshape') {
+				tempObject = createLShape({x:pointer.x, y:pointer.y});
 			}
 			
 			canvas.add(tempObject);
@@ -231,46 +339,6 @@ return {
 			scope.editBoxPosition.top =  position.y +'px';
 			scope.editBoxPosition.left = position.x + 100 + 'px';
 			scope.$apply();
-		}
-
-		function createSquare(config) {
-			return new fabric.Rect({
-				fill: 'rgba(0,0,0,0.2)',
-				left: config.x - 50,
-				top: config.y - 50,
-				width: 100,
-				height: 100,
-				stroke: 'blue',
-				hasRotatingPoint:false,
-				strokeDashArray: [5, 5]
-			});
-		}
-
-		function createCircle(config) {
-			return new fabric.Circle({
-				fill: 'rgba(0,0,0,0.2)',
-				left: config.x,
-				top: config.y,
-				// width: 125,
-				// height: 125,
-				radius: 50,
-				stroke: 'blue',
-				hasRotatingPoint:false,
-				strokeDashArray: [5, 5]
-			});
-		}
-
-		function createTriangle(config) {
-			return new fabric.Triangle({
-				fill: 'rgba(0,0,0,0.2)',
-				left: config.x,
-				top: config.y,
-				width: 100,
-				height: 100,
-				stroke: 'blue',
-				hasRotatingPoint:false,
-				strokeDashArray: [5, 5]
-			});
 		}
 
 		initializeCanvas();
