@@ -365,8 +365,13 @@ return {
 			group.forEach(function (item) {
 				canvas.remove(item);
 			});
-			var allObjects = JSON.stringify(canvas);
-			console.dir(allObjects);
+
+			var canvasObject = canvas.toObject();
+			console.dir(canvasObject.objects);
+
+			// var allObjects = JSON.stringify(canvas);
+			// console.dir(allObjects);
+
 			// add grid lines back to canvas
 			group.forEach(function(item) {
 				canvas.add(item);
