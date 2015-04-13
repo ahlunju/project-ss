@@ -199,6 +199,7 @@ return {
 
 		function hideEditBox () {
 			scope.editBoxPosition.display = 'none';
+			// scope.$apply();
 		}
 
 		function updateEditBoxPosition(position) {
@@ -282,7 +283,7 @@ return {
 		}
 
 		function onMouseDown (options) {
-			console.log(options);
+			console.log('mouse down');
 			if (tempObject instanceof fabric.Object) {
 				if (newObjectType.type === 'rectangle') {
 					var newObject = new fabric.Rect({
@@ -325,12 +326,17 @@ return {
 			if (options.target) {
 				getPointerCoords(options);
 				showEditBox(pointer);
+			} else {
+				console.log('nothing is being clicked');
+				hideEditBox();
+				scope.$apply();
 			}
 		}
 
 		function addObject (event, args) {
-			newObjectType = args;
 			hideEditBox();
+			newObjectType = args;
+			
 			if (!newObjectType.type) {
 				return false;
 			}
