@@ -64,6 +64,9 @@ return {
 		var canvasHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 1000);
 		var selectedObject = {};
 		var newObjectType = {};
+		
+		var lastClosestAngle = 0; // rotation increment of 10 deg
+		var snapAfterRotate = false;
 
 		canvas = new fabric.Canvas('floor-canvas', {
 			backgroundColor: 'rgb(255,255,255)',
@@ -206,12 +209,6 @@ return {
 
 		function onObjectScaling (event) {
 			
-			var object = event.target;
-			console.log(object.getWidth(), object.getHeight());
-			object.set({
-				width: (object.width /gridSize) * gridSize,
-				height: (object.height /gridSize) * gridSize
-			})
 		}
 
 		function onObjectRotating (event) {
@@ -233,15 +230,31 @@ return {
 			updateEditBoxPosition(pointer);
 		}
 
-		function onObjectModified (modEvtData) {
+		function snapWidthAndHeight(options) {
+			// round width/height to nearest 10
+			// new width/height = old width/height * scaleX/scaleY and then round them
+			// then reset scaleX/scaleY to 1
+			var roundedWidth = Math.round(options.target.width * options.target.scaleX /gridSize) * gridSize;
+			var roundedHeight = Math.round(options.target.height * options.target.scaleY /gridSize) * gridSize;
+			options.target.set({
+				width: roundedWidth,
+				height: roundedHeight,
+				scaleX: 1,
+				scaleY: 1
+			});
+		}
+
+		function onObjectModified (options) {
 			console.log('object modified');
 			// modified fires after object has been rotated
-			var modifiedObj = modEvtData.target;
-			if (modifiedObj.angle && snapAfterRotate) {
-				modifiedObj.setAngle(lastClosestAngle).setCoords();
+
+			if (options.target.angle && snapAfterRotate) {
+				options.target.setAngle(lastClosestAngle).setCoords();
 				snapAfterRotate = false;
-				canvas.renderAll();
+				// canvas.renderAll();
 			}
+			snapWidthAndHeight(options);
+			canvas.renderAll();
 		}
 
 		function onObjectSelected (options) {
@@ -361,18 +374,14 @@ return {
 			});
 		}
 
-		canvas.on("after:render", function (){
-			
+		canvas.on('after:render', function (options){
+			// console.log('after render');
 		});
 
-		// rotation increment of 10 deg
-		var lastClosestAngle = 0,
-			snapAfterRotate = false;
-
 		/*Object related events*/
-		canvas.on("object:rotating", onObjectRotating);
+		canvas.on('object:rotating', onObjectRotating);
 
-		canvas.on("object:modified", onObjectModified);
+		canvas.on('object:modified', onObjectModified);
 
 		canvas.on('object:moving', onObjectMoving);
 
