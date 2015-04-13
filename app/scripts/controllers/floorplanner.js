@@ -71,7 +71,7 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 
 	$scope.editBoxPosition = {
 		top	: '0px',
-		left : '0px',
+		// left : '0px',
 		display : 'none'
 	};
 

@@ -51,7 +51,7 @@ return {
 		var shadow = {
 			color: 'rgba(0,0,0,0.6)',
 			blur: 20,
-			offsetX: 10,
+			offsetX: 0,
 			offsetY: 10,
 			opacity: 0.6,
 			fillShadow: true,
@@ -201,10 +201,12 @@ return {
 
 		function showEditBox (position) {
 			//scope variable from controller
-			scope.editBoxPosition.top =  position.y +'px';
-			scope.editBoxPosition.left = position.x + 100 + 'px';
+			// scope.editBoxPosition.top =  position.y +'px';
+			// scope.editBoxPosition.left = position.x + 100 + 'px';
 			scope.editBoxPosition.display = 'block';
 			scope.$apply();
+
+
 		}
 
 		function hideEditBox () {
@@ -213,9 +215,9 @@ return {
 		}
 
 		function updateEditBoxPosition(position) {
-			scope.editBoxPosition.top =  position.y +'px';
-			scope.editBoxPosition.left = position.x + 100 + 'px';
-			scope.$apply();
+			// scope.editBoxPosition.top =  position.y +'px';
+			// scope.editBoxPosition.left = position.x + 100 + 'px';
+			// scope.$apply();
 		}
 
 		function onObjectScaling (event) {

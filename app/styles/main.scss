@@ -124,7 +124,7 @@ body {
   width: 100%;
 }
 .edit-box {
-  position: absolute;
+  // position: absolute;
   width: 230px;
   padding: 10px;
   border: 1px solid #aaa;
@@ -132,6 +132,9 @@ body {
   background: #eee;
   box-shadow: 0px 5px 25px 0px #666;
   z-index: 1;
+
+  position: fixed;
+  right: 0;
 }
 
 .dashed{
