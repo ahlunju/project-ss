@@ -18,7 +18,8 @@ angular
     'ngTouch',
     'ui.router',//not using at the moment
     'ui.select',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'colorpicker.module'
   ])
   .config(function ($routeProvider) {
     $routeProvider

@@ -4,6 +4,12 @@
 <!-- <code>
 	{{objects}}
 </code> -->
+<div class="debug">
+	<code>
+		{{selectedObject.attr}}
+	</code>
+</div>
+
 <div id="floor-map-controls-container">
 	<div class="form-group" id="floor-map-controls">
 		<div class="btn-group" dropdown is-open="status.isopen">
@@ -19,6 +25,8 @@
 				<li><a href="" ng-click="addObject('L-shape')">L Shape</a></li>
 				<li><a href="" ng-click="addObject('T-shape')">T Shape</a></li>
 				<li><a href="" ng-click="addObject('Z-shape')">Z Shape</a></li>
+				<li class="divider"></li>
+				<li><a href="" ng-click="addObject('room')">Room</a></li>
 			</ul>
 		</div>
 		<!-- <button class="btn btn-primary" ng-click="addObject()">Add Object</button> -->
@@ -39,8 +47,12 @@
 			</ui-select-choices>
 		</ui-select>
 		<div class="margin-top-0">
-			<button class="btn btn-success" ng-click="assignEmployee()">Assign Employee</button>
-			<button class="btn btn-danger" ng-click="removeObject()">Delete</button>
+			width: <input type="number" step="10" min="10" ng-model="selectedObject.attr.width">
+			height: <input type="number" step="10" min="10" ng-model="selectedObject.attr.height">
+			<button class="btn btn-success" colorpicker type="button" colorpicker-position="right" ng-model="selectedObject.attr.fill">Change Color</button><br>
+			<button class="btn btn-success" ng-click="selectedObject.updateAttr()">Update</button><br>
+			<button class="btn btn-success" ng-click="selectedObject.assignEmployee()">Assign Employee</button><br>
+			<button class="btn btn-danger" ng-click="removeObject()">Delete</button><br>
 		</div>
 	</div>
 </div>

@@ -48,6 +48,16 @@ return {
 			{x: 0, y: 50}
 		];
 
+		var shadow = {
+			color: 'rgba(0,0,0,0.6)',
+			blur: 20,
+			offsetX: 10,
+			offsetY: 10,
+			opacity: 0.6,
+			fillShadow: true,
+			strokeShadow: true
+		};
+
 		var group = [];
 		var gridSize = 10;
 		var gridGroup = null;
@@ -255,11 +265,16 @@ return {
 				// canvas.renderAll();
 			}
 			snapWidthAndHeight(options);
+			options.target.setShadow({});
 			canvas.renderAll();
 		}
 
 		function onObjectSelected (options) {
+
 			options.target.bringToFront();
+			//store selected Object
+			selectedObject = options.target;
+			scope.selectedObject.attr = options.target;
 		}
 
 		function onMouseMove (options){
@@ -282,8 +297,14 @@ return {
 			}
 		}
 
+		function onMouseUp (options) {
+			// options.target.setShadow({});
+			// canvas.renderAll();
+		}
+
 		function onMouseDown (options) {
 			console.log('mouse down');
+
 			if (tempObject instanceof fabric.Object) {
 				if (newObjectType.type === 'rectangle') {
 					var newObject = new fabric.Rect({
@@ -310,8 +331,10 @@ return {
 					var newObject = new fabric.Polygon(T, {});
 				} else if (newObjectType.type === 'Z-shape') {
 					var newObject = new fabric.Polygon(Z, {});
+				} else if (newObjectType.type === 'room') {
+					// var newObject = new fabric.
 				}
-				newObject.fill = 'orange';
+				newObject.fill = '#bada55';
 				newObject.left = tempObject.left;
 				newObject.top = tempObject.top;
 				newObject.hasRotatingPoint = true;
@@ -324,8 +347,10 @@ return {
 			}
 
 			if (options.target) {
+				options.target.setShadow(shadow);
 				getPointerCoords(options);
 				showEditBox(pointer);
+				canvas.renderAll();
 			} else {
 				console.log('nothing is being clicked');
 				hideEditBox();
@@ -360,6 +385,9 @@ return {
 		}
 
 		function removeObject () {
+			console.log(selectedObject);
+
+			scope.selectedObject.attr = {};
 			canvas.remove(selectedObject);
 			canvas.renderAll();
 
@@ -404,12 +432,19 @@ return {
 
 		canvas.on('mouse:down', onMouseDown);
 
+		canvas.on('mouse:up', onMouseUp);
+
 		scope.$on('addObject', addObject);
 
 		scope.$on('removeObject', removeObject);
 
 		scope.$on('toggleLock', function () {
 			lock = !lock;
+		});
+
+		scope.$on('re-render', function () {
+			console.log('re-render canvas');
+			canvas.renderAll();
 		});
 
 		scope.$on('serializeCanvas', serializeCanvas);
