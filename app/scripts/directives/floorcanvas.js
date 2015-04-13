@@ -244,10 +244,8 @@ return {
 			}
 		}
 
-		function onObjectSelected (selectData) {
-			console.log('selected');
-			console.log(selectData);
-			selectedObject = selectData.target;
+		function onObjectSelected (options) {
+			options.target.bringToFront();
 		}
 
 		function onMouseMove (options){
@@ -356,6 +354,11 @@ return {
 			});
 			var allObjects = JSON.stringify(canvas);
 			console.dir(allObjects);
+			// add grid lines back to canvas
+			group.forEach(function(item) {
+				canvas.add(item);
+				item.sendToBack();
+			});
 		}
 
 		canvas.on("after:render", function (){
