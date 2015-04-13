@@ -48,8 +48,9 @@ return {
 			{x: 0, y: 50}
 		];
 
-
+		var group = [];
 		var gridSize = 10;
+		var gridGroup = null;
 		var mouseX = 0;
 		var mouseY = 0;
 		var pointer = {
@@ -75,10 +76,10 @@ return {
 
 		function initializeCanvas() {
 			canvas.loadFromJSON(scope.objects);
-			draw_grid(gridSize);
+			drawGrid(gridSize);
 		}
 
-		function draw_grid (gridSize) {
+		function drawGrid (gridSize) {
 			var w = canvas.width,
 				h = canvas.height;
 			/**
@@ -98,6 +99,10 @@ return {
 					strokeWidth: 0.2,
 					selectable:false
 				});
+
+				group.push(horizontalLine);
+				group.push(verticalLine);
+
 				canvas.add(horizontalLine);
 				horizontalLine.sendToBack();
 				// draw vertical lines
@@ -181,24 +186,55 @@ return {
 			pointer = canvas.getPointer(options.e);
 		}
 
-		canvas.on("after:render", function (){
+		function showEditBox (position) {
+			//scope variable from controller
+			scope.editBoxPosition.top =  position.y +'px';
+			scope.editBoxPosition.left = position.x + 100 + 'px';
+			scope.editBoxPosition.display = 'block';
+			scope.$apply();
+		}
+
+		function hideEditBox () {
+			scope.editBoxPosition.display = 'none';
+		}
+
+		function updateEditBoxPosition(position) {
+			scope.editBoxPosition.top =  position.y +'px';
+			scope.editBoxPosition.left = position.x + 100 + 'px';
+			scope.$apply();
+		}
+
+		function onObjectScaling (event) {
 			
-		});
+			var object = event.target;
+			console.log(object.getWidth(), object.getHeight());
+			object.set({
+				width: (object.width /gridSize) * gridSize,
+				height: (object.height /gridSize) * gridSize
+			})
+		}
 
-		// rotation increment of 10 deg
-		var lastClosestAngle = 0,
-			snapAfterRotate = false;
-
-		/*Object related events*/
-
-		// rotation increment of 10 (round to the nearest 10)
-		canvas.on("object:rotating", function (rotEvtData) {
-			var targetObj = rotEvtData.target;
+		function onObjectRotating (event) {
+			// rotation increment of 10 (round to the nearest 10)
+			var targetObj = event.target;
 			lastClosestAngle = Math.round(targetObj.angle / 10) * 10;
 			snapAfterRotate = true;
-		});
+		}
 
-		canvas.on("object:modified", function (modEvtData) {
+		function onObjectMoving (event) {
+			// snap to grid
+			event.target.set({
+				left: Math.round(event.target.left / gridSize) * gridSize,
+				top: Math.round(event.target.top / gridSize) * gridSize
+			});
+
+			//update edit box position
+			getPointerCoords(event.target);
+			updateEditBoxPosition(pointer);
+		}
+
+		function onObjectModified (modEvtData) {
+			console.log('object modified');
 			// modified fires after object has been rotated
 			var modifiedObj = modEvtData.target;
 			if (modifiedObj.angle && snapAfterRotate) {
@@ -206,31 +242,19 @@ return {
 				snapAfterRotate = false;
 				canvas.renderAll();
 			}
-		});
+		}
 
-		canvas.on('object:moving', function (movEvtData) {
-			// snap to grid
-			movEvtData.target.set({
-				left: Math.round(movEvtData.target.left / gridSize) * gridSize,
-				top: Math.round(movEvtData.target.top / gridSize) * gridSize
-			});
-
-			//update edit box position
-			getPointerCoords(movEvtData.target);
-			updateEditBoxPosition(pointer);
-		});
-
-		canvas.on('object:selected', function (selectData) {
+		function onObjectSelected (selectData) {
 			console.log('selected');
 			console.log(selectData);
 			selectedObject = selectData.target;
-		});
+		}
 
-		canvas.on('mouse:move', function (options){
+		function onMouseMove (options){
 			getPointerCoords(options);
 			// getMouse(options);// its not an event its options of your canvas object
 			if (tempObject instanceof fabric.Object) {
-				console.log('update tempObject pos');
+				
 				if (newObjectType.type === 'rectangle') {
 					tempObject.set({
 						left: pointer.x - 50,
@@ -244,72 +268,43 @@ return {
 				}
 				canvas.renderAll();
 			}
-		});
+		}
 
-		canvas.on('mouse:down', function (options) {
-			// console.log(options);
+		function onMouseDown (options) {
+			console.log(options);
 			if (tempObject instanceof fabric.Object) {
-				console.log(tempObject);
 				if (newObjectType.type === 'rectangle') {
 					var newObject = new fabric.Rect({
-						fill: 'orange',
-						left: tempObject.left,
-						top: tempObject.top,
 						width: 100,
-						height: 50,
-						hasRotatingPoint: true,
+						height: 50
 					});
 				} else if (newObjectType.type === 'square') {
 					var newObject = new fabric.Rect({
-						fill: 'orange',
-						left: tempObject.left,
-						top: tempObject.top,
 						width: 100,
-						height: 100,
-						hasRotatingPoint: true,
+						height: 100
 					});
 				} else if (newObjectType.type === 'circle') {
 					var newObject = new fabric.Circle({
-						fill: 'orange',
-						left: tempObject.left,
-						top: tempObject.top,
-						// width: 125,
-						// height: 125,
-						radius: 50,
-						hasRotatingPoint: true,
+						radius: 50
 					});
 				} else if (newObjectType.type === 'triangle') {
 					var newObject = new fabric.Triangle({
-						fill: 'orange',
-						left: tempObject.left,
-						top: tempObject.top,
 						width: 100,
-						height: 100,
-						hasRotatingPoint: true,
+						height: 100
 					});
 				} else if (newObjectType.type === 'L-shape') {
-					var newObject = new fabric.Polygon(L, {
-						fill: 'orange',
-						left: tempObject.left,
-						top: tempObject.top,
-						hasRotatingPoint: true,
-					});
+					var newObject = new fabric.Polygon(L, {});
 				} else if (newObjectType.type === 'T-shape') {
-					var newObject = new fabric.Polygon(T, {
-						fill: 'orange',
-						left: tempObject.left,
-						top: tempObject.top,
-						hasRotatingPoint: true,
-					});
+					var newObject = new fabric.Polygon(T, {});
 				} else if (newObjectType.type === 'Z-shape') {
-					var newObject = new fabric.Polygon(Z, {
-						fill: 'orange',
-						left: tempObject.left,
-						top: tempObject.top,
-						hasRotatingPoint: true,
-					});
+					var newObject = new fabric.Polygon(Z, {});
 				}
-				
+				newObject.fill = 'orange';
+				newObject.left = tempObject.left;
+				newObject.top = tempObject.top;
+				newObject.hasRotatingPoint = true;
+				newObject.stroke = '#666';
+
 				canvas.remove(tempObject);
 				tempObject = {};
 				canvas.add(newObject);
@@ -320,9 +315,9 @@ return {
 				getPointerCoords(options);
 				showEditBox(pointer);
 			}
-		});
+		}
 
-		scope.$on('addObject', function (event, args) {
+		function addObject (event, args) {
 			newObjectType = args;
 			hideEditBox();
 			if (!newObjectType.type) {
@@ -345,36 +340,56 @@ return {
 			}
 			
 			canvas.add(tempObject);
-		});
+		}
 
-		scope.$on('removeObject', function () {
+		function removeObject () {
 			canvas.remove(selectedObject);
 			canvas.renderAll();
 
 			hideEditBox();
+		}
+
+		function serializeCanvas () {
+			// remove grid lines before serialize
+			group.forEach(function (item) {
+				canvas.remove(item);
+			});
+			var allObjects = JSON.stringify(canvas);
+			console.dir(allObjects);
+		}
+
+		canvas.on("after:render", function (){
+			
 		});
+
+		// rotation increment of 10 deg
+		var lastClosestAngle = 0,
+			snapAfterRotate = false;
+
+		/*Object related events*/
+		canvas.on("object:rotating", onObjectRotating);
+
+		canvas.on("object:modified", onObjectModified);
+
+		canvas.on('object:moving', onObjectMoving);
+
+		canvas.on('object:scaling', onObjectScaling);
+
+		canvas.on('object:selected', onObjectSelected);
+
+		canvas.on('mouse:move', onMouseMove);
+
+		canvas.on('mouse:down', onMouseDown);
+
+		scope.$on('addObject', addObject);
+
+		scope.$on('removeObject', removeObject);
 
 		scope.$on('toggleLock', function () {
 			lock = !lock;
 		});
 
-		function showEditBox (position) {
-			//scope variable from controller
-			scope.editBoxPosition.top =  position.y +'px';
-			scope.editBoxPosition.left = position.x + 100 + 'px';
-			scope.editBoxPosition.display = 'block';
-			scope.$apply();
-		}
-
-		function hideEditBox () {
-			scope.editBoxPosition.display = 'none';
-		}
-
-		function updateEditBoxPosition(position) {
-			scope.editBoxPosition.top =  position.y +'px';
-			scope.editBoxPosition.left = position.x + 100 + 'px';
-			scope.$apply();
-		}
+		scope.$on('serializeCanvas', serializeCanvas);
 
 		initializeCanvas();
 	}
