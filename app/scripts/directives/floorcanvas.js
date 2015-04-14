@@ -52,7 +52,7 @@ return {
 			color: 'rgba(0,0,0,0.6)',
 			blur: 20,
 			offsetX: 0,
-			offsetY: 10,
+			offsetY: 5,
 			opacity: 0.6,
 			fillShadow: true,
 			strokeShadow: true
@@ -67,6 +67,7 @@ return {
 			x: 0,
 			y: 0
 		};
+
 		var tempObject = {};
 		var lock = true;
 		var canvas = {};
@@ -84,7 +85,8 @@ return {
 			selectionLineWidth: 2,
 			width: canvasWidth,
 			height: canvasHeight,
-			renderOnAddRemove: false //increase performance
+			renderOnAddRemove: false, //increase performance
+			selection: false //disable group selection
 		});
 
 		function initializeCanvas() {
@@ -127,24 +129,32 @@ return {
 		function createRect(config) {
 			return new fabric.Rect({
 				fill: config.fill || 'rgba(0,0,0,0.2)',
-				left: config.x - 50,
-				top: config.y - 25,
 				width: 100,
 				height: 50,
-				stroke: 'blue',
+				stroke: '#337ab7',
 				hasRotatingPoint:false,
 				strokeDashArray: [5, 5]
+			});
+		}
+
+		function createRoom(config) {
+			return new fabric.Rect({
+				fill: null,
+				width: 300,
+				height: 150,
+				stroke: '#D725D3',
+				hasRotatingPoint:false,
+				strokeDashArray: [5, 5],
+				evented: false
 			});
 		}
 
 		function createSquare(config) {
 			return new fabric.Rect({
 				fill: config.fill || 'rgba(0,0,0,0.2)',
-				left: config.x - 50,
-				top: config.y - 50,
 				width: 100,
 				height: 100,
-				stroke: 'blue',
+				stroke: '#337ab7',
 				hasRotatingPoint:false,
 				strokeDashArray: [5, 5]
 			});
@@ -153,12 +163,8 @@ return {
 		function createCircle(config) {
 			return new fabric.Circle({
 				fill: config.fill || 'rgba(0,0,0,0.2)',
-				left: config.x,
-				top: config.y,
-				// width: 100,
-				// height: 100,
 				radius: 50,
-				stroke: 'blue',
+				stroke: '#337ab7',
 				hasRotatingPoint:false,
 				strokeDashArray: [5, 5]
 			});
@@ -167,11 +173,9 @@ return {
 		function createTriangle(config) {
 			return new fabric.Triangle({
 				fill: config.fill || 'rgba(0,0,0,0.2)',
-				left: config.x,
-				top: config.y,
 				width: 100,
 				height: 100,
-				stroke: 'blue',
+				stroke: '#337ab7',
 				hasRotatingPoint:false,
 				strokeDashArray: [5, 5]
 			});
@@ -180,9 +184,7 @@ return {
 		function createPolygon(config, type) {
 			return new fabric.Polygon(type, {
 				fill: config.fill || 'rgba(0,0,0,0.2)',
-				left: config.x,
-				top: config.y,
-				stroke: 'blue',
+				stroke: '#337ab7',
 				hasRotatingPoint:false,
 				strokeDashArray: [5, 5]
 			});
@@ -231,16 +233,22 @@ return {
 			snapAfterRotate = true;
 		}
 
-		function onObjectMoving (event) {
+		function onObjectMoving (options) {
 			// snap to grid
-			event.target.set({
-				left: Math.round(event.target.left / gridSize) * gridSize,
-				top: Math.round(event.target.top / gridSize) * gridSize
+			options.target.set({
+				left: Math.round(options.target.left / gridSize) * gridSize,
+				top: Math.round(options.target.top / gridSize) * gridSize
 			});
 
 			//update edit box position
-			getPointerCoords(event.target);
+			getPointerCoords(options.target);
 			updateEditBoxPosition(pointer);
+
+			options.target.setShadow(shadow);
+		}
+
+		function resizeObject (object) {
+
 		}
 
 		function snapWidthAndHeight(options) {
@@ -266,9 +274,10 @@ return {
 				snapAfterRotate = false;
 				// canvas.renderAll();
 			}
+
 			snapWidthAndHeight(options);
-			options.target.setShadow({});
-			canvas.renderAll();
+
+			// setSelectedObject(options);
 		}
 
 		function onObjectSelected (options) {
@@ -276,6 +285,10 @@ return {
 			options.target.bringToFront();
 			//store selected Object
 			selectedObject = options.target;
+			setSelectedObject(options);
+		}
+
+		function setSelectedObject (options) {
 			scope.selectedObject.attr = options.target;
 		}
 
@@ -283,25 +296,19 @@ return {
 			getPointerCoords(options);
 			// getMouse(options);// its not an event its options of your canvas object
 			if (tempObject instanceof fabric.Object) {
-				
-				if (newObjectType.type === 'rectangle') {
-					tempObject.set({
-						left: pointer.x - 50,
-						top: pointer.y - 25
-					});
-				} else {
-					tempObject.set({
-						left: pointer.x - 50,
-						top: pointer.y - 50
-					});
-				}
+				tempObject.set({
+					left: pointer.x - tempObject.width/2,
+					top: pointer.y - tempObject.height/2
+				});
 				canvas.renderAll();
 			}
 		}
 
 		function onMouseUp (options) {
-			// options.target.setShadow({});
-			// canvas.renderAll();
+			if(options.target) {
+				options.target.setShadow({});
+				canvas.renderAll();
+			}
 		}
 
 		function onMouseDown (options) {
@@ -328,19 +335,36 @@ return {
 						height: 100
 					});
 				} else if (newObjectType.type === 'L-shape') {
-					var newObject = new fabric.Polygon(L, {});
+					var newObject = new fabric.Polygon(L, {
+						lockUniScaling: true
+					});
 				} else if (newObjectType.type === 'T-shape') {
-					var newObject = new fabric.Polygon(T, {});
+					var newObject = new fabric.Polygon(T, {
+						lockUniScaling: true
+					});
 				} else if (newObjectType.type === 'Z-shape') {
-					var newObject = new fabric.Polygon(Z, {});
+					var newObject = new fabric.Polygon(Z, {
+						lockUniScaling: true
+					});
 				} else if (newObjectType.type === 'room') {
-					// var newObject = new fabric.
+					var newObject = new fabric.Rect({
+						width: 300,
+						height: 150
+					});
 				}
+
 				newObject.fill = '#bada55';
 				newObject.left = tempObject.left;
 				newObject.top = tempObject.top;
 				newObject.hasRotatingPoint = true;
 				newObject.stroke = '#666';
+
+				if (newObjectType.type === 'room') {
+					newObject.fill = null;
+
+					newObject.stroke = '#D725D3';
+					newObject.strokeWidth = 2;
+				}
 
 				canvas.remove(tempObject);
 				tempObject = {};
@@ -349,10 +373,9 @@ return {
 			}
 
 			if (options.target) {
-				options.target.setShadow(shadow);
 				getPointerCoords(options);
 				showEditBox(pointer);
-				canvas.renderAll();
+				// canvas.renderAll();
 			} else {
 				console.log('nothing is being clicked');
 				hideEditBox();
@@ -368,19 +391,25 @@ return {
 				return false;
 			}
 			if (newObjectType.type === 'rectangle') {
-				tempObject = createRect({x:pointer.x, y: pointer.y});
+				tempObject = createRect({
+					// config
+				});
 			} else if (newObjectType.type === 'square') {
-				tempObject = createSquare({x:pointer.x, y: pointer.y});
+				tempObject = createSquare({
+					//x:pointer.x, y: pointer.y
+				});
 			} else if (newObjectType.type === 'circle') {
-				tempObject = createCircle({x: pointer.x, y: pointer.y});
+				tempObject = createCircle({});
 			} else if (newObjectType.type === 'triangle') {
-				tempObject = createTriangle({x:pointer.x, y:pointer.y});
+				tempObject = createTriangle({});
 			} else if (newObjectType.type === 'T-shape') {
-				tempObject = createPolygon({x:pointer.x, y:pointer.y}, T);
+				tempObject = createPolygon({}, T);
 			} else if (newObjectType.type === 'L-shape') {
-				tempObject = createPolygon({x:pointer.x, y:pointer.y}, L);
+				tempObject = createPolygon({}, L);
 			} else if (newObjectType.type === 'Z-shape') {
-				tempObject = createPolygon({x:pointer.x, y:pointer.y}, Z);
+				tempObject = createPolygon({}, Z);
+			} else if (newObjectType.type === 'room') {
+				tempObject = createRoom({});
 			}
 			
 			canvas.add(tempObject);

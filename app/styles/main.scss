@@ -115,6 +115,11 @@ body {
   display: none;
 }
 
+#floor-planner-container {
+  margin: 0 15px;
+}
+
+
 #floor-map-container {
   position: relative;
   // background-image: url('../assets/grid.png');
@@ -158,7 +163,7 @@ body {
   z-index: 1;
 }
 #floor-map-controls {
-  position: absolute;
+  // position: absolute;
   left: 0;
   right: 0;
   width: 450px;
@@ -176,4 +181,5 @@ body {
 
 .debug {
   height: 100px;
+  width: 1000px;
 }
