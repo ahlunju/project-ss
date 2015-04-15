@@ -473,6 +473,8 @@ return {
 						this.radius *= this.scaleX;
 					} else if (this.scaleY > this.scaleX) {
 						this.radius *= this.scaleY;
+					} else if (this.scaleX === this.scaleY) {
+						this.radius *= this.scaleX;
 					}
 					this.scaleX = 1;
 					this.scaleY = 1;
