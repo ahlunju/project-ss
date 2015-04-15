@@ -251,20 +251,6 @@ return {
 
 		}
 
-		function snapWidthAndHeight(options) {
-			// round width/height to nearest 10
-			// new width/height = old width/height * scaleX/scaleY and then round them
-			// then reset scaleX/scaleY to 1
-			var roundedWidth = Math.round(options.target.width * options.target.scaleX /gridSize) * gridSize;
-			var roundedHeight = Math.round(options.target.height * options.target.scaleY /gridSize) * gridSize;
-			options.target.set({
-				width: roundedWidth,
-				height: roundedHeight,
-				scaleX: 1,
-				scaleY: 1
-			});
-		}
-
 		function onObjectModified (options) {
 			console.log('object modified');
 			// modified fires after object has been rotated
@@ -274,7 +260,7 @@ return {
 				snapAfterRotate = false;
 				// canvas.renderAll();
 			}
-			snapWidthAndHeight(options);
+			options.target.snapWidthAndHeight();
 			// setSelectedObject(options);
 		}
 
@@ -573,7 +559,17 @@ return {
 				width: maxX - minX,
 				height: maxY - minY
 			}
-		}
+		};
+
+		fabric.Object.prototype.snapWidthAndHeight = function () {
+			var roundedWidth = Math.round(this.width /gridSize) * gridSize;
+			var roundedHeight = Math.round(this.height / gridSize) * gridSize;
+			this.set({
+				width: roundedWidth,
+				height: roundedHeight
+			});
+		};
+
 		initializeCanvas();
 	}
 };
