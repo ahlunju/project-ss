@@ -262,6 +262,7 @@ return {
 			}
 			options.target.snapSize(10);
 			setSelectedObject(options);
+			scope.$apply();
 		}
 
 		function onObjectSelected (options) {

@@ -45,8 +45,8 @@
 			</ui-select-choices>
 		</ui-select>
 		<div class="margin-top-0">
-			width: <input type="number" step="10" min="10" ng-model="selectedObject.attr.width">
-			height: <input type="number" step="10" min="10" ng-model="selectedObject.attr.height">
+			width: <input class="form-control" type="number" step="10" min="10" ng-disabled="true" ng-model="selectedObject.attr.width">
+			height: <input class="form-control" type="number" step="10" min="10" ng-disabled="true" ng-model="selectedObject.attr.height">
 			<button class="btn btn-success" colorpicker type="button" colorpicker-position="left" ng-model="selectedObject.attr.fill">Change Color</button><br>
 			<button class="btn btn-success" ng-click="selectedObject.updateAttr()">Update</button><br>
 			<button class="btn btn-success" ng-click="selectedObject.assignEmployee()">Assign Employee</button><br>
