@@ -261,7 +261,7 @@ return {
 				// canvas.renderAll();
 			}
 			options.target.snapSize(10);
-			// setSelectedObject(options);
+			setSelectedObject(options);
 		}
 
 		function onObjectSelected (options) {
@@ -274,6 +274,7 @@ return {
 
 		function setSelectedObject (options) {
 			scope.selectedObject.attr = options.target;
+			console.log(scope.selectedObject.attr);
 		}
 
 		function onMouseMove (options){
@@ -400,12 +401,9 @@ return {
 		}
 
 		function removeObject () {
-			console.log(selectedObject);
-
-			scope.selectedObject.attr = {};
-			canvas.remove(selectedObject);
+			canvas.remove(canvas.getActiveObject());
 			canvas.renderAll();
-
+			scope.selectedObject.attr = {};
 			hideEditBox();
 		}
 
