@@ -337,6 +337,16 @@ return {
 						width: 300,
 						height: 150
 					});
+				} else if (newObjectType.type === 'label-rect') {
+					var newObject = new LabeledRect({
+						width: 100,
+						height: 50
+						// label: {
+						// 	id: null,
+						// 	name: '',
+						// 	department: ''
+						// }
+					});
 				}
 
 				newObject.fill = '#bada55';
@@ -396,6 +406,12 @@ return {
 				tempObject = createPolygon({}, Z);
 			} else if (newObjectType.type === 'room') {
 				tempObject = createRoom({});
+			} else if (newObjectType.type === 'label-rect') {
+				tempObject = new LabeledRect({
+						width: 100,
+						height: 50//,
+						// label: defaulting it
+					});
 			}
 			
 			canvas.add(tempObject);

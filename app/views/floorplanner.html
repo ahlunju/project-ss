@@ -25,6 +25,7 @@
 				<li><a href="" ng-click="addObject('Z-shape')">Z Shape</a></li>
 				<li class="divider"></li>
 				<li><a href="" ng-click="addObject('room')">Room</a></li>
+				<li><a href="" ng-click="addObject('label-rect')">Labeled Rect</a></li>
 			</ul>
 		</div>
 		<!-- <button class="btn btn-primary" ng-click="addObject()">Add Object</button> -->
@@ -47,6 +48,12 @@
 		<div class="margin-top-0">
 			width: <input class="form-control" type="number" step="10" min="10" ng-disabled="true" ng-model="selectedObject.attr.width">
 			height: <input class="form-control" type="number" step="10" min="10" ng-disabled="true" ng-model="selectedObject.attr.height">
+			<div ng-hide="!selectedObject.attr.label">
+				first name: <input class="form-control" type="text" ng-model="selectedObject.attr.label.firstName">
+				last name: <input class="form-control" type="text" ng-model="selectedObject.attr.label.lastName">
+				id: <input class="form-control" type="number" ng-model="selectedObject.attr.label.id">
+				department: <input class="form-control" type="text" ng-model="selectedObject.attr.label.department">
+			</div>
 			<button class="btn btn-success" colorpicker type="button" colorpicker-position="left" ng-model="selectedObject.attr.fill">Change Color</button><br>
 			<button class="btn btn-success" ng-click="selectedObject.updateAttr()">Update</button><br>
 			<button class="btn btn-success" ng-click="selectedObject.assignEmployee()">Assign Employee</button><br>
