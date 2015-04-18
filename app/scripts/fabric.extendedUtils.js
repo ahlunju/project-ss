@@ -9,7 +9,7 @@ var LabeledRect = fabric.util.createClass(fabric.Rect, {
 			id: null,
 			firstName: '',
 			lastName: '',
-			department: undefined
+			department: null
 		};
 		this.callSuper('initialize', options);
 		// this.set('label', options.label || '');

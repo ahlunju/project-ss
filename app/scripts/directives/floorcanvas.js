@@ -349,7 +349,7 @@ return {
 					});
 				}
 
-				newObject.fill = '#bada55';
+				newObject.fill = '#ababab';
 				newObject.left = tempObject.left;
 				newObject.top = tempObject.top;
 				newObject.hasRotatingPoint = true;
@@ -409,8 +409,11 @@ return {
 			} else if (newObjectType.type === 'label-rect') {
 				tempObject = new LabeledRect({
 						width: 100,
-						height: 50//,
+						height: 50,
 						// label: defaulting it
+						strokeDashArray: [5, 5],
+						stroke: '#337ab7',
+						fill: 'rgba(0,0,0,0.2)'
 					});
 			}
 			
@@ -443,11 +446,35 @@ return {
 			});
 		}
 
+		function onObjectAdded () {
+
+		}
+
+		function onObjectRemoved () {
+
+		}
+
+		function beforeSelectionCleared () {
+
+		}
+
+		function onSelectionCleared () {
+
+		}
+
+		function onSelectionCreated () {
+
+		}
+
 		canvas.on('after:render', function (options){
 			// console.log('after render');
 		});
 
 		/*Object related events*/
+		canvas.on('object:added', onObjectAdded);
+
+		canvas.on('object.removed', onObjectRemoved);
+
 		canvas.on('object:rotating', onObjectRotating);
 
 		canvas.on('object:modified', onObjectModified);
@@ -458,11 +485,19 @@ return {
 
 		canvas.on('object:selected', onObjectSelected);
 
+		//mouse event
 		canvas.on('mouse:move', onMouseMove);
 
 		canvas.on('mouse:down', onMouseDown);
 
 		canvas.on('mouse:up', onMouseUp);
+
+		// selection event
+		canvas.on('before:selection:cleared', beforeSelectionCleared);
+
+		canvas.on('selection:cleared', onSelectionCleared);
+
+		canvas.on('selection:created', onSelectionCreated);
 
 		scope.$on('addObject', addObject);
 
