@@ -13,28 +13,28 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 	$scope.employees = [
 		{
 			"name": "Yalun Zhu",
-			"employeeID": 0,
-			"deskID": 0
+			"id": 0,
+			"department": 'Developer'
 		},
 		{
 			"name": "Jon Snow",
-			"employeeID": 1,
-			"deskID": 1
+			"id": 1,
+			"department": 'HR'
 		},
 		{
 			"name": "Hello World",
-			"employeeID": 2,
-			"deskID": 4
+			"id": 2,
+			"department": 'QA'
 		},
 		{
 			"name": "Tony Stark",
-			"employeeID": 3,
-			"deskID": 2
+			"id": 3,
+			"department": 'PM'
 		},
 		{
 			"name": "Ned Stark",
-			"employeeID": 4,
-			"deskID": 3
+			"id": 4,
+			"department": 'Customer Service'
 		}
 	];
 
@@ -93,6 +93,7 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 		attr: {},
 		updateAttr: function () {
 			console.log('selected object update attr');
+			this.attr.label = angular.copy($scope.selectedEmployee.selected);
 			$scope.reRenderCanvas();
 		},
 		assignEmployee: function () {

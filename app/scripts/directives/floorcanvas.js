@@ -275,6 +275,7 @@ return {
 
 		function setSelectedObject (options) {
 			scope.selectedObject.attr = options.target;
+			scope.selectedEmployee.selected = options.target.label;
 			console.log(scope.selectedObject.attr);
 		}
 
@@ -291,6 +292,7 @@ return {
 		}
 
 		function onMouseUp (options) {
+			console.log('mouse up');
 			if(options.target) {
 				options.target.setShadow({});
 				canvas.renderAll();

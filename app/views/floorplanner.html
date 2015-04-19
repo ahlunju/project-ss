@@ -6,6 +6,7 @@
 </code> -->
 <div class="debug">
 	<pre>{{selectedObject.attr}}</pre>
+	<pre>{{selectedEmployee}}</pre>
 </div>
 
 <div id="floor-map-controls-container">
@@ -38,19 +39,19 @@
 	<floor-canvas></floor-canvas>
 
 	<div class="edit-box" ng-style="editBoxPosition" ng-click="$event.stopPropagation()">
-		<ui-select ng-model="selectedEmployee.selected" theme="bootstrap" ng-disabled="disabled" >
-			<ui-select-match placeholder="Select or search employee...">{{$select.selected.name}}</ui-select-match>
-			<ui-select-choices repeat="employee in employees | filter: $select.search">
-				<span ng-bind-html="employee.name | highlight: $select.search"></span>
-				<small>desk id: <span ng-bind-html="employee.deskID | highlight: $select.search"></span></small>
-			</ui-select-choices>
-		</ui-select>
+		
 		<div class="margin-top-0">
 			width: <input class="form-control" type="number" step="10" min="10" ng-disabled="true" ng-model="selectedObject.attr.width">
 			height: <input class="form-control" type="number" step="10" min="10" ng-disabled="true" ng-model="selectedObject.attr.height">
+			<ui-select ng-model="selectedEmployee.selected" theme="bootstrap" ng-disabled="disabled" >
+				<ui-select-match placeholder="Select or search employee...">{{$select.selected.name}}</ui-select-match>
+				<ui-select-choices repeat="employee in employees | filter: $select.search">
+					<span ng-bind-html="employee.name | highlight: $select.search"></span>
+				</ui-select-choices>
+			</ui-select>
 			<div ng-hide="!selectedObject.attr.label">
-				first name: <input class="form-control" type="text" ng-model="selectedObject.attr.label.firstName">
-				last name: <input class="form-control" type="text" ng-model="selectedObject.attr.label.lastName">
+				
+				name: <input class="form-control" type="text" ng-model="selectedObject.attr.label.name">
 				id: <input class="form-control" type="number" ng-model="selectedObject.attr.label.id">
 				department: <input class="form-control" type="text" ng-model="selectedObject.attr.label.department">
 			</div>
