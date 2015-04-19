@@ -130,7 +130,7 @@ body {
 }
 .edit-box {
   // position: absolute;
-  width: 230px;
+  width: 300px;
   padding: 10px;
   border: 1px solid #aaa;
   border-radius: 3px;
@@ -140,6 +140,8 @@ body {
 
   position: fixed;
   right: 0;
+  bottom: 0;
+  top: 0;
 }
 
 .dashed{

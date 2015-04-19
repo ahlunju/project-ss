@@ -8,9 +8,29 @@
  */
 angular.module('projectSsApp').directive('floorCanvas', function () {
 return {
+
 	template: '<canvas id="floor-canvas"></canvas>',
 	restrict: 'E',
 	link: function postLink (scope, element, attrs) {
+
+		function appendSVG () {
+			var svgEl = document.body.getElementsByTagName('svg')[0];
+			var serializer = new XMLSerializer();
+			var svgStr = serializer.serializeToString(svgEl);
+
+			var path = fabric.loadSVGFromString(svgStr,function(objects, options) {
+			  var obj = fabric.util.groupSVGElements(objects, options);
+			  obj.scaleToHeight(canvas.height-10)
+			    .set({ left: canvas.width/2, top: canvas.height/2 })
+			    .setCoords();
+			  obj.selectable = false;
+
+			  canvas.add(obj).renderAll();
+			  obj.sendToBack();
+			});
+		}
+
+
 		/**controller variable:
 			editBoxPosition
 		**/
@@ -92,6 +112,7 @@ return {
 		function initializeCanvas() {
 			canvas.loadFromJSON(scope.objects);
 			drawGrid(gridSize);
+			appendSVG();
 		}
 
 		function drawGrid (gridSize) {
@@ -276,7 +297,6 @@ return {
 		function setSelectedObject (options) {
 			scope.selectedObject.attr = options.target;
 			scope.selectedEmployee.selected = options.target.label;
-			console.log(scope.selectedObject.attr);
 		}
 
 		function onMouseMove (options){
@@ -301,7 +321,7 @@ return {
 
 		function onMouseDown (options) {
 			console.log('mouse down');
-
+			console.log(options.target);
 			if (tempObject instanceof fabric.Object) {
 				if (newObjectType.type === 'rectangle') {
 					var newObject = new fabric.Rect({
@@ -370,12 +390,12 @@ return {
 				canvas.renderAll();
 			}
 
-			if (options.target) {
+			if (options.target && options.target.selectable) {
 				getPointerCoords(options);
 				showEditBox(pointer);
 				// canvas.renderAll();
 			} else {
-				console.log('nothing is being clicked');
+				console.log('nothing is being clicked or non-selectable object');
 				hideEditBox();
 				scope.$apply();
 			}

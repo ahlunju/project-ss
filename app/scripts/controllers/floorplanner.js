@@ -70,7 +70,7 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 	};
 
 	$scope.editBoxPosition = {
-		top	: '0px',
+		// top	: '0px',
 		// left : '0px',
 		display : 'none'
 	};
@@ -93,11 +93,18 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 		attr: {},
 		updateAttr: function () {
 			console.log('selected object update attr');
-			this.attr.label = angular.copy($scope.selectedEmployee.selected);
+			
 			$scope.reRenderCanvas();
 		},
 		assignEmployee: function () {
-			console.log('selected object assign employee');
+			if ($scope.selectedEmployee.selected) {
+				this.attr.label = angular.copy($scope.selectedEmployee.selected);
+				var index = $scope.employees.indexOf($scope.selectedEmployee.selected.id)
+				$scope.employees.splice(index, 1);
+				$scope.reRenderCanvas();
+			}
 		}
 	};
+
+
 });

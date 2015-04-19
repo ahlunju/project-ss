@@ -7,7 +7,7 @@ var LabeledRect = fabric.util.createClass(fabric.Rect, {
 		options || (options = { });
 		var person = {
 			id: null,
-			name: '',
+			name: null,
 			department: null
 		};
 		this.callSuper('initialize', options);
@@ -26,7 +26,7 @@ var LabeledRect = fabric.util.createClass(fabric.Rect, {
 	_render: function(ctx) {
 		this.callSuper('_render', ctx);
 
-		ctx.font = '20px Helvetica';
+		ctx.font = '16px Helvetica';
 		ctx.fillStyle = '#333';
 		ctx.fillText(this.label.name, -this.width/2, -this.height/2 + 20);
 	}
