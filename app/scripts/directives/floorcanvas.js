@@ -16,18 +16,24 @@ return {
 		function appendSVG () {
 			var svgEl = document.body.getElementsByTagName('svg')[0];
 			var serializer = new XMLSerializer();
-			var svgStr = serializer.serializeToString(svgEl);
+			// var svgStr = serializer.serializeToString(svgEl);
 
-			var path = fabric.loadSVGFromString(svgStr,function(objects, options) {
-			  var obj = fabric.util.groupSVGElements(objects, options);
-			  obj.scaleToHeight(canvas.height-10)
-			    .set({ left: canvas.width/2, top: canvas.height/2 })
-			    .setCoords();
-			  obj.selectable = false;
+			// var path = fabric.loadSVGFromString(svgStr,function(objects, options) {
+			// var path = fabric.loadSVGFromURL('images/18-floor.svg', function (objects, options) {
 
-			  canvas.add(obj).renderAll();
-			  obj.sendToBack();
-			});
+			// 	var obj = fabric.util.groupSVGElements(objects, options);
+			// 	obj.scaleToWidth(canvas.width)
+			// 	.set({
+			// 		left: 0,
+			// 		top: 0,
+			// 		selectable: false,
+			// 		stroke: 1
+			// 	})
+			// 	.setCoords();
+
+			// 	canvas.add(obj).renderAll();
+			// 	obj.sendToBack();
+			// });
 		}
 
 
@@ -91,8 +97,8 @@ return {
 		var tempObject = {};
 		var lock = true;
 		var canvas = {};
-		var canvasWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 1000);
-		var canvasHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 1000);
+		var canvasWidth = Math.max(document.documentElement.clientWidth - 30, window.innerWidth - 30 || 1000);
+		var canvasHeight = 3000; //Math.max(document.documentElement.clientHeight, window.innerHeight || 2000);
 		var selectedObject = {};
 		var newObjectType = {};
 		
