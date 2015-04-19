@@ -13,30 +13,6 @@ return {
 	restrict: 'E',
 	link: function postLink (scope, element, attrs) {
 
-		function appendSVG () {
-			var svgEl = document.body.getElementsByTagName('svg')[0];
-			var serializer = new XMLSerializer();
-			// var svgStr = serializer.serializeToString(svgEl);
-
-			// var path = fabric.loadSVGFromString(svgStr,function(objects, options) {
-			// var path = fabric.loadSVGFromURL('images/18-floor.svg', function (objects, options) {
-
-			// 	var obj = fabric.util.groupSVGElements(objects, options);
-			// 	obj.scaleToWidth(canvas.width)
-			// 	.set({
-			// 		left: 0,
-			// 		top: 0,
-			// 		selectable: false,
-			// 		stroke: 1
-			// 	})
-			// 	.setCoords();
-
-			// 	canvas.add(obj).renderAll();
-			// 	obj.sendToBack();
-			// });
-		}
-
-
 		/**controller variable:
 			editBoxPosition
 		**/
@@ -97,8 +73,8 @@ return {
 		var tempObject = {};
 		var lock = true;
 		var canvas = {};
-		var canvasWidth = Math.max(document.documentElement.clientWidth - 30, window.innerWidth - 30 || 1000);
-		var canvasHeight = 3000; //Math.max(document.documentElement.clientHeight, window.innerHeight || 2000);
+		var canvasWidth = 930 * 2; //Math.max(document.documentElement.clientWidth + 200 , window.innerWidth || 1000);
+		var canvasHeight = 1260 * 2; //Math.max(document.documentElement.clientHeight, window.innerHeight || 2000);
 		var selectedObject = {};
 		var newObjectType = {};
 		
@@ -118,7 +94,6 @@ return {
 		function initializeCanvas() {
 			canvas.loadFromJSON(scope.objects);
 			drawGrid(gridSize);
-			appendSVG();
 		}
 
 		function drawGrid (gridSize) {
@@ -455,23 +430,41 @@ return {
 			hideEditBox();
 		}
 
-		function serializeCanvas () {
-			// remove grid lines before serialize
-			group.forEach(function (item) {
+		function excludeGrid () {
+			group.forEach(function(item) {
 				canvas.remove(item);
 			});
+		}
 
-			var canvasObject = canvas.toObject();
-			console.dir(canvasObject.objects);
-
-			// var allObjects = JSON.stringify(canvas);
-			// console.dir(allObjects);
-
-			// add grid lines back to canvas
+		function includeGrid () {
 			group.forEach(function(item) {
 				canvas.add(item);
 				item.sendToBack();
 			});
+		}
+
+		function toggleObjectSelection () {
+			lock = !lock;
+			excludeGrid();
+
+			var objs = canvas.getObjects().map(function(o) {
+			  return o.set('selectable', lock);
+			});
+
+			includeGrid();
+		}
+
+		function serializeCanvas () {
+			// remove grid lines before serialize
+			excludeGrid();
+
+			var canvasObject = canvas.toObject();
+			console.dir(canvasObject.objects);
+
+			var allObjects = JSON.stringify(canvas);
+			console.dir(allObjects);
+
+			includeGrid();
 		}
 
 		function onObjectAdded () {
@@ -532,7 +525,7 @@ return {
 		scope.$on('removeObject', removeObject);
 
 		scope.$on('toggleLock', function () {
-			lock = !lock;
+			toggleObjectSelection();
 		});
 
 		scope.$on('re-render', function () {

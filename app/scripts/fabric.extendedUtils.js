@@ -28,7 +28,9 @@ var LabeledRect = fabric.util.createClass(fabric.Rect, {
 
 		ctx.font = '16px Helvetica';
 		ctx.fillStyle = '#333';
-		ctx.fillText(this.label.name, -this.width/2, -this.height/2 + 20);
+		if (this.label.name) {
+			ctx.fillText(this.label.name, -this.width/2, -this.height/2 + 20);
+		}
 	}
 });
 

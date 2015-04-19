@@ -4,7 +4,7 @@
 <!-- <code>
 	{{objects}}
 </code> -->
-<div class="debug">
+<div class="debug" ng-show="showDebugPanel">
 	<pre>{{selectedObject.attr}}</pre>
 	<pre>{{selectedEmployee}}</pre>
 </div>
@@ -33,6 +33,7 @@
 		<button class="btn btn-primary" ng-click="updateEmployees()">Save (Not Working)</button>
 		<button class="btn btn-primary" ng-click="editDesks()">Lock/Unlock</button>
 		<button class="btn btn-primary" ng-click="serializeCanvas()">Serialize</button>
+		<button class="btn btn-warning" ng-click="showDebugPanel = !showDebugPanel">Debug Panel</button>
 	</div>
 </div>
 <div id="floor-planner-container">

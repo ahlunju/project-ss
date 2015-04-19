@@ -136,6 +136,7 @@ body {
 .upper-canvas {
   background-image: url('../images/18-floor.svg');
   background-repeat: no-repeat;
+  background-position: 0 0;
   background-size: cover;
 }
 
@@ -179,7 +180,7 @@ body {
   // position: absolute;
   left: 0;
   right: 0;
-  width: 450px;
+  width: 540px;
   margin: 15px auto;
   text-align: center;
 }
