@@ -12,7 +12,7 @@ return {
 	template: '<canvas id="floor-canvas"></canvas>',
 	restrict: 'E',
 	link: function postLink (scope, element, attrs) {
-
+		
 		/**controller variable:
 			editBoxPosition
 		**/
@@ -120,11 +120,11 @@ return {
 				group.push(horizontalLine);
 				group.push(verticalLine);
 
-				canvas.add(horizontalLine);
-				horizontalLine.sendToBack();
-				// draw vertical lines
-				canvas.add(verticalLine);
-				verticalLine.sendToBack();
+				// canvas.add(horizontalLine);
+				// horizontalLine.sendToBack();
+				// // draw vertical lines
+				// canvas.add(verticalLine);
+				// verticalLine.sendToBack();
 			}
 		}
 		
@@ -243,8 +243,8 @@ return {
 			});
 
 			//update edit box position
-			getPointerCoords(options.target);
-			updateEditBoxPosition(pointer);
+			// getPointerCoords(options.target); //error !
+			// updateEditBoxPosition(pointer);
 
 			options.target.setShadow(shadow);
 		}
@@ -526,6 +526,15 @@ return {
 
 		scope.$on('toggleLock', function () {
 			toggleObjectSelection();
+		});
+
+		scope.$on('toggleGrid', function (event, args) {
+			if (args.toggle) {
+				includeGrid();
+			} else {
+				excludeGrid();
+				canvas.renderAll();
+			}
 		});
 
 		scope.$on('re-render', function () {

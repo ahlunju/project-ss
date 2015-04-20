@@ -75,6 +75,12 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 		display : 'none'
 	};
 
+	$scope.showGrid = false;
+
+	$scope.toggleGrid = function () {
+		$scope.$broadcast('toggleGrid', {toggle: $scope.showGrid});
+	};
+
 	$scope.removeObject = function () {
 		$scope.$broadcast('removeObject');
 		console.log('remove object');

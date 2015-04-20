@@ -34,6 +34,7 @@
 		<button class="btn btn-primary" ng-click="editDesks()">Lock/Unlock</button>
 		<button class="btn btn-primary" ng-click="serializeCanvas()">Serialize</button>
 		<button class="btn btn-warning" ng-click="showDebugPanel = !showDebugPanel">Debug Panel</button>
+		<label >Grid <input type="checkbox" ng-model="showGrid" ng-change="toggleGrid()"></label>
 	</div>
 </div>
 <div id="floor-planner-container">
