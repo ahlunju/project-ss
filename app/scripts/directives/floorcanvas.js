@@ -222,7 +222,7 @@ return {
 			});
 
 			//update edit box position
-			// getPointerCoords(options.target); //error !
+			getPointerCoords(options);
 			// updateEditBoxPosition(pointer);
 
 			options.target.setShadow(shadow);
@@ -329,7 +329,7 @@ return {
 				newObject.left = tempObject.left;
 				newObject.top = tempObject.top;
 				newObject.hasRotatingPoint = true;
-				newObject.stroke = '#666';
+				newObject.stroke = '#fff';
 
 				if (newObjectType.type === 'room') {
 					newObject.fill = null;
