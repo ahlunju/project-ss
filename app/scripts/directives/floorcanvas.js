@@ -280,7 +280,6 @@ return {
 
 		function onMouseDown (options) {
 			console.log('mouse down');
-			console.log(options.target);
 			if (tempObject instanceof fabric.Object) {
 				if (newObjectType.type === 'rectangle') {
 					var newObject = new fabric.Rect({
@@ -344,7 +343,7 @@ return {
 				canvas.renderAll();
 			}
 
-			if (options.target && options.target.selectable) {
+			if (options.target && options.target.type !== 'image') {
 				getPointerCoords(options);
 				showEditBox(pointer);
 			} else {
@@ -405,7 +404,9 @@ return {
 		function toggleObjectSelection () {
 			lock = !lock;
 			var objs = canvas.getObjects().map(function(o) {
-			  return o.set('selectable', lock);
+				if (o.type !== 'image') {
+					return o.set('selectable', lock);
+				}
 			});
 
 		}
