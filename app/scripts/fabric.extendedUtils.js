@@ -170,3 +170,49 @@
 		});
 	};
 })(fabric);
+
+// temporary
+function drawGrid (gridSize) {
+	var w = canvas.width,
+		h = canvas.height;
+	/**
+	 * i is used for both x and y to draw
+	 * a line every 5 pixels starting at
+	 * .5 to offset the canvas edges
+	 */
+	for(var i = 0.5; i < w || i < h; i += gridSize) {
+		// draw horizontal lines
+		var horizontalLine = new fabric.Line([i, 0, i, h], {
+			stroke: '#000',
+			strokeWidth: 0.2,
+			selectable:false
+		});
+		var verticalLine = new fabric.Line([0, i, w, i], {
+			stroke: '#000',
+			strokeWidth: 0.2,
+			selectable:false
+		});
+
+		group.push(horizontalLine);
+		group.push(verticalLine);
+
+		// canvas.add(horizontalLine);
+		// horizontalLine.sendToBack();
+		// // draw vertical lines
+		// canvas.add(verticalLine);
+		// verticalLine.sendToBack();
+	}
+}
+
+function excludeGrid () {
+	group.forEach(function(item) {
+		canvas.remove(item);
+	});
+}
+
+function includeGrid () {
+	group.forEach(function(item) {
+		canvas.add(item);
+		item.sendToBack();
+	});
+}

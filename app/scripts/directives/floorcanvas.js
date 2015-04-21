@@ -93,13 +93,11 @@ return {
 
 		function initializeCanvas() {
 			canvas.loadFromJSON(scope.objects);
-			// drawGrid(gridSize);
-			drawBaseLayer();
+			drawBaseLayer('../images/18-floor.svg');
 		}
 
-		function drawBaseLayer () {
-			fabric.Image.fromURL('../images/18-floor.svg', function (img) {
-				console.log(img);
+		function drawBaseLayer (imgUrl) {
+			fabric.Image.fromURL(imgUrl, function (img) {
 				img.left = 0;
 				img.top = 0;
 				img.selectable = false;
@@ -107,38 +105,6 @@ return {
 				canvas.add(img);
 				img.sendToBack();
 			});
-		}
-
-		function drawGrid (gridSize) {
-			var w = canvas.width,
-				h = canvas.height;
-			/**
-			 * i is used for both x and y to draw
-			 * a line every 5 pixels starting at
-			 * .5 to offset the canvas edges
-			 */
-			for(var i = 0.5; i < w || i < h; i += gridSize) {
-				// draw horizontal lines
-				var horizontalLine = new fabric.Line([i, 0, i, h], {
-					stroke: '#000',
-					strokeWidth: 0.2,
-					selectable:false
-				});
-				var verticalLine = new fabric.Line([0, i, w, i], {
-					stroke: '#000',
-					strokeWidth: 0.2,
-					selectable:false
-				});
-
-				group.push(horizontalLine);
-				group.push(verticalLine);
-
-				// canvas.add(horizontalLine);
-				// horizontalLine.sendToBack();
-				// // draw vertical lines
-				// canvas.add(verticalLine);
-				// verticalLine.sendToBack();
-			}
 		}
 		
 		function createRect(config) {
@@ -273,7 +239,6 @@ return {
 			if (options.target.angle && snapAfterRotate) {
 				options.target.setAngle(lastClosestAngle).setCoords();
 				snapAfterRotate = false;
-				// canvas.renderAll();
 			}
 			options.target.snapSize(10);
 			setSelectedObject(options);
@@ -357,11 +322,6 @@ return {
 					var newObject = new LabeledRect({
 						width: 100,
 						height: 50
-						// label: {
-						// 	id: null,
-						// 	name: '',
-						// 	department: ''
-						// }
 					});
 				}
 
@@ -387,7 +347,6 @@ return {
 			if (options.target && options.target.selectable) {
 				getPointerCoords(options);
 				showEditBox(pointer);
-				// canvas.renderAll();
 			} else {
 				console.log('nothing is being clicked or non-selectable object');
 				hideEditBox();
@@ -443,49 +402,20 @@ return {
 			hideEditBox();
 		}
 
-		function excludeGrid () {
-			group.forEach(function(item) {
-				canvas.remove(item);
-			});
-		}
-
-		function includeGrid () {
-			group.forEach(function(item) {
-				canvas.add(item);
-				item.sendToBack();
-			});
-		}
-
 		function toggleObjectSelection () {
 			lock = !lock;
-			if (scope.showGrid) {
-				excludeGrid();
-			}
-
 			var objs = canvas.getObjects().map(function(o) {
 			  return o.set('selectable', lock);
 			});
 
-			if (scope.showGrid) {
-				includeGrid();
-			}
 		}
 
 		function serializeCanvas () {
-			// remove grid lines before serialize
-			if (scope.showGrid) {
-				excludeGrid();
-			}
-			
 			var canvasObject = canvas.toObject();
 			console.dir(canvasObject.objects);
 
 			var allObjects = JSON.stringify(canvas);
 			console.dir(allObjects);
-
-			if (scope.showGrid) {
-				includeGrid();
-			}
 		}
 
 		function onObjectAdded () {
@@ -551,14 +481,13 @@ return {
 
 		scope.$on('toggleGrid', function (event, args) {
 			if (args.toggle) {
-				fabric.Image.fromURL('../images/grid.png', function (img) {
-					canvas.backgroundColor = new fabric.Pattern({source: '../images/grid.png'});
+				//set the grid.png as background
+				canvas.setBackgroundColor({source: '../images/grid.png', repeat: 'repeat'}, function () {
+				  canvas.renderAll();
 				});
-				canvas.renderAll();
-				// includeGrid();
 			} else {
-				// excludeGrid();
-				// canvas.renderAll();
+				canvas.backgroundColor = 'rgb(255,255,255)';
+				canvas.renderAll();
 			}
 		});
 
