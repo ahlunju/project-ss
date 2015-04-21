@@ -64,7 +64,7 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 		console.log('update employees');
 	};
 
-	$scope.editDesks = function () {
+	$scope.toggleLock = function () {
 		console.log('edit desks');
 		$scope.$broadcast('toggleLock');
 	};

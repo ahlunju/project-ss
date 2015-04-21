@@ -93,7 +93,20 @@ return {
 
 		function initializeCanvas() {
 			canvas.loadFromJSON(scope.objects);
-			drawGrid(gridSize);
+			// drawGrid(gridSize);
+			drawBaseLayer();
+		}
+
+		function drawBaseLayer () {
+			fabric.Image.fromURL('../images/18-floor.svg', function (img) {
+				console.log(img);
+				img.left = 0;
+				img.top = 0;
+				img.selectable = false;
+				img.setWidth(canvasWidth).setHeight(canvasHeight);
+				canvas.add(img);
+				img.sendToBack();
+			});
 		}
 
 		function drawGrid (gridSize) {
@@ -445,26 +458,34 @@ return {
 
 		function toggleObjectSelection () {
 			lock = !lock;
-			excludeGrid();
+			if (scope.showGrid) {
+				excludeGrid();
+			}
 
 			var objs = canvas.getObjects().map(function(o) {
 			  return o.set('selectable', lock);
 			});
 
-			includeGrid();
+			if (scope.showGrid) {
+				includeGrid();
+			}
 		}
 
 		function serializeCanvas () {
 			// remove grid lines before serialize
-			excludeGrid();
-
+			if (scope.showGrid) {
+				excludeGrid();
+			}
+			
 			var canvasObject = canvas.toObject();
 			console.dir(canvasObject.objects);
 
 			var allObjects = JSON.stringify(canvas);
 			console.dir(allObjects);
 
-			includeGrid();
+			if (scope.showGrid) {
+				includeGrid();
+			}
 		}
 
 		function onObjectAdded () {
@@ -530,10 +551,14 @@ return {
 
 		scope.$on('toggleGrid', function (event, args) {
 			if (args.toggle) {
-				includeGrid();
-			} else {
-				excludeGrid();
+				fabric.Image.fromURL('../images/grid.png', function (img) {
+					canvas.backgroundColor = new fabric.Pattern({source: '../images/grid.png'});
+				});
 				canvas.renderAll();
+				// includeGrid();
+			} else {
+				// excludeGrid();
+				// canvas.renderAll();
 			}
 		});
 

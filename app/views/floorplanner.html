@@ -19,26 +19,25 @@
 				<li><a href="" ng-click="addObject('rectangle')">Rectangle</a></li>
 				<li><a href="" ng-click="addObject('square')">Square</a></li>
 				<li><a href="" ng-click="addObject('circle')">Circle</a></li>
-				<li><a href="" ng-click="addObject('triangle')">Triangle</a></li>
+				<!-- <li><a href="" ng-click="addObject('triangle')">Triangle</a></li> -->
 				<li class="divider"></li>
 				<li><a href="" ng-click="addObject('L-shape')">L Shape</a></li>
 				<li><a href="" ng-click="addObject('T-shape')">T Shape</a></li>
 				<li><a href="" ng-click="addObject('Z-shape')">Z Shape</a></li>
 				<li class="divider"></li>
-				<li><a href="" ng-click="addObject('room')">Room</a></li>
+				<!-- <li><a href="" ng-click="addObject('room')">Room</a></li> -->
 				<li><a href="" ng-click="addObject('label-rect')">Labeled Rect</a></li>
 			</ul>
 		</div>
-		<!-- <button class="btn btn-primary" ng-click="addObject()">Add Object</button> -->
-		<button class="btn btn-primary" ng-click="updateEmployees()">Save (Not Working)</button>
-		<button class="btn btn-primary" ng-click="editDesks()">Lock/Unlock</button>
+		<!-- <button class="btn btn-primary" ng-click="updateEmployees()">Save (Not Working)</button> -->
+		<button class="btn btn-primary" ng-click="toggleLock()">Lock/Unlock</button>
 		<button class="btn btn-primary" ng-click="serializeCanvas()">Serialize</button>
 		<button class="btn btn-warning" ng-click="showDebugPanel = !showDebugPanel">Debug Panel</button>
 		<label >Grid <input type="checkbox" ng-model="showGrid" ng-change="toggleGrid()"></label>
 	</div>
 </div>
 <div id="floor-planner-container">
-	<floor-canvas></floor-canvas>
+	<floor-canvas ng-class="{'has-grid': showGrid}"></floor-canvas>
 
 	<div class="edit-box" ng-style="editBoxPosition" ng-click="$event.stopPropagation()">
 		

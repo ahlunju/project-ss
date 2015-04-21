@@ -129,15 +129,19 @@ body {
   width: 100%;
 }
 
-#floor-canvas {
-  background-image: url('../images/18-floor.svg');
+.has-grid {
+  .upper-canvas {
+    // background-image: url('../images/18-floor.svg'), url('../images/grid.png');
+    // background-repeat: no-repeat, repeat;
+    // background-position: 0 0, 0 0;
+    // background-size: cover, 50px 50px;
+  }
 }
-
 .upper-canvas {
-  background-image: url('../images/18-floor.svg');
-  background-repeat: no-repeat;
-  background-position: 0 0;
-  background-size: cover;
+  // background-image: url('../images/18-floor.svg');
+  // background-repeat: no-repeat;
+  // background-position: 0 0;
+  // background-size: cover;
 }
 
 .edit-box {
