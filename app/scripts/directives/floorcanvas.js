@@ -73,8 +73,8 @@ return {
 		var tempObject = {};
 		var lock = true;
 		var canvas = {};
-		var canvasWidth = 930 * 2; //Math.max(document.documentElement.clientWidth + 200 , window.innerWidth || 1000);
-		var canvasHeight = 1260 * 2; //Math.max(document.documentElement.clientHeight, window.innerHeight || 2000);
+		var canvasWidth = 1500;
+		var canvasHeight = 1500;
 		var selectedObject = {};
 		var newObjectType = {};
 		
@@ -92,17 +92,25 @@ return {
 		});
 
 		function initializeCanvas() {
+			//getBackgroundDimension();
+
 			canvas.loadFromJSON(scope.objects);
 			// drawBaseLayer('../images/18-floor.svg');
 			drawBaseLayer('../images/drawing.svg');
 		}
 
 		function drawBaseLayer (imgUrl) {
+			console.log(canvasWidth, canvasHeight);
 			fabric.Image.fromURL(imgUrl, function (img) {
+				var imgWidth = img.width;
+				var imgHeight = img.height;
 				img.left = 0;
 				img.top = 0;
 				img.selectable = false;
-				img.setWidth(canvasWidth).setHeight(canvasHeight);
+				img.setWidth(canvasWidth).setHeight(canvasWidth * (imgHeight / imgWidth));
+				// resize canvas dimension
+				canvas.setHeight(canvasWidth * (imgHeight/imgWidth));
+				console.log(canvas.width, canvas.height);
 				canvas.add(img);
 				img.sendToBack();
 			});
