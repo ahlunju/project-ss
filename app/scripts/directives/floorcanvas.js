@@ -93,7 +93,8 @@ return {
 
 		function initializeCanvas() {
 			canvas.loadFromJSON(scope.objects);
-			drawBaseLayer('../images/18-floor.svg');
+			// drawBaseLayer('../images/18-floor.svg');
+			drawBaseLayer('../images/drawing.svg');
 		}
 
 		function drawBaseLayer (imgUrl) {
