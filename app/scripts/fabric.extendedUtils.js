@@ -1,5 +1,5 @@
 // LabelRect, extension of fabric.Rect, with an additional property: label
-(function (fabric) {
+(function (fabric, global) {
 	var LabeledRect = fabric.util.createClass(fabric.Rect, {
 
 		type: 'labeledRect',
@@ -169,7 +169,12 @@
 			height: roundedHeight
 		});
 	};
-})(fabric);
+
+	// expose to global
+	var global = global;
+	global.LabeledRect = LabeledRect;
+	global.extendedSquare = extendedSquare;
+})(fabric, this);
 
 // temporary
 function drawGrid (gridSize) {
