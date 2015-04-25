@@ -95,7 +95,6 @@ return {
 			//getBackgroundDimension();
 
 			canvas.loadFromJSON(scope.objects);
-			// drawBaseLayer('../images/18-floor.svg');
 			drawBaseLayer('../images/drawing.svg');
 		}
 
@@ -331,6 +330,12 @@ return {
 						width: 100,
 						height: 50
 					});
+				} else if (newObjectType.type === 'l-desk') {
+					console.log('l-desk');
+					var newObject = new LabeledRect({
+						width: 100,
+						height: 50
+					});
 				}
 
 				newObject.fill = '#ababab';
@@ -390,6 +395,20 @@ return {
 			} else if (newObjectType.type === 'room') {
 				tempObject = createRoom({});
 			} else if (newObjectType.type === 'label-rect') {
+				tempObject = new LabeledRect({
+						width: 100,
+						height: 50,
+						// label: defaulting it
+						strokeDashArray: [5, 5],
+						stroke: '#337ab7',
+						fill: 'rgba(0,0,0,0.2)'
+					});
+			} else if (newObjectType.type === 'l-desk') {
+				fabric.loadSVGFromURL('../images/l-desk2.svg', function(objects, options) {
+					var obj = fabric.util.groupSVGElements(objects, options);
+					console.log(obj);
+					canvas.add(obj);
+				});
 				tempObject = new LabeledRect({
 						width: 100,
 						height: 50,
