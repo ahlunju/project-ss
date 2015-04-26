@@ -16,7 +16,14 @@ return {
 		/**controller variable:
 			editBoxPosition
 		**/
-
+		var complexDesk = {};
+		fabric.loadSVGFromURL('../images/l-desk2.svg', function(objects, options) {
+			complexDesk = objects;
+			var obj = new fabric.PathGroup(objects, options);
+			      canvas.add(obj);//.centerObject(obj).renderAll();
+			      obj.setCoords();
+			// var obj = fabric.util.groupSVGElements(objects, options);
+		});
 		// polygon shapes (Tetris)
 		// L-shape
 		var L = [
@@ -405,9 +412,12 @@ return {
 					});
 			} else if (newObjectType.type === 'l-desk') {
 				fabric.loadSVGFromURL('../images/l-desk2.svg', function(objects, options) {
-					var obj = fabric.util.groupSVGElements(objects, options);
+					console.log(objects);
+					var obj = new fabric.PathGroup(objects, options);
+					      canvas.add(obj).centerObject(obj).renderAll();
+					      obj.setCoords();
+					// var obj = fabric.util.groupSVGElements(objects, options);
 					console.log(obj);
-					canvas.add(obj);
 				});
 				tempObject = new LabeledRect({
 						width: 100,
