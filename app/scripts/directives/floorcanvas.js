@@ -337,7 +337,7 @@ return {
 						height: 150
 					});
 				} else if (newObjectType.type === 'label-rect') {
-					newObject = new LabeledRect({
+					newObject = new fabric.LabeledRect({
 						width: 100,
 						height: 50
 					});
@@ -346,7 +346,7 @@ return {
 					newObject = new fabric.PathGroup(complexDesk, complexDeskOptions);
 				}
 
-				newObject.fill = '#ababab';
+				newObject.fill = '#818181';
 				newObject.left = tempObject.left;
 				newObject.top = tempObject.top;
 				newObject.hasRotatingPoint = true;
@@ -404,7 +404,7 @@ return {
 			} else if (newObjectType.type === 'room') {
 				tempObject = createRoom({});
 			} else if (newObjectType.type === 'label-rect') {
-				tempObject = new LabeledRect({
+				tempObject = new fabric.LabeledRect({
 						width: 100,
 						height: 50,
 						// label: defaulting it
@@ -511,7 +511,7 @@ return {
 			if (args.toggle) {
 				//set the grid.png as background
 				canvas.setBackgroundColor({source: '../images/grid.png', repeat: 'repeat'}, function () {
-				  canvas.renderAll();
+					canvas.renderAll();
 				});
 			} else {
 				canvas.backgroundColor = 'rgb(255,255,255)';

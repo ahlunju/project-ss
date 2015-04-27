@@ -1,8 +1,8 @@
 // LabelRect, extension of fabric.Rect, with an additional property: label
 (function (fabric, global) {
-	var LabeledRect = fabric.util.createClass(fabric.Rect, {
+	fabric.LabeledRect = fabric.util.createClass(fabric.Rect, {
 
-		type: 'labeledRect',
+		type: 'labeled-rect',
 
 		initialize: function(options) {
 			options || (options = { });
@@ -34,6 +34,13 @@
 			}
 		}
 	});
+
+	fabric.LabeledRect.async = true;
+	fabric.LabeledRect.fromObject = function(object, callback) {
+		fabric.util.enlivenObjects(object, function() {
+			callback && callback(new fabric.LabeledRect(object));
+		});
+	};
 
 	var extendedSquare = fabric.util.createClass(fabric.Rect, {
 
@@ -172,7 +179,7 @@
 
 	// expose to global
 	var global = global;
-	global.LabeledRect = LabeledRect;
+	// global.LabeledRect = LabeledRect;
 	global.extendedSquare = extendedSquare;
 })(fabric, this);
 
