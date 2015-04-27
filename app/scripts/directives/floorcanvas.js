@@ -17,14 +17,17 @@ return {
 			editBoxPosition
 		**/
 		var complexDesk = {};
+		var complexDeskOptions = {};
 		fabric.loadSVGFromURL('../images/l-desk2.svg', function(objects, options) {
 			complexDesk = objects;
-			var obj = new fabric.PathGroup(objects, options);
-			      canvas.add(obj);//.centerObject(obj).renderAll();
-			      obj.setCoords();
+			complexDeskOptions = options;
+			// console.log(options);
+			// var obj = new fabric.PathGroup(objects, options);
+			//       canvas.add(obj).centerObject(obj).renderAll();
+			//       obj.setCoords();
 			// var obj = fabric.util.groupSVGElements(objects, options);
 		});
-		// polygon shapes (Tetris)
+
 		// L-shape
 		var L = [
 			{x: 0, y: 0},
@@ -77,6 +80,7 @@ return {
 			y: 0
 		};
 
+		var newObject = {};
 		var tempObject = {};
 		var lock = true;
 		var canvas = {};
@@ -297,52 +301,49 @@ return {
 			console.log('mouse down');
 			if (tempObject instanceof fabric.Object) {
 				if (newObjectType.type === 'rectangle') {
-					var newObject = new fabric.Rect({
+					newObject = new fabric.Rect({
 						width: 100,
 						height: 50
 					});
 				} else if (newObjectType.type === 'square') {
-					var newObject = new fabric.Rect({
+					newObject = new fabric.Rect({
 						width: 100,
 						height: 100
 					});
 				} else if (newObjectType.type === 'circle') {
-					var newObject = new fabric.Circle({
+					newObject = new fabric.Circle({
 						radius: 50
 					});
 				} else if (newObjectType.type === 'triangle') {
-					var newObject = new fabric.Triangle({
+					newObject = new fabric.Triangle({
 						width: 100,
 						height: 100
 					});
 				} else if (newObjectType.type === 'L-shape') {
-					var newObject = new fabric.Polygon(L, {
+					newObject = new fabric.Polygon(L, {
 						lockUniScaling: true
 					});
 				} else if (newObjectType.type === 'T-shape') {
-					var newObject = new fabric.Polygon(T, {
+					newObject = new fabric.Polygon(T, {
 						lockUniScaling: true
 					});
 				} else if (newObjectType.type === 'Z-shape') {
-					var newObject = new fabric.Polygon(Z, {
+					newObject = new fabric.Polygon(Z, {
 						lockUniScaling: true
 					});
 				} else if (newObjectType.type === 'room') {
-					var newObject = new fabric.Rect({
+					newObject = new fabric.Rect({
 						width: 300,
 						height: 150
 					});
 				} else if (newObjectType.type === 'label-rect') {
-					var newObject = new LabeledRect({
+					newObject = new LabeledRect({
 						width: 100,
 						height: 50
 					});
 				} else if (newObjectType.type === 'l-desk') {
 					console.log('l-desk');
-					var newObject = new LabeledRect({
-						width: 100,
-						height: 50
-					});
+					newObject = new fabric.PathGroup(complexDesk, complexDeskOptions);
 				}
 
 				newObject.fill = '#ababab';
@@ -365,6 +366,7 @@ return {
 			}
 
 			if (options.target && options.target.type !== 'image') {
+				console.log('clicked on something');
 				getPointerCoords(options);
 				showEditBox(pointer);
 			} else {
@@ -411,22 +413,9 @@ return {
 						fill: 'rgba(0,0,0,0.2)'
 					});
 			} else if (newObjectType.type === 'l-desk') {
-				fabric.loadSVGFromURL('../images/l-desk2.svg', function(objects, options) {
-					console.log(objects);
-					var obj = new fabric.PathGroup(objects, options);
-					      canvas.add(obj).centerObject(obj).renderAll();
-					      obj.setCoords();
-					// var obj = fabric.util.groupSVGElements(objects, options);
-					console.log(obj);
-				});
-				tempObject = new LabeledRect({
-						width: 100,
-						height: 50,
-						// label: defaulting it
-						strokeDashArray: [5, 5],
-						stroke: '#337ab7',
-						fill: 'rgba(0,0,0,0.2)'
-					});
+				console.log(complexDeskOptions);
+				console.dir(complexDesk);
+				tempObject = new fabric.PathGroup(complexDesk, complexDeskOptions);
 			}
 			
 			canvas.add(tempObject);

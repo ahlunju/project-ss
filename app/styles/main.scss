@@ -200,4 +200,6 @@ body {
 .debug {
   height: 100px;
   width: 1000px;
+  position: relative;
+  z-index: 2;
 }

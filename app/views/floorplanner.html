@@ -5,6 +5,7 @@
 	{{objects}}
 </code> -->
 <div class="debug" ng-show="showDebugPanel">
+	<button class="btn btn-warning" ng-click="showDebugPanel = !showDebugPanel">Debug Panel</button>
 	<pre>{{selectedObject.attr}}</pre>
 	<pre>{{selectedEmployee}}</pre>
 </div>
@@ -42,26 +43,41 @@
 
 	<div class="edit-box" ng-style="editBoxPosition" ng-click="$event.stopPropagation()">
 		
-		<div class="margin-top-0">
-			width: <input class="form-control" type="number" step="10" min="10" ng-disabled="true" ng-model="selectedObject.attr.width">
-			height: <input class="form-control" type="number" step="10" min="10" ng-disabled="true" ng-model="selectedObject.attr.height">
-			<button class="btn btn-success" colorpicker type="button" colorpicker-position="left" ng-model="selectedObject.attr.fill">Change Color</button><br>
-			<button class="btn btn-success" ng-click="selectedObject.updateAttr()">Update</button><br>
+		<div class="margin-top-0 form-group">
+			<div class="form-group">
+				<label for="">width: </label>
+				<input class="form-control" type="number" step="10" min="10" ng-disabled="true" ng-model="selectedObject.attr.width">
+			</div>
+			<div class="form-group">
+				<label for="">height: </label><input class="form-control" type="number" step="10" min="10" ng-disabled="true" ng-model="selectedObject.attr.height">
+			</div>
+			<div class="form-group">
+				<button class="btn btn-success" colorpicker type="button" colorpicker-position="left" ng-model="selectedObject.attr.fill">Change Color</button>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-success" ng-click="selectedObject.updateAttr()">Update</button>
 			
-			<button class="btn btn-danger" ng-click="removeObject()">Delete</button><br>
-			<ui-select ng-model="selectedEmployee.selected" theme="bootstrap" ng-disabled="disabled" >
+				<button class="btn btn-danger" ng-click="removeObject()">Delete</button>
+			</div>
+			<div class="form-group">
+				<ui-select ng-model="selectedEmployee.selected" theme="bootstrap" ng-disabled="disabled" >
 				<ui-select-match placeholder="Select or search employee...">{{$select.selected.name}}</ui-select-match>
 				<ui-select-choices repeat="employee in employees | filter: $select.search">
 					<span ng-bind-html="employee.name | highlight: $select.search"></span>
 				</ui-select-choices>
-			</ui-select>
-			<button class="btn btn-success" ng-click="selectedObject.assignEmployee()">Assign Employee</button><br>
-			<div ng-hide="!selectedObject.attr.label">
-				
-				name: <input class="form-control" type="text" ng-model="selectedObject.attr.label.name">
-				id: <input class="form-control" type="number" ng-model="selectedObject.attr.label.id">
-				department: <input class="form-control" type="text" ng-model="selectedObject.attr.label.department">
+				</ui-select>
+				<br>
+				<button class="btn btn-success" ng-click="selectedObject.assignEmployee()">Assign Employee</button>
 			</div>
+			<div class="form-group" ng-hide="!selectedObject.attr.label">
+					<label for="">name: </label>
+					<input class="form-control" type="text" ng-model="selectedObject.attr.label.name">
+					<label for="">id: </label>
+					<input class="form-control" type="number" ng-model="selectedObject.attr.label.id">
+					<label for="">department: </label>
+					<input class="form-control" type="text" ng-model="selectedObject.attr.label.department">
+			</div>
+			
 			
 		</div>
 	</div>
