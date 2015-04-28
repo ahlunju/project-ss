@@ -68,7 +68,17 @@
 		}
 	});
 
+	// Monkey patch fabric.Object.prototype.toObject with custom label attribute
+	fabric.Object.prototype.toObject = (function (toObject) {
+		return function () {
+			return fabric.util.object.extend(toObject.call(this), {
+				label: this.get('label')
+			});
+		};
+	})(fabric.Object.prototype.toObject);
+	
 	// customise fabric.Object with a method to resize rather than just scale after tranformation
+
 	fabric.Object.prototype.resizeToScale = function () {
 		// resizes an object that has been scaled (e.g. by manipulating the handles), setting scale to 1 and recalculating bounding box where necessary
 		switch (this.type) {
@@ -98,7 +108,7 @@
 				var points = this.get('points');
 				for (var i = 0; i < points.length; i++) {
 					var p = points[i];
-					p.x *= this.scaleX
+					p.x *= this.scaleX;
 					p.y *= this.scaleY;
 				}
 				this.scaleX = 1;
