@@ -150,7 +150,7 @@ return {
 		}
 
 		function createSquare(config) {
-			return new fabric.Rect({
+			return new fabric.ExtendedSquare({
 				fill: config.fill || 'rgba(0,0,0,0.2)',
 				width: 100,
 				height: 100,
@@ -306,7 +306,7 @@ return {
 						height: 50
 					});
 				} else if (newObjectType.type === 'square') {
-					newObject = new fabric.Rect({
+					newObject = new fabric.ExtendedSquare({
 						width: 100,
 						height: 100
 					});

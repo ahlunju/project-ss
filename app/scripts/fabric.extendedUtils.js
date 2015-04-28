@@ -1,5 +1,5 @@
 // LabelRect, extension of fabric.Rect, with an additional property: label
-(function (fabric, global) {
+(function (fabric) {
 	fabric.LabeledRect = fabric.util.createClass(fabric.Rect, {
 
 		type: 'labeled-rect',
@@ -42,9 +42,9 @@
 		});
 	};
 
-	var extendedSquare = fabric.util.createClass(fabric.Rect, {
+	fabric.ExtendedSquare = fabric.util.createClass(fabric.Rect, {
 
-		type: 'extendedSquare',
+		type: 'extended-square',
 
 		initialize: function(options) {
 			options || (options = { });
@@ -62,9 +62,11 @@
 		_render: function(ctx) {
 			this.callSuper('_render', ctx);
 
-			ctx.font = '20px Helvetica';
+			ctx.font = '16px Helvetica';
 			ctx.fillStyle = '#333';
-			ctx.fillText(this.label, -this.width/2, -this.height/2 + 20);
+			if (this.label.name) {
+				ctx.fillText(this.label.name, -this.width/2, -this.height/2 + 20);
+			}
 		}
 	});
 
@@ -78,7 +80,7 @@
 	})(fabric.Object.prototype.toObject);
 	
 	// customise fabric.Object with a method to resize rather than just scale after tranformation
-
+	
 	fabric.Object.prototype.resizeToScale = function () {
 		// resizes an object that has been scaled (e.g. by manipulating the handles), setting scale to 1 and recalculating bounding box where necessary
 		switch (this.type) {
@@ -187,11 +189,7 @@
 		});
 	};
 
-	// expose to global
-	var global = global;
-	// global.LabeledRect = LabeledRect;
-	global.extendedSquare = extendedSquare;
-})(fabric, this);
+})(fabric);
 
 // temporary
 function drawGrid (gridSize) {
