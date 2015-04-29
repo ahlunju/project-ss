@@ -10,33 +10,9 @@
 angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPlanService, $scope, $http) {
 	$scope.selectedEmployee = {};
 	// $scope.getEmployees(); // use local data for now
-	$scope.employees = [
-		{
-			"name": "Yalun Zhu",
-			"id": 0,
-			"department": 'Developer'
-		},
-		{
-			"name": "Jon Snow",
-			"id": 1,
-			"department": 'HR'
-		},
-		{
-			"name": "Hello World",
-			"id": 2,
-			"department": 'QA'
-		},
-		{
-			"name": "Tony Stark",
-			"id": 3,
-			"department": 'PM'
-		},
-		{
-			"name": "Ned Stark",
-			"id": 4,
-			"department": 'Customer Service'
-		}
-	];
+	$http.get('/data/employees.json').success(function (data) {
+		$scope.employees = data;
+	});
 
 	$scope.objects = {
 		"objects": [],
