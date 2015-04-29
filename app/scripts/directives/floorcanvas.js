@@ -104,7 +104,6 @@ return {
 
 		function initializeCanvas() {
 			//getBackgroundDimension();
-
 			canvas.loadFromJSON(scope.objects);
 			drawBaseLayer('../images/drawing.svg');
 		}
@@ -526,7 +525,7 @@ return {
 
 		scope.$on('serializeCanvas', serializeCanvas);
 
-		initializeCanvas();
+		scope.$on('initializeCanvas', initializeCanvas);
 	}
 };
 });
