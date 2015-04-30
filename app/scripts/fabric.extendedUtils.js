@@ -280,7 +280,7 @@
 		});
 	}
 
-	function createPolygon(config, type) {
+	Ss.createPolygon = function (config, type) {
 		return new fabric.Polygon(type, {
 			fill: config.fill || 'rgba(0,0,0,0.2)',
 			stroke: '#337ab7',

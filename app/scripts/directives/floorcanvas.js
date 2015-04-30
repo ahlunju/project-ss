@@ -27,9 +27,8 @@ return {
 			//       obj.setCoords();
 			// var obj = fabric.util.groupSVGElements(objects, options);
 		});
-		var group = [];
+
 		var gridSize = 10;
-		var gridGroup = null;
 		var pointer = {
 			x: 0,
 			y: 0
@@ -58,7 +57,6 @@ return {
 		});
 
 		function initializeCanvas() {
-			//getBackgroundDimension();
 			canvas.loadFromJSON(scope.objects);
 			drawBaseLayer('../images/drawing.svg');
 		}
@@ -128,10 +126,6 @@ return {
 			options.target.setShadow(Ss.shadow);
 		}
 
-		function resizeObject (object) {
-
-		}
-
 		function onObjectModified (options) {
 			console.log('object modified');
 			// modified fires after object has been rotated
@@ -146,7 +140,6 @@ return {
 		}
 
 		function onObjectSelected (options) {
-
 			options.target.bringToFront();
 			//store selected Object
 			selectedObject = options.target;
@@ -269,19 +262,19 @@ return {
 					// config
 				});
 			} else if (newObjectType.type === 'square') {
-				tempObject = createSquare({
+				tempObject = Ss.createSquare({
 					//x:pointer.x, y: pointer.y
 				});
 			} else if (newObjectType.type === 'circle') {
-				tempObject = createCircle({});
+				tempObject = Ss.createCircle({});
 			} else if (newObjectType.type === 'triangle') {
-				tempObject = createTriangle({});
+				tempObject = Ss.createTriangle({});
 			} else if (newObjectType.type === 'T-shape') {
-				tempObject = createPolygon({}, Ss.T);
+				tempObject = Ss.createPolygon({}, Ss.T);
 			} else if (newObjectType.type === 'L-shape') {
-				tempObject = createPolygon({}, Ss.L);
+				tempObject = Ss.createPolygon({}, Ss.L);
 			} else if (newObjectType.type === 'Z-shape') {
-				tempObject = createPolygon({}, Ss.Z);
+				tempObject = Ss.createPolygon({}, Ss.Z);
 			} else if (newObjectType.type === 'label-rect') {
 				tempObject = new fabric.LabeledRect({
 						width: 100,
