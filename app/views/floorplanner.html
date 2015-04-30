@@ -7,7 +7,7 @@
 <div class="debug" ng-show="showDebugPanel">
 	<button class="btn btn-warning" ng-click="showDebugPanel = !showDebugPanel">Debug Panel</button>
 	<pre>{{selectedObject.attr}}</pre>
-	<pre>{{selectedEmployee}}</pre>
+	<!-- <pre>{{selectedEmployee}}</pre> -->
 </div>
 
 <div id="floor-map-controls-container">
@@ -35,7 +35,13 @@
 		<button class="btn btn-primary" ng-click="toggleLock()">Lock/Unlock</button>
 		<button class="btn btn-primary" ng-click="serializeCanvas()">Serialize</button>
 		<button class="btn btn-warning" ng-click="showDebugPanel = !showDebugPanel">Debug Panel</button>
+		<button class="btn glyphicon glyphicon-refresh" ng-click="rotateCanvas()"></button>
+		<button class="btn glyphicon glyphicon-fullscreen" ng-click="toggleFullScreen()"></button>
 		<label >Grid <input type="checkbox" ng-model="showGrid" ng-change="toggleGrid()"></label>
+		<p class="pull-right">
+			<label for="">total desks: </label>
+			<span>{{totalObjects}}</span>
+		</p>
 	</div>
 </div>
 <div id="floor-planner-container">

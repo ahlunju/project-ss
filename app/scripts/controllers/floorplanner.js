@@ -22,6 +22,7 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 	$http.get('/data/desks.json').success(function (data) {
 		console.dir(data);
 		$scope.objects.objects = data;
+		$scope.totalObjects = data.length;
 		$scope.$broadcast('initializeCanvas');
 	}).error(function (error) {
 		console.log(error);
@@ -51,6 +52,14 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 
 	$scope.toggleGrid = function () {
 		$scope.$broadcast('toggleGrid', {toggle: $scope.showGrid});
+	};
+
+	$scope.toggleFullScreen = function () {
+		$scope.$broadcast('toggleFullScreen');
+	};
+
+	$scope.rotateCanvas = function () {
+		$scope.$broadcast('rotateCanvas');
 	};
 
 	$scope.removeObject = function () {

@@ -27,54 +27,9 @@ return {
 			//       obj.setCoords();
 			// var obj = fabric.util.groupSVGElements(objects, options);
 		});
-
-		// L-shape
-		var L = [
-			{x: 0, y: 0},
-			{x: 50, y: 0},
-			{x: 50, y: 100},
-			{x: 100, y: 100},
-			{x: 100, y: 150},
-			{x: 0, y: 150}
-		];
-
-		var T = [
-			{x: 50, y: 0},
-			{x: 100, y: 0},
-			{x: 100, y: 50},
-			{x: 150, y: 50},
-			{x: 150, y: 100},
-			{x: 0, y: 100},
-			{x: 0, y: 50},
-			{x: 50, y: 50}
-		];
-
-		var Z = [
-			{x: 0, y: 0},
-			{x: 100, y: 0},
-			{x: 100, y: 50},
-			{x: 150, y: 50},
-			{x: 150, y: 100},
-			{x: 50, y: 100},
-			{x: 50, y: 50},
-			{x: 0, y: 50}
-		];
-
-		var shadow = {
-			color: 'rgba(0,0,0,0.6)',
-			blur: 20,
-			offsetX: 0,
-			offsetY: 5,
-			opacity: 0.6,
-			fillShadow: true,
-			strokeShadow: true
-		};
-
 		var group = [];
 		var gridSize = 10;
 		var gridGroup = null;
-		var mouseX = 0;
-		var mouseY = 0;
 		var pointer = {
 			x: 0,
 			y: 0
@@ -124,77 +79,6 @@ return {
 				img.sendToBack();
 			});
 		}
-		
-		function createRect(config) {
-			return new fabric.Rect({
-				fill: config.fill || 'rgba(0,0,0,0.2)',
-				width: 100,
-				height: 50,
-				stroke: '#337ab7',
-				hasRotatingPoint:false,
-				strokeDashArray: [5, 5]
-			});
-		}
-
-		function createRoom(config) {
-			return new fabric.Rect({
-				fill: null,
-				width: 300,
-				height: 150,
-				stroke: '#D725D3',
-				hasRotatingPoint:false,
-				strokeDashArray: [5, 5],
-				evented: false
-			});
-		}
-
-		function createSquare(config) {
-			return new fabric.ExtendedSquare({
-				fill: config.fill || 'rgba(0,0,0,0.2)',
-				width: 100,
-				height: 100,
-				stroke: '#337ab7',
-				hasRotatingPoint:false,
-				strokeDashArray: [5, 5]
-			});
-		}
-
-		function createCircle(config) {
-			return new fabric.Circle({
-				fill: config.fill || 'rgba(0,0,0,0.2)',
-				radius: 50,
-				stroke: '#337ab7',
-				hasRotatingPoint:false,
-				strokeDashArray: [5, 5]
-			});
-		}
-
-		function createTriangle(config) {
-			return new fabric.Triangle({
-				fill: config.fill || 'rgba(0,0,0,0.2)',
-				width: 100,
-				height: 100,
-				stroke: '#337ab7',
-				hasRotatingPoint:false,
-				strokeDashArray: [5, 5]
-			});
-		}
-
-		function createPolygon(config, type) {
-			return new fabric.Polygon(type, {
-				fill: config.fill || 'rgba(0,0,0,0.2)',
-				stroke: '#337ab7',
-				hasRotatingPoint:false,
-				strokeDashArray: [5, 5]
-			});
-		}
-
-		function getMouse (options) {
-			//console.log(options);// you can check all options here
-			mouseX = options.e.clientX;
-			mouseY = options.e.clientY;
-			console.log(options.e.clientX, options.e.clientY);
-		}
 
 		function getPointerCoords(options) {
 			pointer = canvas.getPointer(options.e);
@@ -206,8 +90,6 @@ return {
 			// scope.editBoxPosition.left = position.x + 100 + 'px';
 			scope.editBoxPosition.display = 'block';
 			scope.$apply();
-
-
 		}
 
 		function hideEditBox () {
@@ -243,7 +125,7 @@ return {
 			getPointerCoords(options);
 			// updateEditBoxPosition(pointer);
 
-			options.target.setShadow(shadow);
+			options.target.setShadow(Ss.shadow);
 		}
 
 		function resizeObject (object) {
@@ -319,15 +201,15 @@ return {
 						height: 100
 					});
 				} else if (newObjectType.type === 'L-shape') {
-					newObject = new fabric.Polygon(L, {
+					newObject = new fabric.Polygon(Ss.L, {
 						lockUniScaling: true
 					});
 				} else if (newObjectType.type === 'T-shape') {
-					newObject = new fabric.Polygon(T, {
+					newObject = new fabric.Polygon(Ss.T, {
 						lockUniScaling: true
 					});
 				} else if (newObjectType.type === 'Z-shape') {
-					newObject = new fabric.Polygon(Z, {
+					newObject = new fabric.Polygon(Ss.Z, {
 						lockUniScaling: true
 					});
 				} else if (newObjectType.type === 'room') {
@@ -383,7 +265,7 @@ return {
 				return false;
 			}
 			if (newObjectType.type === 'rectangle') {
-				tempObject = createRect({
+				tempObject = Ss.createRect({
 					// config
 				});
 			} else if (newObjectType.type === 'square') {
@@ -395,13 +277,11 @@ return {
 			} else if (newObjectType.type === 'triangle') {
 				tempObject = createTriangle({});
 			} else if (newObjectType.type === 'T-shape') {
-				tempObject = createPolygon({}, T);
+				tempObject = createPolygon({}, Ss.T);
 			} else if (newObjectType.type === 'L-shape') {
-				tempObject = createPolygon({}, L);
+				tempObject = createPolygon({}, Ss.L);
 			} else if (newObjectType.type === 'Z-shape') {
-				tempObject = createPolygon({}, Z);
-			} else if (newObjectType.type === 'room') {
-				tempObject = createRoom({});
+				tempObject = createPolygon({}, Ss.Z);
 			} else if (newObjectType.type === 'label-rect') {
 				tempObject = new fabric.LabeledRect({
 						width: 100,

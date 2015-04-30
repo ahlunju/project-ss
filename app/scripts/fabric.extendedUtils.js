@@ -191,6 +191,108 @@
 
 })(fabric);
 
+
+// generic points for polygon shapes
+(function (global) {
+	// L-shape
+	var Ss = {};
+	Ss.L = [
+		{x: 0, y: 0},
+		{x: 50, y: 0},
+		{x: 50, y: 100},
+		{x: 100, y: 100},
+		{x: 100, y: 150},
+		{x: 0, y: 150}
+	];
+
+	Ss.T = [
+		{x: 50, y: 0},
+		{x: 100, y: 0},
+		{x: 100, y: 50},
+		{x: 150, y: 50},
+		{x: 150, y: 100},
+		{x: 0, y: 100},
+		{x: 0, y: 50},
+		{x: 50, y: 50}
+	];
+
+	Ss.Z = [
+		{x: 0, y: 0},
+		{x: 100, y: 0},
+		{x: 100, y: 50},
+		{x: 150, y: 50},
+		{x: 150, y: 100},
+		{x: 50, y: 100},
+		{x: 50, y: 50},
+		{x: 0, y: 50}
+	];
+
+	Ss.shadow = {
+		color: 'rgba(0,0,0,0.6)',
+		blur: 20,
+		offsetX: 0,
+		offsetY: 5,
+		opacity: 0.6,
+		fillShadow: true,
+		strokeShadow: true
+	};
+
+	Ss.createRect = function (config) {
+		return new fabric.Rect({
+			fill: config.fill || 'rgba(0,0,0,0.2)',
+			width: 100,
+			height: 50,
+			stroke: '#337ab7',
+			hasRotatingPoint:false,
+			strokeDashArray: [5, 5]
+		});
+	}
+
+	Ss.createSquare = function (config) {
+		return new fabric.ExtendedSquare({
+			fill: config.fill || 'rgba(0,0,0,0.2)',
+			width: 100,
+			height: 100,
+			stroke: '#337ab7',
+			hasRotatingPoint:false,
+			strokeDashArray: [5, 5]
+		});
+	}
+
+	Ss.createCircle = function (config) {
+		return new fabric.Circle({
+			fill: config.fill || 'rgba(0,0,0,0.2)',
+			radius: 50,
+			stroke: '#337ab7',
+			hasRotatingPoint:false,
+			strokeDashArray: [5, 5]
+		});
+	}
+
+	Ss.createTriangle = function (config) {
+		return new fabric.Triangle({
+			fill: config.fill || 'rgba(0,0,0,0.2)',
+			width: 100,
+			height: 100,
+			stroke: '#337ab7',
+			hasRotatingPoint:false,
+			strokeDashArray: [5, 5]
+		});
+	}
+
+	function createPolygon(config, type) {
+		return new fabric.Polygon(type, {
+			fill: config.fill || 'rgba(0,0,0,0.2)',
+			stroke: '#337ab7',
+			hasRotatingPoint:false,
+			strokeDashArray: [5, 5]
+		});
+	}
+
+	global.Ss = Ss;
+})(this);
+
+
 // temporary
 function drawGrid (gridSize) {
 	var w = canvas.width,
