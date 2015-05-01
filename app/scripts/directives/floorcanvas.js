@@ -45,6 +45,7 @@ return {
 		
 		var lastClosestAngle = 0; // rotation increment of 10 deg
 		var snapAfterRotate = false;
+		var baseLayer;
 
 		canvas = new fabric.Canvas('floor-canvas', {
 			backgroundColor: 'rgb(255,255,255)',
@@ -62,8 +63,8 @@ return {
 		}
 
 		function drawBaseLayer (imgUrl) {
-			console.log(canvasWidth, canvasHeight);
 			fabric.Image.fromURL(imgUrl, function (img) {
+				baseLayer = img;
 				var imgWidth = img.width;
 				var imgHeight = img.height;
 				img.left = 0;
@@ -75,6 +76,7 @@ return {
 				console.log(canvas.width, canvas.height);
 				canvas.add(img);
 				img.sendToBack();
+				return img;
 			});
 		}
 
@@ -399,6 +401,24 @@ return {
 		scope.$on('serializeCanvas', serializeCanvas);
 
 		scope.$on('initializeCanvas', initializeCanvas);
+
+		scope.$on('toggleFullScreen', toggleFullScreen);
+
+		function toggleFullScreen (event, args) {
+			var aspectRatio = baseLayer.height/ baseLayer.width;
+			if (args.maximize) {
+				console.log('maximize');
+				var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+				// var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+				
+				baseLayer.setWidth(w).setHeight(w * aspectRatio);
+				canvas.setWidth(w).setHeight(w * aspectRatio);
+			} else {
+				console.log('original size');
+				baseLayer.setWidth(canvasWidth).setHeight(canvasWidth * aspectRatio);
+				canvas.setWidth(canvasWidth).setHeight(canvasWidth * aspectRatio);
+			}
+		}
 	}
 };
 });

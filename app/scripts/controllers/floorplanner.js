@@ -54,8 +54,10 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 		$scope.$broadcast('toggleGrid', {toggle: $scope.showGrid});
 	};
 
+	$scope.fullScreen = false;
 	$scope.toggleFullScreen = function () {
-		$scope.$broadcast('toggleFullScreen');
+		$scope.fullScreen = !$scope.fullScreen;
+		$scope.$broadcast('toggleFullScreen', {maximize: $scope.fullScreen});
 	};
 
 	$scope.rotateCanvas = function () {
