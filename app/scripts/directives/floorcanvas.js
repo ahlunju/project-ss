@@ -13,19 +13,11 @@ return {
 	restrict: 'E',
 	link: function postLink (scope, element, attrs) {
 		
-		/**controller variable:
-			editBoxPosition
-		**/
 		var complexDesk = {};
 		var complexDeskOptions = {};
 		fabric.loadSVGFromURL('../images/l-desk2.svg', function(objects, options) {
 			complexDesk = objects;
 			complexDeskOptions = options;
-			// console.log(options);
-			// var obj = new fabric.PathGroup(objects, options);
-			//       canvas.add(obj).centerObject(obj).renderAll();
-			//       obj.setCoords();
-			// var obj = fabric.util.groupSVGElements(objects, options);
 		});
 
 		var gridSize = 10;
@@ -46,7 +38,7 @@ return {
 		var lastClosestAngle = 0; // rotation increment of 10 deg
 		var snapAfterRotate = false;
 		var baseLayer;
-
+		var canvasScale = 1;
 		canvas = new fabric.Canvas('floor-canvas', {
 			backgroundColor: 'rgb(255,255,255)',
 			selectionColor: 'rgba(100,200,200, 0.5)',
@@ -404,20 +396,33 @@ return {
 
 		scope.$on('toggleFullScreen', toggleFullScreen);
 
+		function scaleObjects (scale) {
+			var objs = canvas.getObjects().map(function(o) {
+				o.scaleX *= scale;
+				o.scaleY *= scale;
+			});
+
+		}
+
 		function toggleFullScreen (event, args) {
 			var aspectRatio = baseLayer.height/ baseLayer.width;
+			var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+			
 			if (args.maximize) {
 				console.log('maximize');
-				var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-				// var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-				
 				baseLayer.setWidth(w).setHeight(w * aspectRatio);
 				canvas.setWidth(w).setHeight(w * aspectRatio);
+				canvasScale = w / canvasWidth;
+
 			} else {
 				console.log('original size');
 				baseLayer.setWidth(canvasWidth).setHeight(canvasWidth * aspectRatio);
 				canvas.setWidth(canvasWidth).setHeight(canvasWidth * aspectRatio);
+				canvasScale = canvasWidth / w;
 			}
+			console.log(canvasScale);
+			scaleObjects(canvasScale);
+			canvas.renderAll();
 		}
 	}
 };
