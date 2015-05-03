@@ -22,7 +22,6 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 	$http.get('/data/desks.json').success(function (data) {
 		console.dir(data);
 		$scope.desks.objects = data;
-		$scope.totalObjects = data.length;
 		$scope.$broadcast('initializeCanvas');
 	}).error(function (error) {
 		console.log(error);
