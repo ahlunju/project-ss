@@ -50,7 +50,7 @@ return {
 		});
 
 		function initializeCanvas() {
-			canvas.loadFromJSON(scope.objects);
+			canvas.loadFromJSON(scope.desks);
 			drawBaseLayer('../images/drawing.svg');
 		}
 
