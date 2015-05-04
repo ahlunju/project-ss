@@ -307,10 +307,9 @@ return {
 		function serializeCanvas () {
 			canvas.remove(baseLayer);
 			scope.desks = canvas.toObject();
-			canvas.add(baseLayer);
-			console.dir(scope.desks.objects);
-			console.log(scope.desks.objects.length);
+			// canvas.add(baseLayer);
 
+			initializeCanvas();
 			// var allObjects = JSON.stringify(canvas);
 			// console.dir(allObjects);
 		}
