@@ -13,6 +13,7 @@
 <div id="floor-map-controls-container">
 	<div class="form-group" id="floor-map-controls">
 		<div class="btn-group" dropdown is-open="status.isopen">
+			
 			<button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle ng-disabled="disabled">
 				Add <span class="caret"></span>
 			</button>
@@ -37,6 +38,15 @@
 		<button class="btn glyphicon glyphicon-refresh" ng-click="rotateCanvas()"></button>
 		<button class="btn glyphicon glyphicon-fullscreen" ng-click="toggleFullScreen()"></button>
 		<label >Grid <input type="checkbox" ng-model="showGrid" ng-change="toggleGrid()"></label>
+		<div class="form-group pull-right employee-search">
+			<ui-select ng-model="searchEmployee.selected" on-select="onEmployeeSearch($item, $model)" theme="bootstrap" ng-disabled="disabled" >
+			<ui-select-match placeholder="Select or search employee...">{{$select.selected.name}}</ui-select-match>
+			<ui-select-choices repeat="employee in employees | filter: $select.search">
+				<span ng-bind-html="employee.name | highlight: $select.search"></span>
+			</ui-select-choices>
+			</ui-select>
+			<br>
+		</div>
 		<p class="pull-right">
 			<label for="">total desks: </label>
 			<span>{{desks.objects.length}}</span>

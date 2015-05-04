@@ -7,8 +7,15 @@
  * # FloorplannerCtrl
  * Controller of the projectSsApp
  */
-angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPlanService, $scope, $http) {
+angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPlanService, $rootScope, $scope, $http) {
 	$scope.selectedEmployee = {};
+
+	$scope.searchEmployee = {};
+
+	$scope.onEmployeeSearch = function (model) {
+		$scope.$broadcast('searchEmployee', {employee: model});
+	};
+
 	// $scope.getEmployees(); // use local data for now
 	$http.get('/data/employees.json').success(function (data) {
 		$scope.employees = data;

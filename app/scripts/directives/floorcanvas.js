@@ -399,6 +399,24 @@ return {
 
 		scope.$on('toggleFullScreen', toggleFullScreen);
 
+		scope.$on('searchEmployee', searchEmployee);
+
+		function searchEmployee (event, args) {
+			var employeeId = args.employee.id;
+			var objs = canvas.getObjects();
+			for (var i = 0; i < objs.length; i++) {
+				if (objs[i].label && objs[i].label.id === employeeId) {
+					console.log(objs[i]);
+					highlightDesk(objs[i]);
+				}
+			}
+		}
+
+		function highlightDesk (desk) {
+			desk.fill = '#bada55';
+			canvas.renderAll();
+		}
+
 		function scaleObjects (scale) {
 			var objs = canvas.getObjects().map(function(o) {
 				o.scaleX *= scale;
