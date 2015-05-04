@@ -408,6 +408,9 @@ return {
 				if (objs[i].label && objs[i].label.id === employeeId) {
 					console.log(objs[i]);
 					highlightDesk(objs[i]);
+				} else {
+					objs[i].fill = '#818181';
+					canvas.renderAll();
 				}
 			}
 		}
