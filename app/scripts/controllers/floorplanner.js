@@ -95,7 +95,7 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 			if ($scope.selectedEmployee.selected) {
 				this.attr.label = angular.copy($scope.selectedEmployee.selected);
 				var index = $scope.employees.indexOf($scope.selectedEmployee.selected.id)
-				$scope.employees.splice(index, 1);
+				// $scope.employees.splice(index, 1);
 				$scope.reRenderCanvas();
 			}
 		}

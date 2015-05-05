@@ -360,6 +360,16 @@ return {
 
 		canvas.on('mouse:up', onMouseUp);
 
+		canvas.on('mouse:over', function(e) {
+			e.target.setFill('orange');
+			canvas.renderAll();
+		});
+
+		canvas.on('mouse:out', function(e) {
+			e.target.setFill('#818181');
+			canvas.renderAll();
+		});
+
 		// selection event
 		canvas.on('before:selection:cleared', beforeSelectionCleared);
 
@@ -408,14 +418,14 @@ return {
 					console.log(objs[i]);
 					highlightDesk(objs[i]);
 				} else {
-					objs[i].fill = '#818181';
+					objs[i].setFill('#818181');
 					canvas.renderAll();
 				}
 			}
 		}
 
 		function highlightDesk (desk) {
-			desk.fill = '#bada55';
+			desk.setFill('#bada55');
 			canvas.renderAll();
 		}
 
