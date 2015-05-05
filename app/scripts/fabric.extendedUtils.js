@@ -26,11 +26,16 @@
 
 		_render: function(ctx) {
 			this.callSuper('_render', ctx);
-
+			console.log(ctx);
 			ctx.font = '16px Helvetica';
-			ctx.fillStyle = '#333';
+			ctx.fillStyle = '#fff';
+			ctx.shadowColor = 'rgba(0,0,0, 0.75)';
+			ctx.shadowBlur = 2;
+			ctx.strokeShadow= true;
+			ctx.shadowOffsetX = 1;
+			ctx.shadowOffsetY = 1;
 			if (this.label.name) {
-				ctx.fillText(this.label.name, -this.width/2, -this.height/2 + 20);
+				ctx.fillText(this.label.name, -this.width/2 +5 , -this.height/2 + 20);
 			}
 		}
 	});

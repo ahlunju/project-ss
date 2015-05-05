@@ -361,12 +361,12 @@ return {
 		canvas.on('mouse:up', onMouseUp);
 
 		canvas.on('mouse:over', function(e) {
-			e.target.setFill('orange');
+			e.target.setOpacity(0.75);
 			canvas.renderAll();
 		});
 
 		canvas.on('mouse:out', function(e) {
-			e.target.setFill('#818181');
+			e.target.setOpacity(1);
 			canvas.renderAll();
 		});
 
