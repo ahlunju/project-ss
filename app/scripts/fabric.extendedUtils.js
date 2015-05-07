@@ -14,7 +14,6 @@
 			this.callSuper('initialize', options);
 			// this.set('label', options.label || '');
 			this.set('label', options.label || person);
-			console.log(this.get('label'));
 		},
 
 		toObject: function() {
@@ -24,9 +23,23 @@
 			});
 		},
 
+		toSVG: function() {
+			return this.callSuper('toSVG') +
+
+				new fabric.Text(this.label.name || '',{
+					originX: 'left',
+					originY: 'top',
+					left: this.left - this.width/2 +5,
+					top: this.top - this.height/2 + 20,
+					fontSize: 16,
+					fill: '#fff',
+					fontFamily: 'Helvetica',
+					shadow: 'rgba(0,0,0, 0.75) 1px 1px 1px'
+				}).toSVG();
+		},
+
 		_render: function(ctx) {
 			this.callSuper('_render', ctx);
-			console.log(ctx);
 			ctx.font = '16px Helvetica';
 			ctx.fillStyle = '#fff';
 			ctx.shadowColor = 'rgba(0,0,0, 0.75)';

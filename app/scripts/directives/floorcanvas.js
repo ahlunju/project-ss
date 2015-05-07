@@ -314,6 +314,12 @@ return {
 			// console.dir(allObjects);
 		}
 
+		function convertSVG () {
+			// scope.floorPlan = canvas.toSVG();
+			var floorPlan = canvas.toSVG();
+			document.body.insertAdjacentHTML('afterbegin', floorPlan);
+		}
+
 		function onObjectAdded () {
 
 		}
@@ -361,12 +367,12 @@ return {
 		canvas.on('mouse:up', onMouseUp);
 
 		canvas.on('mouse:over', function(e) {
-			e.target.setOpacity(0.75);
+			e.target.setFill('rgba(129, 129, 129, 0.75)');
 			canvas.renderAll();
 		});
 
 		canvas.on('mouse:out', function(e) {
-			e.target.setOpacity(1);
+			e.target.setFill('#818181');
 			canvas.renderAll();
 		});
 
@@ -404,6 +410,7 @@ return {
 
 		scope.$on('serializeCanvas', serializeCanvas);
 
+		scope.$on('convertSVG', convertSVG);
 		scope.$on('initializeCanvas', initializeCanvas);
 
 		scope.$on('toggleFullScreen', toggleFullScreen);

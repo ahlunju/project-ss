@@ -9,6 +9,7 @@
 	<pre>{{selectedObject.attr}}</pre>
 	<!-- <pre>{{selectedEmployee}}</pre> -->
 	<!-- {{desks}} -->
+	{{floorPlan}}
 </div>
 
 <div id="floor-map-controls-container">
@@ -35,6 +36,7 @@
 		<!-- <button class="btn btn-primary" ng-click="updateEmployees()">Save (Not Working)</button> -->
 		<button class="btn btn-primary" ng-click="toggleLock()">Lock/Unlock</button>
 		<button class="btn btn-primary" ng-click="serializeCanvas()">Save (Serialize)</button>
+		<button class="btn btn-primary" ng-click="convertSVG()">Convert to SVG</button>
 		<button class="btn btn-warning" ng-click="showDebugPanel = !showDebugPanel">Debug Panel</button>
 		<button class="btn glyphicon glyphicon-refresh" ng-click="rotateCanvas()"></button>
 		<button class="btn glyphicon glyphicon-fullscreen" ng-click="toggleFullScreen()"></button>

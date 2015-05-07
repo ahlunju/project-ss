@@ -21,6 +21,8 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 		$scope.employees = data;
 	});
 
+	$scope.floorPlan;
+	
 	$scope.desks = {
 		"objects": [],
 		"background":"rgb(255,255,255)"
@@ -77,6 +79,10 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 
 	$scope.serializeCanvas = function () {
 		$scope.$broadcast('serializeCanvas');
+	};
+
+	$scope.convertSVG = function () {
+		$scope.$broadcast('convertSVG');
 	};
 
 	$scope.reRenderCanvas = function () {
