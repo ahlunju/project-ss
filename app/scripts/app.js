@@ -21,25 +21,15 @@ angular
     'ui.bootstrap',
     'colorpicker.module'
   ])
-  .config(function ($routeProvider) {
-    $routeProvider
-      // .when('/', {
-      //   templateUrl: 'views/floorplanner.html',
-      //   controller: 'FloorplannerCtrl'
-      // })
-      .when('/home', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
-      })
-      .when('/floor-plan', {
-        templateUrl: 'views/floorplan.html',
-        controller: 'FloorplanCtrl'
-      })
-      .when('/floor-planner', {
-        templateUrl: 'views/floorplanner.html',
-        controller: 'FloorplannerCtrl'
-      })
-      .otherwise({
-        redirectTo: '/floor-planner'
-      });
+  .config(function ($routeProvider, $stateProvider) {
+    $stateProvider.state('home', {
+      url: '/',
+      templateUrl: 'views/floorplanner.html',
+      controller: 'FloorplannerCtrl'
+    });
+    $stateProvider.state('floor-planner', {
+      url: '/floor-planner',
+      templateUrl: 'views/floorplanner.html',
+      controller: 'FloorplannerCtrl'
+    });
   });
