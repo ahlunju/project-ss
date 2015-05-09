@@ -39,7 +39,9 @@ return {
 		var snapAfterRotate = false;
 		var baseLayer;
 		var canvasScale = 1;
-		canvas = new fabric.Canvas('floor-canvas', {
+
+		//canvas = new fabric.Canvas('floor-canvas', {
+		canvas = new fabric.CanvasWithViewport('floor-canvas', {
 			backgroundColor: 'rgb(255,255,255)',
 			selectionColor: 'rgba(100,200,200, 0.5)',
 			selectionLineWidth: 2,
@@ -47,8 +49,11 @@ return {
 			height: canvasHeight,
 			renderOnAddRemove: false, //increase performance
 			selection: false //disable group selection
+
 		});
 
+		canvas.isGrabMode = true;
+		
 		function initializeCanvas() {
 			canvas.loadFromJSON(scope.desks);
 			drawBaseLayer('../images/drawing.svg');
@@ -413,37 +418,6 @@ return {
 		scope.$on('convertSVG', convertSVG);
 		scope.$on('initializeCanvas', initializeCanvas);
 
-		scope.$on('toggleFullScreen', toggleFullScreen);
-
-		scope.$on('searchEmployee', searchEmployee);
-
-		function searchEmployee (event, args) {
-			var employeeId = args.employee.id;
-			var objs = canvas.getObjects();
-			for (var i = 0; i < objs.length; i++) {
-				if (objs[i].label && objs[i].label.id === employeeId) {
-					console.log(objs[i]);
-					highlightDesk(objs[i]);
-				} else {
-					objs[i].setFill('#818181');
-					canvas.renderAll();
-				}
-			}
-		}
-
-		function highlightDesk (desk) {
-			desk.setFill('#bada55');
-			canvas.renderAll();
-		}
-
-		function scaleObjects (scale) {
-			var objs = canvas.getObjects().map(function(o) {
-				o.scaleX *= scale;
-				o.scaleY *= scale;
-			});
-
-		}
-
 		function toggleFullScreen (event, args) {
 			var aspectRatio = baseLayer.height/ baseLayer.width;
 			var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -463,6 +437,37 @@ return {
 			console.log(canvasScale);
 			scaleObjects(canvasScale);
 			canvas.renderAll();
+		}
+
+		scope.$on('toggleFullScreen', toggleFullScreen);
+
+		function searchEmployee (event, args) {
+			var employeeId = args.employee.id;
+			var objs = canvas.getObjects();
+			for (var i = 0; i < objs.length; i++) {
+				if (objs[i].label && objs[i].label.id === employeeId) {
+					console.log(objs[i]);
+					highlightDesk(objs[i]);
+				} else {
+					objs[i].setFill('#818181');
+					canvas.renderAll();
+				}
+			}
+		}
+
+		scope.$on('searchEmployee', searchEmployee);
+
+		function highlightDesk (desk) {
+			desk.setFill('#bada55');
+			canvas.renderAll();
+		}
+
+		function scaleObjects (scale) {
+			var objs = canvas.getObjects().map(function(o) {
+				o.scaleX *= scale;
+				o.scaleY *= scale;
+			});
+
 		}
 	}
 };

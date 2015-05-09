@@ -65,7 +65,7 @@ angular.module('projectSsApp')
 	$scope.editMode = false;
 	$scope.editDesks = function () {
 		$scope.editMode = !$scope.editMode;
-		$scope.$broadcast("editDeskPosition", $scope.editMode);
+		$scope.$broadcast('editDeskPosition', $scope.editMode);
 	};
 
 	$scope.addMode = false;
@@ -93,29 +93,29 @@ angular.module('projectSsApp')
 	// $scope.getEmployees(); // use local data for now
 	$scope.employees = [
 		{
-			"name": "Yalun Zhu",
-			"employeeID": 0,
-			"deskID": 0
+			'name': 'Yalun Zhu',
+			'employeeID': 0,
+			'deskID': 0
 		},
 		{
-			"name": "Jon Snow",
-			"employeeID": 1,
-			"deskID": 1
+			'name': 'Jon Snow',
+			'employeeID': 1,
+			'deskID': 1
 		},
 		{
-			"name": "Hello World",
-			"employeeID": 2,
-			"deskID": 4
+			'name': 'Hello World',
+			'employeeID': 2,
+			'deskID': 4
 		},
 		{
-			"name": "Tony Stark",
-			"employeeID": 3,
-			"deskID": 2
+			'name': 'Tony Stark',
+			'employeeID': 3,
+			'deskID': 2
 		},
 		{
-			"name": "Ned Stark",
-			"employeeID": 4,
-			"deskID": 3
+			'name': 'Ned Stark',
+			'employeeID': 4,
+			'deskID': 3
 		}
 	];
 });

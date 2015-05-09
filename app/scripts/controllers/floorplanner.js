@@ -21,11 +21,11 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 		$scope.employees = data;
 	});
 
-	$scope.floorPlan;
+	$scope.floorPlan = undefined;
 	
 	$scope.desks = {
-		"objects": [],
-		"background":"rgb(255,255,255)"
+		'objects': [],
+		'background':'rgb(255,255,255)'
 	};
 
 	$http.get('/data/desks.json').success(function (data) {
@@ -100,7 +100,7 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 		assignEmployee: function () {
 			if ($scope.selectedEmployee.selected) {
 				this.attr.label = angular.copy($scope.selectedEmployee.selected);
-				var index = $scope.employees.indexOf($scope.selectedEmployee.selected.id)
+				// var index = $scope.employees.indexOf($scope.selectedEmployee.selected.id);
 				// $scope.employees.splice(index, 1);
 				$scope.reRenderCanvas();
 			}
