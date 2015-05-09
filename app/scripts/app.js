@@ -22,6 +22,8 @@ angular
     'colorpicker.module'
   ])
   .config(function ($routeProvider, $stateProvider) {
+    $routeProvider.otherwise("/");
+    
     $stateProvider.state('home', {
       url: '/',
       templateUrl: 'views/floorplanner.html',
