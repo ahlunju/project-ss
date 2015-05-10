@@ -40,8 +40,7 @@ return {
 		var baseLayer;
 		var canvasScale = 1;
 
-		//canvas = new fabric.Canvas('floor-canvas', {
-		canvas = new fabric.CanvasWithViewport('floor-canvas', {
+		canvas = new fabric.Canvas('floor-canvas', {
 			backgroundColor: 'rgb(255,255,255)',
 			selectionColor: 'rgba(100,200,200, 0.5)',
 			selectionLineWidth: 2,
@@ -52,8 +51,6 @@ return {
 
 		});
 
-		canvas.isGrabMode = true;
-		
 		function initializeCanvas() {
 			canvas.loadFromJSON(scope.desks);
 			drawBaseLayer('../images/drawing.svg');
@@ -469,6 +466,17 @@ return {
 			});
 
 		}
+
+		function zoomIn () {
+			canvas.setZoom(canvas.getZoom() * 1.1);
+		}
+
+		function zoomOut () {
+			canvas.setZoom(canvas.getZoom() /1.1);
+		}
+
+		scope.$on('zoom-in', zoomIn);
+		scope.$on('zoom-out', zoomOut);
 	}
 };
 });

@@ -88,6 +88,15 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 	$scope.reRenderCanvas = function () {
 		$scope.$broadcast('re-render');
 	};
+
+	$scope.zoomIn = function () {
+		$scope.$broadcast('zoom-in');
+	};
+
+	$scope.zoomOut = function () {
+		$scope.$broadcast('zoom-out');
+	};
+
 	// edit box attributes
 	// width, height, color, name, person name, person id
 	$scope.selectedObject = {

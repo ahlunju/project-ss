@@ -16,7 +16,6 @@
     "ui-bootstrap": "~0.12.1",
     "angular-bootstrap": "~0.12.1",
     "angular-bootstrap-colorpicker": "https://github.com/buberdds/angular-bootstrap-colorpicker.git#~3.0.13",
-    "fabricjs-viewport": "https://github.com/rstgroup/fabricjs-viewport.git",
     "jquery": "https://github.com/jquery/jquery.git#~2.1.4",
     "fabric.js": "https://github.com/kangax/fabric.js.git#~1.5.0"
   },
