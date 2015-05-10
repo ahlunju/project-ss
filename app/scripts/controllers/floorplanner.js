@@ -97,6 +97,9 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 		$scope.$broadcast('zoom-out');
 	};
 
+	$scope.resetZoomPan = function () {
+		$scope.$broadcast('reset-zoom-pan');
+	};
 	// edit box attributes
 	// width, height, color, name, person name, person id
 	$scope.selectedObject = {

@@ -39,9 +39,10 @@
 		<button class="btn btn-primary" ng-click="convertSVG()">Convert to SVG</button>
 		<button class="btn btn-warning" ng-click="showDebugPanel = !showDebugPanel">Debug Panel</button>
 		<button class="btn glyphicon glyphicon-refresh" ng-click="rotateCanvas()"></button>
-		<button class="btn glyphicon glyphicon-fullscreen" ng-click="toggleFullScreen()"></button>
+		<!-- <button class="btn glyphicon glyphicon-fullscreen" ng-click="toggleFullScreen()"></button> -->
 		<button class="btn glyphicon glyphicon-zoom-in" ng-click="zoomIn()"></button>
 		<button class="btn glyphicon glyphicon-zoom-out" ng-click="zoomOut()"></button>
+		<button class="btn glyphicon glyphicon-fullscreen" ng-click="resetZoomPan()"></button>
 		<label >Grid <input type="checkbox" ng-model="showGrid" ng-change="toggleGrid()"></label>
 		<div class="form-group pull-right employee-search">
 			<ui-select ng-model="searchEmployee.selected" on-select="onEmployeeSearch($item, $model)" theme="bootstrap" ng-disabled="disabled" >
