@@ -8,7 +8,7 @@
  *
  * Main module of the application.
  */
-angular
+var SSApp = angular
   .module('projectSsApp', [
     'ngAnimate',
     'ngCookies',
@@ -16,22 +16,21 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ui.router',//not using at the moment
+    'ui.router',
     'ui.select',
     'ui.bootstrap',
     'colorpicker.module'
   ])
-  .config(function ($routeProvider, $stateProvider) {
-    $routeProvider.otherwise("/");
-    
+  .config(['$urlRouterProvider', '$stateProvider', function ($urlRouterProvider, $stateProvider) {
+    $urlRouterProvider.otherwise("/home");
     $stateProvider.state('home', {
-      url: '/',
+      url: '/home',
       templateUrl: 'views/floorplanner.html',
       controller: 'FloorplannerCtrl'
-    });
-    $stateProvider.state('floor-planner', {
+    })
+    .state('floor-planner', {
       url: '/floor-planner',
       templateUrl: 'views/floorplanner.html',
       controller: 'FloorplannerCtrl'
-    });
-  });
+    })
+  }]);
