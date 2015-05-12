@@ -480,6 +480,10 @@ return {
 
 		function resetZoomPan() {
 			canvas.setZoom(1);
+			canvas.absolutePan({
+				x: 0,
+				y: 0
+			});
 			canvas.renderAll();
 		}
 		scope.$on('zoom-in', zoomIn);
