@@ -121,7 +121,7 @@ body {
 
 
 #floor-map-container {
-  position: relative;
+  // position: relative;
   // background-image: url('../assets/grid.png');
 }
 
@@ -177,14 +177,14 @@ body {
 }
 
 #floor-map-controls-container {
-  position: relative;
+  // position: relative;
   z-index: 1;
 }
 #floor-map-controls {
   // position: absolute;
   left: 0;
   right: 0;
-  width: 1000px;
+  width: 100%;
   margin: 15px auto;
   text-align: center;
 }

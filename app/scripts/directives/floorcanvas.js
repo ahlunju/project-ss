@@ -39,12 +39,7 @@ return {
 		var snapAfterRotate = false;
 		var baseLayer;
 		var canvasScale = 1;
-		var canvasZoom;
-		var isDown = false; //panning
-		var viewportLeft = 0;
-		var viewportTop = 0;
-		var mouseLeft;
-		var mouseTop;
+
 
 		var _drawSelection = function () {};
 		canvas = new fabric.Canvas('floor-canvas', {
@@ -61,7 +56,6 @@ return {
 			canvas.loadFromJSON(scope.desks);
 			drawBaseLayer('../images/drawing.svg');
 			_drawSelection = canvas._drawSelection;
-			canvasZoom = canvas.getZoom();
 		}
 
 		function drawBaseLayer (imgUrl) {
@@ -155,22 +149,6 @@ return {
 			scope.selectedEmployee.selected = options.target.label;
 		}
 
-		function panCanvasMove (options) {
-			if (options.e.ctrlKey && isDown) {
-				console.log('panning canvas');
-				var currentMouseLeft = options.e.x;
-				var currentMouseTop = options.e.y;
-
-				var deltaLeft = currentMouseLeft - mouseLeft,
-					deltaTop = currentMouseTop - mouseTop;
-
-				canvas.viewportTransform[4] = viewportLeft + deltaLeft;
-				canvas.viewportTransform[5] = viewportTop + deltaTop;
-
-				canvas.renderAll();
-			}
-		}
-
 		function onMouseMove (options){
 			getPointerCoords(options);
 			// getMouse(options);// its not an event its options of your canvas object
@@ -181,13 +159,6 @@ return {
 				});
 				canvas.renderAll();
 			}
-			panCanvasMove(options);
-		}
-
-		function panCanvasFinish () {
-			console.log('finish panning');
-			canvas._drawSelection = _drawSelection;
-			isDown = false;
 		}
 
 		function onMouseUp (options) {
@@ -196,28 +167,10 @@ return {
 				options.target.setShadow({});
 				canvas.renderAll();
 			}
-			panCanvasFinish();
-		}
-
-		function panCanvasMouseDown (options) {
-			isDown = true;
-			viewportLeft = canvas.viewportTransform[4];
-			viewportTop = canvas.viewportTransform[5];
-
-			mouseLeft = options.e.x;
-			mouseTop = options.e.y;
-
-			if (options.e.ctrlKey) {
-				_drawSelection = canvas._drawSelection;
-				canvas._drawSelection = function () { };
-			}
 		}
 
 		function onMouseDown (options) {
 			console.log('mouse down');
-
-			panCanvasMouseDown(options);
-
 			if (tempObject instanceof fabric.Object) {
 				if (newObjectType.type === 'rectangle') {
 					newObject = new fabric.Rect({
@@ -281,6 +234,7 @@ return {
 				canvas.remove(tempObject);
 				tempObject = {};
 				canvas.add(newObject);
+				newObject.setCoords();
 				canvas.renderAll();
 			}
 
@@ -392,6 +346,7 @@ return {
 
 		canvas.on('after:render', function (options){
 			// console.log('after render');
+			// canvas.calcOffset();
 		});
 
 		/*Object related events*/
@@ -525,13 +480,38 @@ return {
 
 		function resetZoomPan() {
 			canvas.setZoom(1);
-			canvas.viewportTransform[4] = 0;
-			canvas.viewportTransform[5] = 0;
 			canvas.renderAll();
 		}
 		scope.$on('zoom-in', zoomIn);
 		scope.$on('zoom-out', zoomOut);
 		scope.$on('reset-zoom-pan', resetZoomPan);
+		scope.$on('move-left', function () {
+			canvas.relativePan({
+					x: -10,
+					y: 0
+				});
+		});
+
+		scope.$on('move-up', function () {
+			canvas.relativePan({
+					x: 0,
+					y: -10
+				});
+		});
+
+		scope.$on('move-right', function () {
+			canvas.relativePan({
+					x: 10,
+					y: 0
+				});
+		});
+
+		scope.$on('move-down', function () {
+			canvas.relativePan({
+					x: 0,
+					y: 10
+				});
+		});
 	}
 };
 });

@@ -100,6 +100,22 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 	$scope.resetZoomPan = function () {
 		$scope.$broadcast('reset-zoom-pan');
 	};
+
+	$scope.moveLeft = function () {
+		$scope.$broadcast('move-left');
+	};
+
+	$scope.moveUp = function () {
+		$scope.$broadcast('move-up');
+	};
+
+	$scope.moveRight = function () {
+		$scope.$broadcast('move-right');
+	};
+
+	$scope.moveDown = function () {
+		$scope.$broadcast('move-down');
+	};
 	// edit box attributes
 	// width, height, color, name, person name, person id
 	$scope.selectedObject = {
