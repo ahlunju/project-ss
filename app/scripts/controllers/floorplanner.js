@@ -12,8 +12,9 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 
 	$scope.searchEmployee = {};
 
-	$scope.onEmployeeSearch = function (model) {
-		$scope.$broadcast('searchEmployee', {employee: model});
+	$scope.onEmployeeSearch = function () {
+		console.log($scope.searchEmployee);
+		$scope.$broadcast('searchEmployee', {employee: $scope.searchEmployee.selected});
 	};
 
 	// $scope.getEmployees(); // use local data for now
