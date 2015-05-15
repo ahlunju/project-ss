@@ -19,7 +19,8 @@ var SSApp = angular
     'ui.router',
     'ui.select',
     'ui.bootstrap',
-    'colorpicker.module'
+    'colorpicker.module',
+    'projectSsApp.common'
   ])
   .config(['$urlRouterProvider', '$stateProvider', function ($urlRouterProvider, $stateProvider) {
     $urlRouterProvider.otherwise("/home");
