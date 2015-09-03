@@ -18,8 +18,11 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 	};
 
 	// $scope.getEmployees(); // use local data for now
-	$http.get('/data/employees.json').success(function (data) {
+	// $http.get('/data/employees.json').success(function (data) {
+	$http.get('/api/employees').success(function (data) {
 		$scope.employees = data;
+	}).error(function (err) {
+		console.log(err);
 	});
 
 	$scope.floorPlan = undefined;

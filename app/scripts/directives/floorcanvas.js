@@ -15,7 +15,7 @@ return {
 		
 		var complexDesk = {};
 		var complexDeskOptions = {};
-		fabric.loadSVGFromURL('../images/l-desk2.svg', function(objects, options) {
+		fabric.loadSVGFromURL('./images/l-desk2.svg', function(objects, options) {
 			complexDesk = objects;
 			complexDeskOptions = options;
 		});
@@ -54,7 +54,7 @@ return {
 
 		function initializeCanvas() {
 			canvas.loadFromJSON(scope.desks);
-			drawBaseLayer('../images/drawing.svg');
+			drawBaseLayer('./images/drawing.svg');
 			_drawSelection = canvas._drawSelection;
 		}
 
@@ -399,7 +399,7 @@ return {
 		scope.$on('toggleGrid', function (event, args) {
 			if (args.toggle) {
 				//set the grid.png as background
-				canvas.setBackgroundColor({source: '../images/grid.png', repeat: 'repeat'}, function () {
+				canvas.setBackgroundColor({source: './images/grid.png', repeat: 'repeat'}, function () {
 					canvas.renderAll();
 				});
 			} else {
