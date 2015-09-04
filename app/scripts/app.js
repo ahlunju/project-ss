@@ -23,12 +23,13 @@ var SSApp = angular
     'projectSsApp.common'
   ])
   .config(['$urlRouterProvider', '$stateProvider', function ($urlRouterProvider, $stateProvider) {
-    $urlRouterProvider.otherwise("/home");
-    $stateProvider.state('home', {
-      url: '/home',
-      templateUrl: 'views/floorplanner.html',
-      controller: 'FloorplannerCtrl'
-    })
+    $urlRouterProvider.otherwise("/floor-planner");
+    $stateProvider
+    // .state('home', {
+    //   url: '/home',
+    //   templateUrl: 'views/floorplanner.html',
+    //   controller: 'FloorplannerCtrl'
+    // })
     .state('floor-planner', {
       url: '/floor-planner',
       templateUrl: 'views/floorplanner.html',

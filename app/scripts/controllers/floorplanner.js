@@ -8,6 +8,9 @@
  * Controller of the projectSsApp
  */
 angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPlanService, $rootScope, $scope, $http) {
+
+	$scope.desks_id = null;
+
 	$scope.selectedEmployee = {};
 
 	$scope.searchEmployee = {};
@@ -32,14 +35,41 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 		'background':'rgb(255,255,255)'
 	};
 
-	$http.get('/data/desks.json').success(function (data) {
-		console.dir(data);
-		$scope.desks.objects = data;
+	$http.get('/api/desks').success(function (data) {
+	// $http.get('/data/desks.json').success(function (data) {
+		if (data[0]) {
+			$scope.desks_id = data[0]._id;
+			console.log($scope.desks_id);
+			console.dir(data);
+			$scope.desks.objects = data[0].obj;
+		}
+		
 		$scope.$broadcast('initializeCanvas');
 	}).error(function (error) {
 		console.log(error);
 		return [];
 	});
+
+	$scope.updateDesks = function (desks) {
+		console.log($scope.desks_id);
+		if ($scope.desks_id) {
+			$http.post('/api/desks/'+$scope.desks_id, {obj: desks.objects}).
+				then(function (res) {
+					console.log(res)
+				}, function (err) {
+					console.log(err);
+				});
+		} else {
+			$http.post('/api/desks', {obj: desks.objects}).
+				then(function (res) {
+					console.log(res)
+				}, function (err) {
+					console.log(err);
+				});
+		}
+		
+	};
+	
 
 	$scope.addObject = function (objectType) {
 		$scope.$broadcast('addObject', {type: objectType});

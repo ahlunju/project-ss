@@ -312,7 +312,7 @@ return {
 			canvas.remove(baseLayer);
 			scope.desks = canvas.toObject();
 			// canvas.add(baseLayer);
-
+			scope.updateDesks(scope.desks);
 			initializeCanvas();
 			// var allObjects = JSON.stringify(canvas);
 			// console.dir(allObjects);
