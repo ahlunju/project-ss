@@ -53,7 +53,7 @@ angular.module('projectSsApp').controller('FloorplannerCtrl', function (floorPla
 	$scope.updateDesks = function (desks) {
 		console.log($scope.desks_id);
 		if ($scope.desks_id) {
-			$http.post('/api/desks/'+$scope.desks_id, {obj: desks.objects}).
+			$http.put('/api/desks/'+$scope.desks_id, {obj: desks.objects}).
 				then(function (res) {
 					console.log(res)
 				}, function (err) {
